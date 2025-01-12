@@ -1,0 +1,24 @@
+# Enforce Unix newlines
+* text=lf
+
+*.blade.php diff=html
+*.css diff=css
+*.html diff=html
+*.md diff=markdown
+*.php diff=php
+
+# Exclude unused files
+/.devcontainer        export-ignore
+/.gitattributes       export-ignore
+/.gitignore           export-ignore
+/.github              export-ignore
+/CHANGELOG.md         export-ignore
+/docs                 export-ignore
+/resources/docs       export-ignore
+/tests                export-ignore
+/package.json         export-ignore
+/package-lock.json    export-ignore
+/phpunit.xml          export-ignore
+/tsconfig.json        export-ignore
+/vite.config.js       export-ignore
+/pnpm-lock.yaml       export-ignore
