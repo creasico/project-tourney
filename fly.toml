@@ -13,12 +13,18 @@ console_command = 'php /var/www/html/artisan tinker'
     PHP_VERSION = '8.2'
 
 [env]
-  APP_ENV = 'production'
-  LOG_CHANNEL = 'stderr'
+  APP_NAME = 'Tourney'
+  APP_ENV = 'staging'
+  APP_LOCALE = 'id'
+  APP_FAKER_LOCALE = 'id_ID'
+  LOG_CHANNEL = 'stack'
+  LOG_STACK = 'stderr,sentry'
   LOG_LEVEL = 'info'
   LOG_STDERR_FORMATTER = 'Monolog\Formatter\JsonFormatter'
-  SESSION_DRIVER = 'cookie'
+  SESSION_DRIVER = 'database'
   SESSION_SECURE_COOKIE = 'true'
+  QUEUE_CONNECTION = 'database'
+  CACHE_STORE = 'database'
 
 [http_service]
   internal_port = 8080
