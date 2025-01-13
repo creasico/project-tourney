@@ -2,10 +2,4 @@
 
 use Illuminate\Support\Facades\Route;
 
-Route::view('/', 'welcome');
-
-Route::view('profile', 'profile')
-    ->middleware(['auth'])
-    ->name('profile');
-
-// require __DIR__.'/auth.php';
+Route::get('/', static fn () => to_route('filament.admin.pages.dashboard'));
