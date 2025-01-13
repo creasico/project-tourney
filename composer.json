@@ -1,5 +1,4 @@
 {
-  "$schema": "https://getcomposer.org/schema.json",
   "name": "creasico/project-tourney",
   "type": "project",
   "license": "MIT",
@@ -13,6 +12,7 @@
     "sentry/sentry-laravel": "^4.10"
   },
   "require-dev": {
+    "barryvdh/laravel-ide-helper": "^3.5",
     "fakerphp/faker": "^1.23",
     "fly-apps/dockerfile-laravel": "^1.0",
     "laravel/pint": "^1.19",
@@ -36,7 +36,9 @@
     "post-autoload-dump": [
       "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
       "@php artisan package:discover --ansi",
-      "@php artisan filament:upgrade"
+      "@php artisan filament:upgrade",
+      "@php artisan ide-helper:generate",
+      "@php artisan ide-helper:models -n"
     ],
     "post-update-cmd": [
       "@php artisan vendor:publish --tag=laravel-assets --ansi --force"
@@ -46,7 +48,6 @@
     ],
     "post-create-project-cmd": [
       "@php artisan key:generate --ansi",
-      "@php -r \"file_exists('database/database.sqlite') || touch('database/database.sqlite');\"",
       "@php artisan migrate --graceful --ansi"
     ],
     "dev": [
