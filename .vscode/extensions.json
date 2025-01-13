@@ -1,0 +1,7 @@
+{
+  "recommendations": [
+    "laravel.vscode-laravel",
+    "onecentlin.laravel-blade",
+    "bradlc.vscode-tailwindcss"
+  ]
+}
