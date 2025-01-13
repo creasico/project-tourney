@@ -1,4 +1,4 @@
-import laravel from 'laravel-vite-plugin'
+import laravel, { refreshPaths } from 'laravel-vite-plugin'
 import { defineConfig, loadEnv } from 'vite'
 
 export default defineConfig(({ mode }) => {
@@ -11,6 +11,7 @@ export default defineConfig(({ mode }) => {
       sourcemap: isDev || 'SENTRY_AUTH_TOKEN' in env,
       reportCompressedSize: false,
       chunkSizeWarningLimit: 2000,
+
       /**
        * @see https://rollupjs.org/configuration-options/#output-manualchunks
        */
@@ -36,7 +37,10 @@ export default defineConfig(({ mode }) => {
     plugins: [
       laravel({
         input: ['resources/css/app.css', 'resources/js/app.js'],
-        refresh: true,
+        refresh: [
+          ...refreshPaths,
+          'app/Livewire/**',
+        ],
       }),
     ],
   }
