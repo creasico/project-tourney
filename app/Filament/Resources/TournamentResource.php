@@ -60,6 +60,12 @@ class TournamentResource extends Resource
                 Columns\TextColumn::make('title')
                     ->label(fn () => trans('tournament.field.title'))
                     ->description(fn (Tournament $record) => $record->description),
+                Columns\TextColumn::make('participants_count')
+                    ->label(fn () => trans('tournament.field.participants_count'))
+                    ->counts(['participants'])
+                    ->numeric()
+                    ->width('10%')
+                    ->alignCenter(),
                 Columns\TextColumn::make('status')
                     ->label(fn () => trans('tournament.field.status'))
                     ->formatStateUsing(static function (Tournament $record) {

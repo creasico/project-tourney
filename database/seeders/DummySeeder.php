@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Enums\ParticipantType;
 use App\Models\Classification;
 use App\Models\Continent;
 use App\Models\Participant;
@@ -49,11 +50,23 @@ class DummySeeder extends Seeder
     }
 
     /**
-     * @param  \Illuminate\Database\Eloquent\Collection<int, Continent>  $classes
+     * @param  \Illuminate\Database\Eloquent\Collection<int, Continent>  $continents
      * @return \Illuminate\Database\Eloquent\Collection
      */
     private function generateTournaments($continents)
     {
+        $participants = $continents->reduce(
+            function ($participants, $continent) {
+                $contestants = $continent->participants()
+                    ->where('type', ParticipantType::Contestant)
+                    ->take(fake()->numberBetween(5, 20))
+                    ->get();
+
+                return $participants->merge($contestants);
+            },
+            collect()
+        );
+
         return Tournament::factory(10)
             ->sequence(static function (Sequence $sequence) {
                 $criteria = $sequence->index < 6;
@@ -74,6 +87,9 @@ class DummySeeder extends Seeder
                     'updated_at' => $created,
                 ];
             })
+            ->hasAttached($participants, fn () => [
+                // .
+            ])
             ->createMany();
     }
 }

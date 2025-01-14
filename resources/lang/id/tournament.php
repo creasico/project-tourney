@@ -15,6 +15,7 @@ return [
         'start_date' => 'Tanggal Mulai',
         'finish_date' => 'Tanggal Selesai',
         'status' => 'Status',
+        'participants_count' => 'Juml. Peserta',
     ],
 
     'reward' => [

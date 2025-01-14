@@ -8,6 +8,8 @@ use Illuminate\Database\Eloquent\Relations\Pivot;
 
 class MatchHistory extends Pivot
 {
+    protected $table = 'match_histories';
+
     protected function casts(): array
     {
         return [

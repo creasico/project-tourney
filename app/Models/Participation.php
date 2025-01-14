@@ -8,6 +8,8 @@ use Illuminate\Database\Eloquent\Relations\Pivot;
 
 class Participation extends Pivot
 {
+    protected $table = 'participations';
+
     protected function casts(): array
     {
         return [

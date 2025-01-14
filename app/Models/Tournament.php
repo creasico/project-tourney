@@ -34,7 +34,11 @@ class Tournament extends Model
     public function participants(): BelongsToMany
     {
         return $this->belongsToMany(Participant::class, Participation::class)
-            ->withPivot('rank_number', 'draw_number', 'medal', 'disqualified_at', 'knocked_at')
+            ->withPivot([
+                'rank_number', 'draw_number', 'medal', 'knocked_at',
+                'disqualification_reason', 'disqualified_at',
+                'verified_at', 'knocked_at',
+            ])
             ->as('participation');
     }
 

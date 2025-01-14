@@ -15,6 +15,7 @@ return [
         'start_date' => 'Start_ Date',
         'finish_date' => 'Finish Date',
         'status' => 'Status',
+        'participants_count' => 'Parties Count',
     ],
 
     'reward' => [

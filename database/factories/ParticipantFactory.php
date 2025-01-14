@@ -13,8 +13,6 @@ use Illuminate\Database\Eloquent\Factories\Factory;
  */
 class ParticipantFactory extends Factory
 {
-    private static ?Gender $gender = null;
-
     /**
      * Define the model's default state.
      *
@@ -25,10 +23,10 @@ class ParticipantFactory extends Factory
         return [
             'continent_id' => Continent::factory(),
             'class_id' => Classification::factory(),
-            'gender' => self::$gender = fake()->randomElement(Gender::cases()),
-            'name' => implode(' ', [
-                fake()->firstName(self::$gender->value),
-                fake()->lastName(self::$gender->value),
+            'gender' => fake()->randomElement(Gender::cases()),
+            'name' => fn (array $attr) => implode(' ', [
+                fake()->firstName($attr['gender']),
+                fake()->lastName($attr['gender']),
             ]),
             'type' => fake()->randomElement(ParticipantType::cases()),
         ];
@@ -37,7 +35,7 @@ class ParticipantFactory extends Factory
     public function withGender(Gender $gender)
     {
         return $this->state([
-            'gender' => self::$gender = $gender,
+            'gender' => $gender,
         ]);
     }
 

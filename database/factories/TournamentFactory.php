@@ -9,8 +9,6 @@ use Illuminate\Database\Eloquent\Factories\Factory;
  */
 class TournamentFactory extends Factory
 {
-    private static ?\DateTime $startDate = null;
-
     /**
      * Define the model's default state.
      *
@@ -22,23 +20,8 @@ class TournamentFactory extends Factory
             'title' => fake()->words(asText: true),
             'description' => null,
             'attr' => null,
-            'start_date' => self::$startDate = fake()->dateTimeThisMonth(),
-            'finish_date' => fake()->dateTimeBetween(self::$startDate),
+            'start_date' => fake()->dateTimeThisMonth(),
+            'finish_date' => fn (array $attr) => fake()->dateTimeBetween($attr['start_date']),
         ];
-    }
-
-    public function unstarted()
-    {
-        return $this->state([
-            'start_date' => null,
-            'finish_date' => null,
-        ]);
-    }
-
-    public function unfinished()
-    {
-        return $this->state([
-            'finish_date' => null,
-        ]);
     }
 }
