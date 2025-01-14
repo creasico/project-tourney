@@ -9,10 +9,16 @@ return [
         'info_heading' => 'Information',
     ],
 
+    'role' => [
+        'athlete' => 'Athlete',
+        'manager' => 'Manager',
+    ],
+
     'field' => [
         'name' => 'Nama',
         'classification' => 'Classification',
-        'type' => 'Type',
+        'role' => 'Role',
         'gender' => 'Gender',
+        'verified' => 'Verified',
     ],
 ];

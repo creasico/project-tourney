@@ -3,7 +3,7 @@
 namespace Database\Factories;
 
 use App\Enums\Gender;
-use App\Enums\ParticipantType;
+use App\Enums\ParticipantRole;
 use App\Models\Classification;
 use App\Models\Continent;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -28,7 +28,7 @@ class ParticipantFactory extends Factory
                 fake()->firstName($attr['gender']),
                 fake()->lastName($attr['gender']),
             ]),
-            'type' => fake()->randomElement(ParticipantType::cases()),
+            'role' => fake()->randomElement(ParticipantRole::cases()),
         ];
     }
 
@@ -39,22 +39,22 @@ class ParticipantFactory extends Factory
         ]);
     }
 
-    public function withType(ParticipantType $type)
+    public function withRole(ParticipantRole $role)
     {
         return $this->state([
-            'type' => $type,
+            'role' => $role,
         ]);
     }
 
-    public function asContestant()
+    public function asAthlete()
     {
-        return $this->withType(ParticipantType::Contestant);
+        return $this->withRole(ParticipantRole::Athlete);
     }
 
-    public function asPic()
+    public function asManager()
     {
         return $this->state([
             'class_id' => null,
-        ])->withType(ParticipantType::PIC);
+        ])->withRole(ParticipantRole::Manager);
     }
 }

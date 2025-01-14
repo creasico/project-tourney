@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\ParticipantRole;
 use Illuminate\Database\Eloquent\Casts\AsArrayObject;
 use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -20,8 +21,18 @@ class Continent extends Model
         ];
     }
 
-    public function participants(): HasMany
+    public function members(): HasMany
     {
         return $this->hasMany(Participant::class);
+    }
+
+    public function athletes(): HasMany
+    {
+        return $this->members()->where('role', ParticipantRole::Athlete);
+    }
+
+    public function managers(): HasMany
+    {
+        return $this->members()->where('role', ParticipantRole::Manager);
     }
 }

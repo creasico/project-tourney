@@ -5,7 +5,7 @@ namespace App\Filament\Resources;
 use App\Enums\Gender;
 use App\Filament\Resources\ClassificationResource\Pages;
 use App\Models\Classification;
-use App\View\Navigations\GroupSetting;
+use App\View\Navigations\GroupSystem;
 use Filament\Forms\Components;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -15,7 +15,7 @@ use Filament\Tables\Table;
 
 class ClassificationResource extends Resource
 {
-    use GroupSetting;
+    use GroupSystem;
 
     protected static ?string $model = Classification::class;
 
@@ -37,7 +37,7 @@ class ClassificationResource extends Resource
     {
         return $table
             ->reorderable('order')
-            ->defaultSort('created_at', 'desc')
+            ->defaultSort('order')
             ->columns([
                 Columns\TextColumn::make('order')
                     ->label(fn () => trans('classification.field.order'))
@@ -52,12 +52,10 @@ class ClassificationResource extends Resource
                 //
             ])
             ->actions([
-                Actions\EditAction::make(),
-            ])
-            ->bulkActions([
-                Actions\BulkActionGroup::make([
-                    Actions\DeleteBulkAction::make(),
-                ]),
+                Actions\ActionGroup::make([
+                    Actions\EditAction::make('edit'),
+                    Actions\DeleteAction::make('delete'),
+                ])->tooltip(fn () => trans('app.resource.action_label')),
             ]);
     }
 

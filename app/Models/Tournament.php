@@ -2,7 +2,11 @@
 
 namespace App\Models;
 
+use App\Enums\TournamentLevel;
 use App\Enums\TournamentStatus;
+use App\Events\ParticipantDisqualified;
+use App\Events\ParticipantKnockedOff;
+use App\Events\ParticipantVerified;
 use Illuminate\Database\Eloquent\Casts\AsArrayObject;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Concerns\HasUlids;
@@ -20,6 +24,7 @@ class Tournament extends Model
     protected function casts(): array
     {
         return [
+            'level' => TournamentLevel::class,
             'attr' => AsArrayObject::class,
             'start_date' => 'immutable_date',
             'finish_date' => 'immutable_date',
@@ -35,7 +40,7 @@ class Tournament extends Model
     {
         return $this->belongsToMany(Participant::class, Participation::class)
             ->withPivot([
-                'rank_number', 'draw_number', 'medal', 'knocked_at',
+                'rank_number', 'draw_number', 'medal',
                 'disqualification_reason', 'disqualified_at',
                 'verified_at', 'knocked_at',
             ])
@@ -60,14 +65,58 @@ class Tournament extends Model
     public function isStarted(): Attribute
     {
         return Attribute::get(
-            fn () => Carbon::parse($this->start_date)->startOfDay()->lt(now()->endOfDay())
+            fn () => $this->start_date?->startOfDay()->lt(now()->endOfDay())
         );
     }
 
     public function isFinished(): Attribute
     {
         return Attribute::get(
-            fn () => Carbon::parse($this->finish_date)->endOfDay()->lt(now()->startOfDay())
+            fn () => $this->finish_date?->endOfDay()->lt(now()->startOfDay())
         );
+    }
+
+    public function dateLabel(): Attribute
+    {
+        return Attribute::get(function () {
+            if (! $this->finish_date) {
+                return Carbon::parse($this->start_date)->getCalendarFormats();
+            }
+
+        });
+    }
+
+    public function disqualify(Participant $participant, ?string $reason = null)
+    {
+        $disqualified = $this->participants()->updateExistingPivot($participant, [
+            'disqualification_reason' => $reason,
+            'disqualified_at' => $this->freshTimestamp(),
+        ]);
+
+        event(new ParticipantDisqualified($participant, $this, $reason));
+
+        return $disqualified;
+    }
+
+    public function verify(Participant $participant, ?string $reason = null)
+    {
+        $verified = $this->participants()->updateExistingPivot($participant, [
+            'verified_at' => $this->freshTimestamp(),
+        ]);
+
+        event(new ParticipantVerified($participant, $this));
+
+        return $verified;
+    }
+
+    public function knockOff(Participant $participant, ?string $reason = null)
+    {
+        $knocked = $this->participants()->updateExistingPivot($participant, [
+            'knocked_at' => $this->freshTimestamp(),
+        ]);
+
+        event(new ParticipantKnockedOff($participant, $this));
+
+        return $knocked;
     }
 }

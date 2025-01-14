@@ -2,14 +2,13 @@
 
 namespace App\Providers\Filament;
 
-use App\Filament\Pages\Profile;
+use App\Filament\Pages;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
 use Filament\Navigation\MenuItem;
 use Filament\Navigation\NavigationGroup;
-use Filament\Pages;
 use Filament\Panel;
 use Filament\PanelProvider;
 use Filament\Support\Colors\Color;
@@ -28,19 +27,19 @@ class AdminPanelProvider extends PanelProvider
         return $panel
             ->default()
             ->id('admin')
-            ->path('admin')
+            ->path('')
             ->spa()
             ->colors([
                 'primary' => Color::Slate,
             ])
             ->login()
-            ->profile(Profile::class, false)
+            ->profile(Pages\Profile::class, false)
             ->userMenuItems([
                 'profile' => MenuItem::make()->label(fn () => auth()->user()->name),
             ])
             ->navigationGroups([
                 NavigationGroup::make(fn () => trans('navigation.manage'))->collapsible(false),
-                NavigationGroup::make(fn () => trans('navigation.settings'))->collapsible(false),
+                NavigationGroup::make(fn () => trans('navigation.system'))->collapsible(false),
             ])
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')

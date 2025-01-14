@@ -18,6 +18,7 @@ class MatchUp extends Model
     {
         return [
             'next_side' => MatchSide::class,
+            'party' => 'integer',
             'round' => 'integer',
             'order' => 'integer',
             'is_bye' => 'boolean',

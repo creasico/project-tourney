@@ -32,8 +32,10 @@ return [
         'finished' => 'Finished',
     ],
 
-    'participant_type' => [
-        'contestant' => 'Contestant',
-        'pic' => 'Person in charge',
+    'level' => [
+        'nation' => 'Nation',
+        'province' => 'Province',
+        'regency' => 'Regency',
+        'district' => 'District',
     ],
 ];

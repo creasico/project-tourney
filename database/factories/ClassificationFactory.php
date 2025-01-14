@@ -2,7 +2,6 @@
 
 namespace Database\Factories;
 
-use App\Enums\Gender;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -20,7 +19,6 @@ class ClassificationFactory extends Factory
         return [
             'label' => fake()->words(asText: true),
             'description' => null,
-            'gender' => fake()->randomElement(Gender::cases()),
             'order' => null,
         ];
     }

@@ -9,10 +9,16 @@ return [
         'info_heading' => 'Informasi',
     ],
 
+    'role' => [
+        'athlete' => 'Atlit',
+        'manager' => 'Manajer',
+    ],
+
     'field' => [
         'name' => 'Nama',
         'classification' => 'Kelas',
-        'type' => 'Tipe',
+        'role' => 'Peran',
         'gender' => 'Gender',
+        'verified' => 'Terverifikasi',
     ],
 ];

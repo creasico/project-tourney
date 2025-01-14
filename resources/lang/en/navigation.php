@@ -2,5 +2,5 @@
 
 return [
     'manage' => 'Manage',
-    'settings' => 'Settings',
+    'system' => 'System',
 ];

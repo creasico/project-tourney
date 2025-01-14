@@ -2,5 +2,5 @@
 
 return [
     'manage' => 'Kelola',
-    'settings' => 'Pengaturan',
+    'system' => 'Sistem',
 ];

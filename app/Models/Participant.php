@@ -3,7 +3,7 @@
 namespace App\Models;
 
 use App\Enums\Gender;
-use App\Enums\ParticipantType;
+use App\Enums\ParticipantRole;
 use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -18,7 +18,7 @@ class Participant extends Model
     protected function casts(): array
     {
         return [
-            'type' => ParticipantType::class,
+            'role' => ParticipantRole::class,
             'gender' => Gender::class,
         ];
     }
@@ -36,7 +36,11 @@ class Participant extends Model
     public function tournaments(): BelongsToMany
     {
         return $this->belongsToMany(Tournament::class, Participation::class)
-            ->withPivot('rank_number', 'draw_number', 'medal', 'disqualified_at', 'knocked_at')
+            ->withPivot([
+                'rank_number', 'draw_number', 'medal',
+                'disqualification_reason', 'disqualified_at',
+                'verified_at', 'knocked_at',
+            ])
             ->as('participate');
     }
 }

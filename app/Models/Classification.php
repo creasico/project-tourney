@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Enums\Gender;
 use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -15,7 +14,6 @@ class Classification extends Model
     protected function casts(): array
     {
         return [
-            'gender' => Gender::class,
             'order' => 'integer',
         ];
     }

@@ -2,7 +2,6 @@
 
 namespace Database\Seeders;
 
-use App\Enums\ParticipantType;
 use App\Models\Classification;
 use App\Models\Continent;
 use App\Models\Participant;
@@ -35,16 +34,16 @@ class DummySeeder extends Seeder
                 'name' => 'Kontingen '.($sequence->index + 1),
             ])
             ->has(
-                Participant::factory(2)->asPic(),
-                'participants'
+                Participant::factory(2)->asManager(),
+                'members'
             )
             ->has(
                 Participant::factory(20)
                     ->sequence(static fn () => [
                         'class_id' => fake()->randomElement($classes)->getKey(),
                     ])
-                    ->asContestant(),
-                'participants'
+                    ->asAthlete(),
+                'members'
             )
             ->createMany();
     }
@@ -55,14 +54,13 @@ class DummySeeder extends Seeder
      */
     private function generateTournaments($continents)
     {
-        $participants = $continents->reduce(
-            function ($participants, $continent) {
-                $contestants = $continent->participants()
-                    ->where('type', ParticipantType::Contestant)
+        $athletes = $continents->reduce(
+            function ($athletes, $continent) {
+                $contestants = $continent->athletes()
                     ->take(fake()->numberBetween(5, 20))
                     ->get();
 
-                return $participants->merge($contestants);
+                return $athletes->merge($contestants);
             },
             collect()
         );
@@ -87,9 +85,27 @@ class DummySeeder extends Seeder
                     'updated_at' => $created,
                 ];
             })
-            ->hasAttached($participants, fn () => [
-                // .
-            ])
+            ->hasAttached($athletes, function (Tournament $model) {
+                $disqualified = $model->is_started && fake()->boolean(10)
+                    ? fake()->dateTimeBetween($model->start_date, $model->start_date->addDays(7))
+                    : null;
+
+                return [
+                    // 'rank_number' => null,
+                    'draw_number' => $model->is_finished ? fake()->numberBetween(1, 20) : 0,
+                    // 'medal' => null,
+                    'knocked_at' => $model->is_started && $disqualified === null && fake()->boolean(40)
+                        ? fake()->dateTimeBetween($model->start_date, $model->start_date->addDays(7))
+                        : null,
+                    'disqualification_reason' => $disqualified !== null && fake()->boolean(40)
+                        ? fake()->sentence()
+                        : null,
+                    'disqualified_at' => $disqualified,
+                    'verified_at' => $model->is_started
+                        ? fake()->dateTimeBetween($model->start_date->subDays(10), $model->start_date)
+                        : null,
+                ];
+            })
             ->createMany();
     }
 }

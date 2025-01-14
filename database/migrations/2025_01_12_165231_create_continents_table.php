@@ -28,6 +28,7 @@ return new class extends Migration
 
             $table->string('title');
             $table->string('description')->nullable();
+            $table->unsignedTinyInteger('level')->nullable();
             $table->json('attr')->nullable();
             $table->date('start_date')->nullable();
             $table->date('finish_date')->nullable();
@@ -50,7 +51,6 @@ return new class extends Migration
 
             $table->string('label');
             $table->string('description')->nullable();
-            $table->enum('gender', Gender::toArray())->nullable();
             $table->unsignedSmallInteger('order')->nullable();
 
             $table->timestamps();
@@ -62,7 +62,7 @@ return new class extends Migration
             $table->ulid('class_id')->nullable();
 
             $table->string('name');
-            $table->unsignedTinyInteger('type')->nullable()->comment('0=contestant; 1=pic');
+            $table->unsignedTinyInteger('role')->nullable()->comment('0=athlete; 1=manager');
             $table->enum('gender', Gender::toArray())->nullable();
 
             $table->timestamps();
@@ -77,6 +77,7 @@ return new class extends Migration
             $table->ulid('next_id')->nullable();
 
             $table->enum('next_side', MatchSide::toArray())->nullable();
+            $table->unsignedSmallInteger('party')->default(0);
             $table->smallInteger('round')->default(0);
             $table->unsignedSmallInteger('order')->default(0);
             $table->boolean('is_bye')->default(false);

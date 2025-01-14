@@ -27,6 +27,7 @@ class MatchUpFactory extends Factory
             'class_id' => Classification::factory(),
             'next_id' => null,
             'next_side' => fake()->randomElement(MatchSide::cases()),
+            'party' => fake()->numberBetween(0, 10),
             'round' => fake()->numberBetween(0, 10),
             'order' => fake()->numberBetween(0, 10),
             'is_bye' => fake()->boolean(),

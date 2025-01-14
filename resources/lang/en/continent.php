@@ -10,7 +10,7 @@ return [
 
     'field' => [
         'name' => 'Name',
-        'pics_count' => 'PICs Count',
-        'contestants_count' => 'Contestants Count',
+        'managers_count' => 'Manager Count',
+        'athletes_count' => 'Athletes Count',
     ],
 ];

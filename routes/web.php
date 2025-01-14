@@ -2,4 +2,4 @@
 
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', static fn () => to_route('filament.admin.pages.dashboard'));
+// Route::get('/', static fn () => to_route('filament.admin.pages.dashboard'));

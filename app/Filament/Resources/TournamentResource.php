@@ -4,6 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Enums\TournamentStatus;
 use App\Filament\Resources\TournamentResource\Pages;
+use App\Filament\Resources\TournamentResource\RelationManagers;
 use App\Models\Tournament;
 use App\View\Navigations\GroupManage;
 use Filament\Forms\Components;
@@ -32,9 +33,11 @@ class TournamentResource extends Resource
                     ->schema([
                         Components\TextInput::make('title')
                             ->label(fn () => trans('tournament.field.title'))
+                            ->disabled(fn (Tournament $record) => $record->is_started)
                             ->required(),
                         Components\Textarea::make('description')
                             ->label(fn () => trans('tournament.field.description'))
+                            ->disabled(fn (Tournament $record) => $record->is_started)
                             ->nullable(),
                     ]),
                 Components\Section::make(static fn () => trans('tournament.section.schedule_heading'))
@@ -43,9 +46,11 @@ class TournamentResource extends Resource
                     ->schema([
                         Components\DatePicker::make('start_date')
                             ->label(fn () => trans('tournament.field.start_date'))
+                            ->disabled(fn (Tournament $record) => $record->is_started)
                             ->required(),
                         Components\DatePicker::make('finish_date')
                             ->label(fn () => trans('tournament.field.finish_date'))
+                            ->disabled(fn (Tournament $record) => $record->is_finished)
                             ->nullable(),
                     ]),
             ])
@@ -81,7 +86,10 @@ class TournamentResource extends Resource
                 //
             ])
             ->actions([
-                Actions\EditAction::make(),
+                Actions\ActionGroup::make([
+                    Actions\EditAction::make('edit'),
+                    Actions\DeleteAction::make('delete'),
+                ])->tooltip(fn () => trans('app.resource.action_label')),
             ])
             ->bulkActions([
                 Actions\BulkActionGroup::make([
@@ -93,7 +101,8 @@ class TournamentResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            RelationManagers\ParticipantsRelationManager::class,
+            RelationManagers\MatchesRelationManager::class,
         ];
     }
 

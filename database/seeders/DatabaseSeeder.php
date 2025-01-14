@@ -39,13 +39,13 @@ class DatabaseSeeder extends Seeder
         }
 
         $rewards = [
-            ['Juara 1', null],
-            ['Juara 2', null],
-            ['Juara 3', null],
-            ['Juara Harapan 1', null],
-            ['Juara Harapan 2', null],
-            ['Juara Harapan 3', null],
-            ['Juara Favorit', null],
+            ['Juara 1', 'Contoh deskripsi Juara 1'],
+            ['Juara 2', 'Contoh deskripsi Juara 2'],
+            ['Juara 3', 'Contoh deskripsi Juara 3'],
+            ['Juara Harapan 1', 'Contoh deskripsi Juara Harapan 1'],
+            ['Juara Harapan 2', 'Contoh deskripsi Juara Harapan 2'],
+            ['Juara Harapan 3', 'Contoh deskripsi Juara Harapan 3'],
+            ['Juara Favorit', 'Contoh deskripsi Juara Favorit'],
         ];
 
         foreach ($rewards as $i => [$label, $description]) {
@@ -64,22 +64,10 @@ class DatabaseSeeder extends Seeder
         }
 
         $classifications = [
-            ['Dewasa A', null],
-            ['Dewasa B', null],
-            ['Dewasa C', null],
-            ['Dewasa D', null],
-            ['Remaja A', null],
-            ['Remaja B', null],
-            ['Remaja C', null],
-            ['Remaja D', null],
-            ['Anak A', null],
-            ['Anak B', null],
-            ['Anak C', null],
-            ['Anak D', null],
-            ['Usia dini A', null],
-            ['Usia dini B', null],
-            ['Usia dini C', null],
-            ['Usia dini D', null],
+            ['Dewasa', 'Misal usia lebih dari 18 tahun'],
+            ['Remaja', 'Misal usia antara 12-18 tahun'],
+            ['Anak', 'Misal usia antara 6-12 tahun'],
+            ['Usia dini', 'Misal usia dibawah 6 tahun'],
         ];
 
         foreach ($classifications as $i => [$label, $description]) {

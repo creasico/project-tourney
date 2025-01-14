@@ -4,7 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\UserResource\Pages;
 use App\Models\User;
-use App\View\Navigations\GroupSetting;
+use App\View\Navigations\GroupSystem;
 use Filament\Forms\Components;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -14,7 +14,7 @@ use Filament\Tables\Table;
 
 class UserResource extends Resource
 {
-    use GroupSetting;
+    use GroupSystem;
 
     protected static ?string $model = User::class;
 
@@ -44,7 +44,11 @@ class UserResource extends Resource
                 //
             ])
             ->actions([
-                Actions\EditAction::make('edit')
+                Actions\ActionGroup::make([
+                    Actions\EditAction::make('edit'),
+                    Actions\DeleteAction::make('delete'),
+                ])
+                    ->tooltip(fn () => trans('app.resource.action_label'))
                     ->visible(fn (User $record) => $record->isNot(auth()->user())),
             ])
             ->recordUrl(fn (User $record) => $record->is(auth()->user()) ? route('filament.admin.auth.profile') : null)

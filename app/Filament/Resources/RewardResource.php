@@ -4,7 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\RewardResource\Pages;
 use App\Models\Reward;
-use App\View\Navigations\GroupSetting;
+use App\View\Navigations\GroupSystem;
 use Filament\Forms\Components;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -14,7 +14,7 @@ use Filament\Tables\Table;
 
 class RewardResource extends Resource
 {
-    use GroupSetting;
+    use GroupSystem;
 
     protected static ?string $model = Reward::class;
 
@@ -40,7 +40,8 @@ class RewardResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
-            ->defaultSort('order', 'desc')
+            ->reorderable('order')
+            ->defaultSort('order')
             ->columns([
                 Columns\TextColumn::make('order')
                     ->label(fn () => trans('reward.field.order'))
@@ -55,12 +56,10 @@ class RewardResource extends Resource
                 //
             ])
             ->actions([
-                Actions\EditAction::make(),
-            ])
-            ->bulkActions([
-                Actions\BulkActionGroup::make([
-                    Actions\DeleteBulkAction::make(),
-                ]),
+                Actions\ActionGroup::make([
+                    Actions\EditAction::make('edit'),
+                    Actions\DeleteAction::make('delete'),
+                ])->tooltip(fn () => trans('app.resource.action_label')),
             ]);
     }
 

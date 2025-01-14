@@ -32,8 +32,10 @@ return [
         'finished' => 'Selesai',
     ],
 
-    'participant_type' => [
-        'contestant' => 'Peserta',
-        'pic' => 'Penanggungjawab',
+    'level' => [
+        'nation' => 'Nasional',
+        'province' => 'Provinsi',
+        'regency' => 'Kab. / Kota',
+        'district' => 'Kecamatan',
     ],
 ];

@@ -2,8 +2,9 @@
 
 namespace App\Filament\Resources;
 
-use App\Enums\ParticipantType;
+use App\Enums\ParticipantRole;
 use App\Filament\Resources\ContinentResource\Pages;
+use App\Filament\Resources\ContinentResource\RelationManagers;
 use App\Models\Continent;
 use App\View\Navigations\GroupManage;
 use Filament\Forms\Components;
@@ -44,18 +45,18 @@ class ContinentResource extends Resource
             ->columns([
                 Columns\TextColumn::make('name')
                     ->label(fn () => trans('continent.field.name')),
-                Columns\TextColumn::make('pics_count')
-                    ->label(fn () => trans('continent.field.pics_count'))
+                Columns\TextColumn::make('managers_count')
+                    ->label(fn () => trans('continent.field.managers_count'))
                     ->counts([
-                        'participants as pics_count' => fn (Builder $q) => $q->where('type', ParticipantType::PIC),
+                        'managers' => fn (Builder $q) => $q->where('role', ParticipantRole::Manager),
                     ])
                     ->numeric()
                     ->width('10%')
                     ->alignCenter(),
-                Columns\TextColumn::make('contestants_count')
-                    ->label(fn () => trans('continent.field.contestants_count'))
+                Columns\TextColumn::make('athletes_count')
+                    ->label(fn () => trans('continent.field.athletes_count'))
                     ->counts([
-                        'participants as contestants_count' => fn (Builder $q) => $q->where('type', ParticipantType::Contestant),
+                        'athletes' => fn (Builder $q) => $q->where('role', ParticipantRole::Athlete),
                     ])
                     ->numeric()
                     ->width('10%')
@@ -65,7 +66,10 @@ class ContinentResource extends Resource
                 //
             ])
             ->actions([
-                Actions\EditAction::make(),
+                Actions\ActionGroup::make([
+                    Actions\EditAction::make('edit'),
+                    Actions\DeleteAction::make('delete'),
+                ])->tooltip(fn () => trans('app.resource.action_label')),
             ])
             ->bulkActions([
                 Actions\BulkActionGroup::make([
@@ -77,7 +81,8 @@ class ContinentResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            RelationManagers\ManagersRelationManager::class,
+            RelationManagers\AthletesRelationManager::class,
         ];
     }
 
