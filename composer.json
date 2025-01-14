@@ -12,6 +12,7 @@
     "sentry/sentry-laravel": "^4.10"
   },
   "require-dev": {
+    "barryvdh/laravel-debugbar": "^3.14",
     "barryvdh/laravel-ide-helper": "^3.5",
     "fakerphp/faker": "^1.23",
     "fly-apps/dockerfile-laravel": "^1.0",
