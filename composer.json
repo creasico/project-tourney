@@ -4,18 +4,16 @@
   "license": "MIT",
   "require": {
     "php": "^8.2",
+    "fakerphp/faker": "^1.23",
     "filament/filament": "^3.2",
     "laravel/framework": "^11.31",
     "laravel/tinker": "^2.9",
     "livewire/livewire": "^3.4",
-    "livewire/volt": "^1.0",
     "sentry/sentry-laravel": "^4.10"
   },
   "require-dev": {
     "barryvdh/laravel-debugbar": "^3.14",
     "barryvdh/laravel-ide-helper": "^3.5",
-    "fakerphp/faker": "^1.23",
-    "fly-apps/dockerfile-laravel": "^1.0",
     "laravel/pint": "^1.19",
     "mockery/mockery": "^1.6",
     "pestphp/pest": "^3.7",
