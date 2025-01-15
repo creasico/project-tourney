@@ -2,7 +2,6 @@
 
 namespace App\Filament\Resources;
 
-use App\Enums\TournamentStatus;
 use App\Filament\Resources\TournamentResource\Pages;
 use App\Filament\Resources\TournamentResource\RelationManagers;
 use App\Models\Tournament;
@@ -10,9 +9,11 @@ use App\View\Navigations\GroupManage;
 use Filament\Forms\Components;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
+use Filament\Support\Enums\Alignment;
 use Filament\Tables\Actions;
 use Filament\Tables\Columns;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
 
 class TournamentResource extends Resource
 {
@@ -65,22 +66,49 @@ class TournamentResource extends Resource
                 Columns\TextColumn::make('title')
                     ->label(fn () => trans('tournament.field.title'))
                     ->description(fn (Tournament $record) => $record->description),
-                Columns\TextColumn::make('participants_count')
-                    ->label(fn () => trans('tournament.field.participants_count'))
-                    ->counts(['participants'])
-                    ->numeric()
-                    ->width('10%')
-                    ->alignCenter(),
+                Columns\ColumnGroup::make(fn () => trans('tournament.field.participants'), [
+                    Columns\TextColumn::make('registered_count')
+                        ->label(fn () => trans('tournament.field.registered_count'))
+                        ->counts([
+                            'participants as registered_count',
+                        ])
+                        ->numeric()
+                        ->alignCenter()
+                        ->width('10%'),
+                    Columns\TextColumn::make('verified_count')
+                        ->label(fn () => trans('tournament.field.verified_count'))
+                        ->counts([
+                            'participants as verified_count' => fn (Builder $q) => $q->whereNotNull('verified_at'),
+                        ])
+                        ->numeric()
+                        ->alignCenter()
+                        ->width('10%'),
+                ])->alignment(Alignment::Center)->wrapHeader(),
+                Columns\ColumnGroup::make(fn () => trans('tournament.field.schedule'), [
+                    Columns\TextColumn::make('start_date')
+                        ->label(fn () => trans('tournament.field.start_date'))
+                        ->formatStateUsing(
+                            static fn (Tournament $record) => $record->start_date->toFormattedDateString()
+                        )
+                        ->width('10%'),
+                    Columns\TextColumn::make('finish_date')
+                        ->label(fn () => trans('tournament.field.finish_date'))
+                        ->formatStateUsing(
+                            static fn (Tournament $record) => $record->finish_date->toFormattedDateString()
+                        )
+                        ->width('10%'),
+                ])->alignment(Alignment::Center)->wrapHeader(),
                 Columns\TextColumn::make('status')
                     ->label(fn () => trans('tournament.field.status'))
-                    ->formatStateUsing(static function (Tournament $record) {
-                        $date = $record->status === TournamentStatus::Finished
-                            ? $record->finish_date
-                            : $record->start_date;
-
-                        return $record->status->label().': '.$date->toFormattedDateString();
-                    })
-                    ->width('15%'),
+                    ->colors([
+                        'primary' => static fn (Tournament $record) => $record->status->isFinished(),
+                        'success' => static fn (Tournament $record) => $record->status->isOnGoing(),
+                        'warning' => static fn (Tournament $record) => $record->status->isScheduled(),
+                    ])
+                    ->formatStateUsing(static fn (Tournament $record) => $record->status->label())
+                    ->width('10%')
+                    ->badge()
+                    ->alignCenter(),
             ])
             ->filters([
                 //

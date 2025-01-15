@@ -12,10 +12,13 @@ return [
     'field' => [
         'title' => 'Judul',
         'description' => 'Deskripsi',
+        'schedule' => 'Jadwal',
         'start_date' => 'Tanggal Mulai',
         'finish_date' => 'Tanggal Selesai',
         'status' => 'Status',
-        'participants_count' => 'Juml. Peserta',
+        'participants' => 'Jumlah Peserta',
+        'registered_count' => 'Terdaftar',
+        'verified_count' => 'Terverifikasi',
     ],
 
     'reward' => [

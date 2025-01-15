@@ -12,10 +12,13 @@ return [
     'field' => [
         'title' => 'Title',
         'description' => 'Description',
-        'start_date' => 'Start_ Date',
+        'schedule' => 'Schedule',
+        'start_date' => 'Start Date',
         'finish_date' => 'Finish Date',
         'status' => 'Status',
-        'participants_count' => 'Parties Count',
+        'participants' => 'Participants Count',
+        'registered_count' => 'Registered',
+        'verified_count' => 'Verified',
     ],
 
     'reward' => [

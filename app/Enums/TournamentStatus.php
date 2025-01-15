@@ -19,4 +19,19 @@ enum TournamentStatus: int
     {
         return trans('tournament.status.'.str($this->name)->slug());
     }
+
+    public function isScheduled(): bool
+    {
+        return $this === self::Scheduled;
+    }
+
+    public function isOnGoing(): bool
+    {
+        return $this === self::OnGoing;
+    }
+
+    public function isFinished(): bool
+    {
+        return $this === self::Finished;
+    }
 }
