@@ -8,6 +8,11 @@ return [
         'info_heading' => 'Continent Info',
     ],
 
+    'membership' => [
+        'athletes' => 'Athletes',
+        'managers' => 'Managers',
+    ],
+
     'field' => [
         'name' => 'Name',
         'managers_count' => 'Manager Count',

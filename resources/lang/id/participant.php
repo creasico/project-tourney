@@ -10,7 +10,7 @@ return [
     ],
 
     'role' => [
-        'athlete' => 'Atlit',
+        'athlete' => 'Atlet',
         'manager' => 'Manajer',
     ],
 

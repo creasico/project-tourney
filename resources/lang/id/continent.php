@@ -8,9 +8,14 @@ return [
         'info_heading' => 'Informasi Kontingen',
     ],
 
+    'membership' => [
+        'athletes' => 'Atlet',
+        'managers' => 'Manajer',
+    ],
+
     'field' => [
         'name' => 'Nama',
         'managers_count' => 'Juml. Manaser',
-        'athletes_count' => 'Juml. Atlit',
+        'athletes_count' => 'Juml. Atlet',
     ],
 ];

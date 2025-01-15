@@ -11,10 +11,16 @@ use Filament\Tables\Actions;
 use Filament\Tables\Columns;
 use Filament\Tables\Filters;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Model;
 
 class AthletesRelationManager extends RelationManager
 {
     protected static string $relationship = 'athletes';
+
+    public static function getTitle(Model $ownerRecord, string $pageClass): string
+    {
+        return trans('continent.membership.athletes');
+    }
 
     public function form(Form $form): Form
     {

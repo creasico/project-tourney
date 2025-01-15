@@ -9,10 +9,16 @@ use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables\Actions;
 use Filament\Tables\Columns;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Model;
 
 class ManagersRelationManager extends RelationManager
 {
     protected static string $relationship = 'managers';
+
+    public static function getTitle(Model $ownerRecord, string $pageClass): string
+    {
+        return trans('continent.membership.managers');
+    }
 
     public function form(Form $form): Form
     {

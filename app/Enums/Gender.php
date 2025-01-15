@@ -15,6 +15,6 @@ enum Gender: string
 
     public function label(): string
     {
-        return trans('person.gender.'.$this->value);
+        return trans('app.gender.'.$this->value);
     }
 }
