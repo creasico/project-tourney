@@ -47,6 +47,16 @@ class Tournament extends Model
             ->as('participation');
     }
 
+    public function verifiedParticipants()
+    {
+        return $this->participants()->wherePivotNotNull('verified_at');
+    }
+
+    public function unverifiedParticipants()
+    {
+        return $this->participants()->wherePivotNull('verified_at');
+    }
+
     public function status(): Attribute
     {
         return Attribute::get(function () {

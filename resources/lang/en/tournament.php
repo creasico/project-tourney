@@ -9,16 +9,23 @@ return [
         'schedule_heading' => 'Schedule',
     ],
 
+    'wizard' => [
+        'basic_label' => 'Basic',
+        'basic_description' => 'The tournament info',
+        'regulation_label' => 'Regulation',
+        'regulation_description' => 'The competition schema',
+        'participation_label' => 'Participation',
+        'participation_description' => 'Register the participants',
+    ],
+
     'field' => [
         'title' => 'Title',
         'description' => 'Description',
+        'level' => 'Level',
         'schedule' => 'Schedule',
         'start_date' => 'Start Date',
         'finish_date' => 'Finish Date',
         'status' => 'Status',
-        'participants' => 'Participants Count',
-        'registered_count' => 'Registered',
-        'verified_count' => 'Verified',
     ],
 
     'reward' => [
