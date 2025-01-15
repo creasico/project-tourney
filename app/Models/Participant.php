@@ -15,6 +15,8 @@ class Participant extends Model
     /** @use HasFactory<\Database\Factories\ParticipantFactory> */
     use HasFactory, HasUlids;
 
+    protected static string $builder = Builders\ParticipantBuilder::class;
+
     protected function casts(): array
     {
         return [
@@ -41,6 +43,6 @@ class Participant extends Model
                 'disqualification_reason', 'disqualified_at',
                 'verified_at', 'knocked_at',
             ])
-            ->as('participate');
+            ->as('participation');
     }
 }
