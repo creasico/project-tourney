@@ -11,6 +11,15 @@ class Participation extends Pivot
 {
     protected $table = 'participations';
 
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(static function (Participation $model) {
+            $model->class_id = $model->participant->class_id;
+        });
+    }
+
     protected function casts(): array
     {
         return [
@@ -23,9 +32,9 @@ class Participation extends Pivot
         ];
     }
 
-    public function continent(): BelongsTo
+    public function participant(): BelongsTo
     {
-        return $this->belongsTo(Continent::class);
+        return $this->belongsTo(Participant::class);
     }
 
     public function classification(): BelongsTo
