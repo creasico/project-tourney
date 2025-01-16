@@ -1,6 +1,5 @@
 <?php
 
-use App\Enums\Gender;
 use App\Enums\MatchSide;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -13,65 +12,25 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('continents', function (Blueprint $table) {
-            $table->ulid('id')->unique();
-
-            $table->string('code', 50)->nullable();
-            $table->string('name');
-            $table->json('attr')->nullable();
-
-            $table->timestamps();
-        });
-
-        Schema::create('tournaments', function (Blueprint $table) {
-            $table->ulid('id')->unique();
-
-            $table->string('title');
-            $table->string('description')->nullable();
-            $table->unsignedTinyInteger('level')->nullable();
-            $table->json('attr')->nullable();
-            $table->date('start_date')->nullable();
-            $table->date('finish_date')->nullable();
-
-            $table->timestamps();
-        });
-
-        Schema::create('rewards', function (Blueprint $table) {
-            $table->ulid('id')->unique();
-
-            $table->string('label');
-            $table->string('description')->nullable();
-            $table->unsignedSmallInteger('order')->nullable();
-
-            $table->timestamps();
-        });
-
-        Schema::create('classifications', function (Blueprint $table) {
-            $table->ulid('id')->unique();
-
-            $table->string('label');
-            $table->string('description')->nullable();
-            $table->unsignedSmallInteger('order')->nullable();
-
-            $table->timestamps();
-        });
-
-        Schema::create('participants', function (Blueprint $table) {
-            $table->ulid('id')->unique();
-            $table->ulid('continent_id')->nullable();
+        Schema::create('group_matches', function (Blueprint $table) {
+            $table->id();
+            $table->ulid('tournament_id')->nullable();
             $table->ulid('class_id')->nullable();
 
-            $table->string('name');
-            $table->unsignedTinyInteger('role')->nullable()->comment('0=athlete; 1=manager');
-            $table->enum('gender', Gender::toArray())->nullable();
+            $table->string('label');
 
-            $table->timestamps();
-            $table->foreign('continent_id')->references('id')->on('continents')->nullOnDelete();
+            $table->foreign('tournament_id')->references('id')->on('tournaments')->nullOnDelete();
             $table->foreign('class_id')->references('id')->on('classifications')->nullOnDelete();
+        });
+
+        Schema::create('group_prizes', function (Blueprint $table) {
+            $table->foreignId('group_id')->constrained('group_matches')->cascadeOnDelete();
+            $table->foreignUlid('prize_id')->constrained('prize_pools')->cascadeOnDelete();
         });
 
         Schema::create('match_ups', function (Blueprint $table) {
             $table->ulid('id')->unique();
+            $table->foreignId('group_id')->constrained('group_matches')->cascadeOnDelete();
             $table->ulid('tournament_id')->nullable();
             $table->ulid('class_id')->nullable();
             $table->ulid('next_id')->nullable();
@@ -111,7 +70,7 @@ return new class extends Migration
             $table->dateTime('verified_at')->nullable();
             $table->foreign('match_id')->references('id')->on('match_ups')->nullOnDelete();
             $table->foreign('class_id')->references('id')->on('classifications')->nullOnDelete();
-            $table->foreign('reward_id')->references('id')->on('rewards')->nullOnDelete();
+            $table->foreign('reward_id')->references('id')->on('prize_pools')->nullOnDelete();
         });
 
         Schema::create('match_revisions', function (Blueprint $table) {
@@ -124,7 +83,7 @@ return new class extends Migration
             $table->foreign('match_id')->references('id')->on('match_ups')->nullOnDelete();
         });
 
-        Schema::create('match_histories', function (Blueprint $table) {
+        Schema::create('match_parties', function (Blueprint $table) {
             $table->foreignUlid('match_id')->constrained('match_ups')->cascadeOnDelete();
             $table->foreignUlid('participant_id')->constrained('participants')->cascadeOnDelete();
 
@@ -139,14 +98,11 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('match_histories');
+        Schema::dropIfExists('match_parties');
         Schema::dropIfExists('match_revisions');
         Schema::dropIfExists('participations');
         Schema::dropIfExists('match_ups');
-        Schema::dropIfExists('participants');
-        Schema::dropIfExists('classifications');
-        Schema::dropIfExists('rewards');
-        Schema::dropIfExists('tournaments');
-        Schema::dropIfExists('continents');
+        Schema::dropIfExists('group_prizes');
+        Schema::dropIfExists('group_matches');
     }
 };

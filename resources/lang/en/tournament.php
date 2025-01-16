@@ -28,7 +28,7 @@ return [
         'status' => 'Status',
     ],
 
-    'reward' => [
+    'prize' => [
         'no-medal' => 'No medal',
         'gold' => 'Gold Medal',
         'silver' => 'Silver Medal',
@@ -37,6 +37,7 @@ return [
     ],
 
     'status' => [
+        'draft' => 'Draft',
         'scheduled' => 'Scheduled',
         'ongoing' => 'On Going',
         'finished' => 'Finished',

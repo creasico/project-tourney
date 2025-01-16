@@ -3,7 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Classification;
-use App\Models\Reward;
+use App\Models\PrizePool;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -34,7 +34,7 @@ class DatabaseSeeder extends Seeder
 
     private function createRewards(): void
     {
-        if (Reward::count() > 0) {
+        if (PrizePool::count() > 0) {
             return;
         }
 
@@ -49,7 +49,7 @@ class DatabaseSeeder extends Seeder
         ];
 
         foreach ($rewards as $i => [$label, $description]) {
-            Reward::create([
+            PrizePool::create([
                 'label' => $label,
                 'description' => $description,
                 'order' => $i + 1,

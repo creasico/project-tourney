@@ -28,7 +28,7 @@ return [
         'status' => 'Status',
     ],
 
-    'reward' => [
+    'prize' => [
         'no-medal' => 'Tidak ada medali',
         'gold' => 'Medali Emas',
         'silver' => 'Medali Perak',
@@ -37,6 +37,7 @@ return [
     ],
 
     'status' => [
+        'draft' => 'Draft',
         'scheduled' => 'Dijadwalkan',
         'ongoing' => 'Berjalan',
         'finished' => 'Selesai',

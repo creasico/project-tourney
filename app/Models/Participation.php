@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Enums\Reward as RewardEnum;
+use App\Enums\MedalPrize;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\Pivot;
@@ -16,7 +16,7 @@ class Participation extends Pivot
         return [
             'rank_number' => 'integer',
             'draw_number' => 'integer',
-            'medal' => RewardEnum::class,
+            'medal' => MedalPrize::class,
             'disqualified_at' => 'immutable_datetime',
             'knocked_at' => 'immutable_datetime',
             'verified_at' => 'immutable_datetime',
@@ -33,9 +33,9 @@ class Participation extends Pivot
         return $this->belongsTo(Classification::class, 'class_id');
     }
 
-    public function reward(): BelongsTo
+    public function prize(): BelongsTo
     {
-        return $this->belongsTo(Reward::class);
+        return $this->belongsTo(PrizePool::class);
     }
 
     public function isDisqualified(): Attribute

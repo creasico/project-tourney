@@ -5,9 +5,9 @@ namespace Database\Factories;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Reward>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\PrizePool>
  */
-class RewardFactory extends Factory
+class PriePoolFactory extends Factory
 {
     /**
      * Define the model's default state.

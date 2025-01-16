@@ -1,14 +1,14 @@
 <?php
 
-namespace App\Filament\Resources\RewardResource\Pages;
+namespace App\Filament\Resources\PrizeResource\Pages;
 
-use App\Filament\Resources\RewardResource;
+use App\Filament\Resources\PrizeResource;
 use Filament\Actions;
 use Filament\Resources\Pages\EditRecord;
 
-class EditReward extends EditRecord
+class EditPrize extends EditRecord
 {
-    protected static string $resource = RewardResource::class;
+    protected static string $resource = PrizeResource::class;
 
     protected function getHeaderActions(): array
     {

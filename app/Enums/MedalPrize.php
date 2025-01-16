@@ -5,7 +5,7 @@ namespace App\Enums;
 use App\Support\ArrayableEnum;
 use App\Support\OptionableEnum;
 
-enum Reward: int
+enum MedalPrize: int
 {
     use ArrayableEnum, OptionableEnum;
 
@@ -21,6 +21,6 @@ enum Reward: int
 
     public function label(): string
     {
-        return trans('tournament.reward.'.str($this->name)->slug());
+        return trans('tournament.prize.'.str($this->name)->slug());
     }
 }

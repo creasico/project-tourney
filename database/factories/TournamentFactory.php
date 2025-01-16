@@ -24,6 +24,7 @@ class TournamentFactory extends Factory
             'attr' => null,
             'start_date' => fake()->dateTimeThisMonth(),
             'finish_date' => fn (array $attr) => fake()->dateTimeBetween($attr['start_date']),
+            'published_at' => null,
         ];
     }
 

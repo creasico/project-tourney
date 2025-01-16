@@ -67,7 +67,7 @@ class DummySeeder extends Seeder
 
         return Tournament::factory(10)
             ->sequence(static function (Sequence $sequence) {
-                $criteria = $sequence->index < 6;
+                $criteria = $sequence->index < 5;
                 $fake = Carbon::parse(fake()->dateTimeThisMonth());
                 $start = $criteria
                     ? $fake->subWeeks(6 - $sequence->index)
@@ -78,11 +78,12 @@ class DummySeeder extends Seeder
                     'title' => 'Turnamen '.($sequence->index + 1),
                     'description' => 'Contoh keterangan turnamen '.($sequence->index + 1),
                     'start_date' => $start,
-                    'finish_date' => $sequence->index < 6
+                    'finish_date' => $criteria
                         ? fake()->dateTimeBetween($start, $start->clone()->addWeek())
                         : null,
                     'created_at' => $created,
                     'updated_at' => $created,
+                    'published_at' => $sequence->index < 8 ? $start : null,
                 ];
             })
             ->hasAttached($athletes, function (Tournament $model) {

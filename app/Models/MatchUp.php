@@ -40,7 +40,7 @@ class MatchUp extends Model
 
     public function participants(): BelongsToMany
     {
-        return $this->belongsToMany(Participant::class, MatchHistory::class)
+        return $this->belongsToMany(Participant::class, MatchParty::class)
             ->withPivot('side', 'round', 'status')
             ->as('party');
     }

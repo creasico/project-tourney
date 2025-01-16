@@ -2,8 +2,8 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\RewardResource\Pages;
-use App\Models\Reward;
+use App\Filament\Resources\PrizeResource\Pages;
+use App\Models\PrizePool;
 use App\View\Navigations\GroupSystem;
 use Filament\Forms\Components;
 use Filament\Forms\Form;
@@ -12,11 +12,11 @@ use Filament\Tables\Actions;
 use Filament\Tables\Columns;
 use Filament\Tables\Table;
 
-class RewardResource extends Resource
+class PrizeResource extends Resource
 {
     use GroupSystem;
 
-    protected static ?string $model = Reward::class;
+    protected static ?string $model = PrizePool::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-gift';
 
@@ -25,12 +25,12 @@ class RewardResource extends Resource
         return $form
             ->schema([
                 Components\TextInput::make('label')
-                    ->label(fn () => trans('reward.field.label'))
+                    ->label(fn () => trans('prize.field.label'))
                     ->required(),
                 Components\Textarea::make('description')
-                    ->label(fn () => trans('reward.field.description')),
+                    ->label(fn () => trans('prize.field.description')),
                 Components\TextInput::make('order')
-                    ->label(fn () => trans('reward.field.order'))
+                    ->label(fn () => trans('prize.field.order'))
                     ->numeric()
                     ->minValue(1),
             ])
@@ -44,13 +44,13 @@ class RewardResource extends Resource
             ->defaultSort('order')
             ->columns([
                 Columns\TextColumn::make('order')
-                    ->label(fn () => trans('reward.field.order'))
+                    ->label(fn () => trans('prize.field.order'))
                     ->numeric()
                     ->width(1)
                     ->alignCenter(),
                 Columns\TextColumn::make('label')
-                    ->label(fn () => trans('reward.field.label'))
-                    ->description(fn (Reward $record) => $record->description),
+                    ->label(fn () => trans('prize.field.label'))
+                    ->description(fn (PrizePool $record) => $record->description),
             ])
             ->filters([
                 //
@@ -73,9 +73,9 @@ class RewardResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListRewards::route('/'),
-            'create' => Pages\CreateReward::route('/create'),
-            'edit' => Pages\EditReward::route('/{record}/edit'),
+            'index' => Pages\ListPrizes::route('/'),
+            'create' => Pages\CreatePrize::route('/create'),
+            'edit' => Pages\EditPrize::route('/{record}/edit'),
         ];
     }
 }

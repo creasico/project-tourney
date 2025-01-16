@@ -14,7 +14,6 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Support\Carbon;
 
 class Tournament extends Model
 {
@@ -28,6 +27,7 @@ class Tournament extends Model
             'attr' => AsArrayObject::class,
             'start_date' => 'immutable_date',
             'finish_date' => 'immutable_date',
+            'published_at' => 'immutable_datetime',
         ];
     }
 
@@ -60,6 +60,10 @@ class Tournament extends Model
     public function status(): Attribute
     {
         return Attribute::get(function () {
+            if (! $this->published_at) {
+                return TournamentStatus::Draft;
+            }
+
             if ($this->is_finished) {
                 return TournamentStatus::Finished;
             }
@@ -86,14 +90,11 @@ class Tournament extends Model
         );
     }
 
-    public function dateLabel(): Attribute
+    public function isPublished(): Attribute
     {
-        return Attribute::get(function () {
-            if (! $this->finish_date) {
-                return Carbon::parse($this->start_date)->getCalendarFormats();
-            }
-
-        });
+        return Attribute::get(
+            fn () => $this->published_at?->startOfDay()->lt(now()->endOfDay())
+        );
     }
 
     public function disqualify(Participant $participant, ?string $reason = null)

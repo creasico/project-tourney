@@ -1,8 +1,8 @@
 <?php
 
 return [
-    'singular' => 'Reward',
-    'plural' => 'Rewards',
+    'singular' => 'Prize pool',
+    'plural' => 'Prize pools',
 
     'field' => [
         'label' => 'Label',

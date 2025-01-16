@@ -6,9 +6,9 @@ use App\Enums\MatchSide;
 use App\Enums\MatchStatus;
 use Illuminate\Database\Eloquent\Relations\Pivot;
 
-class MatchHistory extends Pivot
+class MatchParty extends Pivot
 {
-    protected $table = 'match_histories';
+    protected $table = 'match_parties';
 
     protected function casts(): array
     {
