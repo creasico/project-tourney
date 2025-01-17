@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class PrizePool extends Model
 {
@@ -16,5 +17,12 @@ class PrizePool extends Model
         return [
             'order' => 'integer',
         ];
+    }
+
+    public function prizes(): BelongsToMany
+    {
+        return $this->belongsToMany(DivisionMatch::class, DivisionPrize::class)
+            ->withPivot(['amount', 'medal'])
+            ->as('pool');
     }
 }

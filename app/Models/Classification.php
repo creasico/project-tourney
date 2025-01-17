@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Classification extends Model
 {
@@ -16,5 +17,12 @@ class Classification extends Model
         return [
             'order' => 'integer',
         ];
+    }
+
+    public function classes(): BelongsToMany
+    {
+        return $this->belongsToMany(Tournament::class, TournamentDivision::class)
+            ->withPivot(['label', 'division', 'attr'])
+            ->as('division');
     }
 }

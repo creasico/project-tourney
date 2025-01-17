@@ -1,6 +1,7 @@
 <?php
 
 use App\Enums\Gender;
+use App\Enums\ParticipantRole;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -62,8 +63,10 @@ return new class extends Migration
             $table->ulid('class_id')->nullable();
 
             $table->string('name');
-            $table->unsignedTinyInteger('role')->nullable()->comment('0=athlete; 1=manager');
             $table->enum('gender', Gender::toArray())->nullable();
+            $table->unsignedTinyInteger('role')->nullable()->comment(
+                sprintf('See %s for detail', ParticipantRole::class)
+            );
 
             $table->timestamps();
             $table->foreign('continent_id')->references('id')->on('continents')->nullOnDelete();

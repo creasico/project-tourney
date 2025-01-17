@@ -2,7 +2,6 @@
 
 namespace Database\Factories;
 
-use App\Enums\Gender;
 use App\Enums\ParticipantRole;
 use App\Models\Classification;
 use App\Models\Continent;
@@ -13,6 +12,8 @@ use Illuminate\Database\Eloquent\Factories\Factory;
  */
 class ParticipantFactory extends Factory
 {
+    use Helpers\WithGender;
+
     /**
      * Define the model's default state.
      *
@@ -23,20 +24,13 @@ class ParticipantFactory extends Factory
         return [
             'continent_id' => Continent::factory(),
             'class_id' => Classification::factory(),
-            'gender' => fake()->randomElement(Gender::cases()),
+            'gender' => $this->fakeGender(),
             'name' => fn (array $attr) => implode(' ', [
                 fake()->firstName($attr['gender']),
                 fake()->lastName($attr['gender']),
             ]),
             'role' => fake()->randomElement(ParticipantRole::cases()),
         ];
-    }
-
-    public function withGender(Gender $gender)
-    {
-        return $this->state([
-            'gender' => $gender,
-        ]);
     }
 
     public function withRole(ParticipantRole $role)

@@ -36,6 +36,13 @@ class Tournament extends Model
         return $this->hasMany(MatchUp::class);
     }
 
+    public function classes(): BelongsToMany
+    {
+        return $this->belongsToMany(Classification::class, TournamentDivision::class)
+            ->withPivot(['label', 'division', 'attr'])
+            ->as('division');
+    }
+
     public function participants(): BelongsToMany
     {
         return $this->belongsToMany(Participant::class, Participation::class)
