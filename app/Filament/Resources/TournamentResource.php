@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use App\Enums\TournamentLevel;
 use App\Filament\Resources\TournamentResource\Pages;
 use App\Filament\Resources\TournamentResource\RelationManagers;
 use App\Models\Builders\ParticipantBuilder;
@@ -25,7 +26,7 @@ class TournamentResource extends Resource
 
     protected static ?int $navigationSort = 1;
 
-    private static function getFormInfoSection()
+    public static function getFormInfoSection()
     {
         return Components\Section::make(static fn () => trans('tournament.section.info_heading'))
             ->disabled(fn (?Tournament $record) => $record?->is_started)
@@ -33,17 +34,19 @@ class TournamentResource extends Resource
             ->schema([
                 Components\TextInput::make('title')
                     ->label(trans('tournament.field.title'))
+                    ->autofocus()
                     ->required(),
                 Components\Textarea::make('description')
                     ->label(trans('tournament.field.description'))
                     ->nullable(),
                 Components\Select::make('level')
                     ->label(trans('tournament.field.level'))
-                    ->nullable(),
+                    ->options(TournamentLevel::toOptions())
+                    ->required(),
             ]);
     }
 
-    private static function getFormScheduleSection()
+    public static function getFormScheduleSection()
     {
         return Components\Section::make(trans('tournament.section.schedule_heading'))
             ->disabled(fn (?Tournament $record) => $record?->is_started)
@@ -61,34 +64,10 @@ class TournamentResource extends Resource
 
     public static function form(Form $form): Form
     {
-        $steps = [
-            Components\Wizard\Step::make(trans('tournament.wizard.basic_label'))
-                ->description(trans('tournament.wizard.basic_description'))
-                ->columns(2)
-                ->schema([
-                    self::getFormInfoSection(),
-                    self::getFormScheduleSection(),
-                ]),
-            Components\Wizard\Step::make(trans('tournament.wizard.regulation_label'))
-                ->description(trans('tournament.wizard.regulation_description'))
-                ->schema([
-                    // Components\Repeater::make()
-                ]),
-            Components\Wizard\Step::make(trans('tournament.wizard.participation_label'))
-                ->description(trans('tournament.wizard.participation_description'))
-                ->schema([
-                    // .
-                ]),
-        ];
-
         return $form
             ->schema([
                 self::getFormInfoSection()->hiddenOn('create'),
                 self::getFormScheduleSection()->hiddenOn('create'),
-                Components\Wizard::make($steps)
-                    ->hiddenOn('edit')
-                    ->persistStepInQueryString()
-                    ->contained(false),
             ])
             ->columns(1);
     }

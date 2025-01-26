@@ -58,14 +58,16 @@ class ParticipantsRelationManager extends RelationManager
                     ->formatStateUsing(fn (Participant $record) => $record->gender->label())
                     ->width('10%')
                     ->alignCenter(),
-                Columns\BooleanColumn::make('participation.is_verified')
+                Columns\IconColumn::make('participation.is_verified')
                     ->label(fn () => trans('participant.participation.verification'))
                     ->width('10%')
+                    ->boolean()
                     ->false(color: 'gray')
                     ->alignCenter(),
-                Columns\BooleanColumn::make('participation.is_disqualified')
+                Columns\IconColumn::make('participation.is_disqualified')
                     ->label(fn () => trans('participant.participation.disqualification'))
                     ->width('10%')
+                    ->boolean()
                     ->true(color: 'danger')
                     ->false(color: 'gray')
                     ->alignCenter(),

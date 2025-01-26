@@ -7,6 +7,7 @@ return [
     'section' => [
         'info_heading' => 'Information',
         'schedule_heading' => 'Schedule',
+        'classification_heading' => 'Classification',
     ],
 
     'wizard' => [
@@ -26,6 +27,9 @@ return [
         'start_date' => 'Start Date',
         'finish_date' => 'Finish Date',
         'status' => 'Status',
+        'divisions' => 'Division',
+        'division' => 'Chart Count',
+        'class' => 'Class',
     ],
 
     'prize' => [

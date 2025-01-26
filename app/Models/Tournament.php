@@ -31,6 +31,25 @@ class Tournament extends Model
         ];
     }
 
+    public static function createAsDraft(
+        string $title,
+        int $level,
+        string $startDate,
+        ?string $finishDate = null,
+        ?string $description = null
+    ): ?static {
+        $model = new static([
+            'title' => $title,
+            'description' => $description,
+            'level' => $level,
+            'start_date' => $startDate,
+            'finish_date' => $finishDate,
+            'published_at' => null,
+        ]);
+
+        return $model->save() ? $model->fresh() : null;
+    }
+
     public function matches(): HasMany
     {
         return $this->hasMany(MatchUp::class);
@@ -39,8 +58,13 @@ class Tournament extends Model
     public function classes(): BelongsToMany
     {
         return $this->belongsToMany(Classification::class, TournamentDivision::class)
-            ->withPivot(['label', 'division', 'attr'])
+            ->withPivot(['division', 'attr'])
             ->as('division');
+    }
+
+    public function divisions(): HasMany
+    {
+        return $this->hasMany(TournamentDivision::class);
     }
 
     public function participants(): BelongsToMany
@@ -94,6 +118,13 @@ class Tournament extends Model
     {
         return Attribute::get(
             fn () => $this->finish_date?->endOfDay()->lt(now()->startOfDay())
+        );
+    }
+
+    public function isDraft(): Attribute
+    {
+        return Attribute::get(
+            fn () => $this->published_at === null
         );
     }
 

@@ -19,10 +19,10 @@ class Classification extends Model
         ];
     }
 
-    public function classes(): BelongsToMany
+    public function tournaments(): BelongsToMany
     {
         return $this->belongsToMany(Tournament::class, TournamentDivision::class)
-            ->withPivot(['label', 'division', 'attr'])
+            ->withPivot(['division', 'attr'])
             ->as('division');
     }
 }

@@ -4,8 +4,18 @@ namespace App\Filament\Resources\TournamentResource\Pages;
 
 use App\Filament\Resources\TournamentResource;
 use Filament\Resources\Pages\CreateRecord;
+use Filament\Resources\Pages\CreateRecord\Concerns\HasWizard;
 
+/**
+ * @property null|\App\Models\Tournament $record
+ */
 class CreateTournament extends CreateRecord
 {
+    use CreationWizardForm {
+        CreationWizardForm::form insteadof HasWizard;
+        CreationWizardForm::getSteps insteadof HasWizard;
+    }
+    use HasWizard;
+
     protected static string $resource = TournamentResource::class;
 }

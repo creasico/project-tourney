@@ -7,6 +7,7 @@ return [
     'section' => [
         'info_heading' => 'Informasi',
         'schedule_heading' => 'Jadwal',
+        'classification_heading' => 'Klasifikasi',
     ],
 
     'wizard' => [
@@ -26,6 +27,9 @@ return [
         'start_date' => 'Tanggal Mulai',
         'finish_date' => 'Tanggal Selesai',
         'status' => 'Status',
+        'divisions' => 'Pembagian',
+        'division' => 'Juml. Bagan',
+        'class' => 'Kelas',
     ],
 
     'prize' => [
