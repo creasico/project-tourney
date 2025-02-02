@@ -10,6 +10,7 @@ return [
     ],
 
     'action' => [
+        'import' => 'Impor participan',
         'verify' => 'Verifikasi',
         'bulk_verify' => 'Verifikasi masal',
         'disqualify' => 'Diskualifikasi',

@@ -4,6 +4,7 @@ namespace App\Filament\Imports;
 
 use App\Enums\Gender;
 use App\Enums\ParticipantRole;
+use App\Models\Classification;
 use App\Models\Participant;
 use Filament\Actions\Imports\ImportColumn;
 use Filament\Actions\Imports\Importer;
@@ -22,31 +23,37 @@ class ParticipantImporter extends Importer
                 ->label(trans('continent.singular'))
                 ->rules(['required']),
             ImportColumn::make('age')
-                ->relationship(resolveUsing: ['label'])
+                ->relationship(
+                    resolveUsing: fn (string $state) => Classification::onlyAges()->where('label', $state)->first()
+                )
                 ->label(trans('classification.term.age'))
                 ->rules(['required']),
             ImportColumn::make('weight')
-                ->relationship(resolveUsing: ['label'])
+                ->relationship(
+                    resolveUsing: fn (string $state) => Classification::onlyWeights()->where('label', $state)->first()
+                )
                 ->label(trans('classification.term.weight'))
                 ->rules(['required']),
             ImportColumn::make('name')
                 ->requiredMapping()
                 ->rules(['required', 'max:255']),
             ImportColumn::make('gender')
-                ->rules([Rule::enum(Gender::class)]),
+                ->rules(['required', Rule::enum(Gender::class)]),
             ImportColumn::make('role')
                 ->numeric()
-                ->rules([Rule::enum(ParticipantRole::class)]),
+                ->rules(['required', Rule::enum(ParticipantRole::class)]),
         ];
     }
 
     public function resolveRecord(): ?Participant
     {
-        return Participant::query()->firstOrNew([
+        $participant = Participant::query()->firstOrNew([
             'name' => $this->data['name'],
             'gender' => $this->data['gender'],
             'role' => $this->data['role'],
         ]);
+
+        return $participant;
     }
 
     public static function getCompletedNotificationBody(Import $import): string

@@ -30,6 +30,9 @@ class Participant extends Model
         return $this->belongsTo(Continent::class);
     }
 
+    /**
+     * @return BelongsTo|Builders\ClassificationBuilder
+     */
     protected function classification(string $field): BelongsTo
     {
         return $this->belongsTo(Classification::class, $field);

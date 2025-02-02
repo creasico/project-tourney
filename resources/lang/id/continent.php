@@ -15,7 +15,7 @@ return [
 
     'field' => [
         'name' => 'Nama',
-        'managers_count' => 'Juml. Manaser',
+        'managers_count' => 'Juml. Manajer',
         'athletes_count' => 'Juml. Atlet',
     ],
 ];

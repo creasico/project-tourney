@@ -10,6 +10,7 @@ return [
     ],
 
     'action' => [
+        'import' => 'Import participants',
         'verify' => 'Verify',
         'bulk_verify' => 'Verify in bulk',
         'disqualify' => 'Disqualify',
