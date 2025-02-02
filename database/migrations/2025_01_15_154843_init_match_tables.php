@@ -72,7 +72,8 @@ return new class extends Migration
             $table->foreignUlid('tournament_id')->constrained('tournaments')->cascadeOnDelete();
             $table->foreignUlid('participant_id')->constrained('participants')->cascadeOnDelete();
             $table->ulid('match_id')->nullable();
-            $table->ulid('class_id')->nullable();
+            $table->ulid('class_age_id')->nullable();
+            $table->ulid('class_weight_id')->nullable();
             $table->ulid('reward_id')->nullable();
 
             $table->smallInteger('rank_number')->nullable();
@@ -84,7 +85,8 @@ return new class extends Migration
             $table->dateTime('knocked_at')->nullable();
             $table->dateTime('verified_at')->nullable();
             $table->foreign('match_id')->references('id')->on('match_ups')->nullOnDelete();
-            $table->foreign('class_id')->references('id')->on('classifications')->nullOnDelete();
+            $table->foreign('class_age_id')->references('id')->on('classifications')->nullOnDelete();
+            $table->foreign('class_weight_id')->references('id')->on('classifications')->nullOnDelete();
             $table->foreign('reward_id')->references('id')->on('prize_pools')->nullOnDelete();
         });
 

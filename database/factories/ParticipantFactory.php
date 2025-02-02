@@ -23,7 +23,8 @@ class ParticipantFactory extends Factory
     {
         return [
             'continent_id' => Continent::factory(),
-            'class_id' => Classification::factory(),
+            'class_age_id' => Classification::factory()->asAge(),
+            'class_weight_id' => Classification::factory()->asWeight(),
             'gender' => $this->fakeGender(),
             'name' => fn (array $attr) => implode(' ', [
                 fake()->firstName($attr['gender']),
@@ -40,15 +41,19 @@ class ParticipantFactory extends Factory
         ]);
     }
 
-    public function asAthlete()
+    public function asAthlete($age = null, $weight = null)
     {
-        return $this->withRole(ParticipantRole::Athlete);
+        return $this->withRole(ParticipantRole::Athlete)->state(fn () => array_filter([
+            'class_age_id' => $age,
+            'class_weight_id' => $weight,
+        ]));
     }
 
     public function asManager()
     {
         return $this->state([
-            'class_id' => null,
+            'class_age_id' => null,
+            'class_weight_id' => null,
         ])->withRole(ParticipantRole::Manager);
     }
 }

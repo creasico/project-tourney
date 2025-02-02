@@ -17,18 +17,19 @@ class DummySeeder extends Seeder
      */
     public function run(): void
     {
-        $classes = Classification::all();
-        $continents = $this->generateContinents($classes);
+        $continents = $this->generateContinents();
 
         $this->generateTournaments($continents);
     }
 
     /**
-     * @param  \Illuminate\Database\Eloquent\Collection<int, Classification>  $classes
      * @return \Illuminate\Database\Eloquent\Collection
      */
-    private function generateContinents($classes)
+    private function generateContinents()
     {
+        $ageRanges = Classification::onlyAges()->get();
+        $weightRanges = Classification::onlyWeights()->get();
+
         return Continent::factory(15)
             ->sequence(static fn (Sequence $sequence) => [
                 'name' => 'Kontingen '.($sequence->index + 1),
@@ -40,7 +41,8 @@ class DummySeeder extends Seeder
             ->has(
                 Participant::factory(20)
                     ->sequence(static fn () => [
-                        'class_id' => fake()->randomElement($classes)->getKey(),
+                        'class_age_id' => fake()->randomElement($ageRanges)->getKey(),
+                        'class_weight_id' => fake()->randomElement($weightRanges)->getKey(),
                     ])
                     ->asAthlete(),
                 'members'

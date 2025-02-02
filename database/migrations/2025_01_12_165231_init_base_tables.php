@@ -61,7 +61,8 @@ return new class extends Migration
         Schema::create('participants', function (Blueprint $table) {
             $table->ulid('id')->unique();
             $table->ulid('continent_id')->nullable();
-            $table->ulid('class_id')->nullable();
+            $table->ulid('class_age_id')->nullable();
+            $table->ulid('class_weight_id')->nullable();
 
             $table->string('name');
             $table->enum('gender', Gender::toArray())->nullable();
@@ -71,7 +72,8 @@ return new class extends Migration
 
             $table->timestamps();
             $table->foreign('continent_id')->references('id')->on('continents')->nullOnDelete();
-            $table->foreign('class_id')->references('id')->on('classifications')->nullOnDelete();
+            $table->foreign('class_age_id')->references('id')->on('classifications')->nullOnDelete();
+            $table->foreign('class_weight_id')->references('id')->on('classifications')->nullOnDelete();
         });
     }
 

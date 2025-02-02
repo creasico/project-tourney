@@ -23,8 +23,15 @@ trait WithMembershipRecord
         ];
 
         if ($forAthlete) {
-            $schema[] = Components\BelongsToSelect::make('class_id')
-                ->relationship('classification', 'label')
+            $schema[] = Components\Select::make('class_age_id')
+                ->relationship('age', 'label')
+                ->preload()
+                ->searchable()
+                ->required()
+                ->searchDebounce(500);
+
+            $schema[] = Components\Select::make('class_weight_id')
+                ->relationship('weight', 'label')
                 ->preload()
                 ->searchable()
                 ->required()
@@ -47,8 +54,12 @@ trait WithMembershipRecord
         ];
 
         if ($forAthlete) {
-            $schema[] = Columns\TextColumn::make('classification.label')
-                ->label(fn () => trans('participant.field.classification'))
+            $schema[] = Columns\TextColumn::make('age.label')
+                ->label(fn () => trans('classification.term.age'))
+                ->width('14%')
+                ->alignCenter();
+            $schema[] = Columns\TextColumn::make('weight.label')
+                ->label(fn () => trans('classification.term.weight'))
                 ->width('14%')
                 ->alignCenter();
         }

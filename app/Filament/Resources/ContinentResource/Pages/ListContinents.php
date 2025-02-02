@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\ContinentResource\Pages;
 
+use App\Filament\Imports\ParticipantImporter;
 use App\Filament\Resources\ContinentResource;
 use Filament\Actions;
 use Filament\Resources\Pages\ListRecords;
@@ -14,6 +15,7 @@ class ListContinents extends ListRecords
     {
         return [
             Actions\CreateAction::make(),
+            Actions\ImportAction::make()->importer(ParticipantImporter::class),
         ];
     }
 }

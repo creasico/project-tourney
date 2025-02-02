@@ -30,9 +30,19 @@ class Participant extends Model
         return $this->belongsTo(Continent::class);
     }
 
-    public function classification(): BelongsTo
+    protected function classification(string $field): BelongsTo
     {
-        return $this->belongsTo(Classification::class, 'class_id');
+        return $this->belongsTo(Classification::class, $field);
+    }
+
+    public function weight(): BelongsTo
+    {
+        return $this->classification('class_weight_id')->onlyWeights();
+    }
+
+    public function age(): BelongsTo
+    {
+        return $this->classification('class_age_id')->onlyAges();
     }
 
     public function tournaments(): BelongsToMany

@@ -16,7 +16,8 @@ class Participation extends Pivot
         parent::boot();
 
         static::creating(static function (Participation $model) {
-            $model->class_id = $model->participant->class_id;
+            $model->class_age_id = $model->participant->class_age_id;
+            $model->class_weight_id = $model->participant->class_weight_id;
         });
     }
 
@@ -37,9 +38,19 @@ class Participation extends Pivot
         return $this->belongsTo(Participant::class);
     }
 
-    public function classification(): BelongsTo
+    protected function classification(string $field): BelongsTo
     {
-        return $this->belongsTo(Classification::class, 'class_id');
+        return $this->belongsTo(Classification::class, $field);
+    }
+
+    public function weight(): BelongsTo
+    {
+        return $this->classification('class_weight_id')->onlyWeights();
+    }
+
+    public function age(): BelongsTo
+    {
+        return $this->classification('class_age_id')->onlyAges();
     }
 
     public function prize(): BelongsTo
