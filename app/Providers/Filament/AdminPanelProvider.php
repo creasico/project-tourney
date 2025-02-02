@@ -34,6 +34,7 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->login()
             ->profile(Pages\Profile::class, false)
+            ->databaseNotifications()
             ->userMenuItems([
                 'profile' => MenuItem::make()->label(fn () => auth()->user()->name),
             ])
