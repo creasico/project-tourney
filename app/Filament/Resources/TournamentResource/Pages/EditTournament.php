@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\TournamentResource\Pages;
 
 use App\Filament\Resources\TournamentResource;
+use App\Filament\Resources\TournamentResource\CreationWizardForm;
 use App\Models\Tournament;
 use Filament\Actions;
 use Filament\Resources\Pages\EditRecord;

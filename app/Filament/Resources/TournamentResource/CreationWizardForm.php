@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Filament\Resources\TournamentResource\Pages;
+namespace App\Filament\Resources\TournamentResource;
 
 use App\Filament\Resources\TournamentResource;
 use Filament\Forms\Components;
