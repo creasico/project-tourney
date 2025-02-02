@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Enums\ClassificationTerm;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -16,6 +18,7 @@ class Classification extends Model
     {
         return [
             'order' => 'integer',
+            'term' => ClassificationTerm::class,
         ];
     }
 
@@ -24,5 +27,15 @@ class Classification extends Model
         return $this->belongsToMany(Tournament::class, TournamentDivision::class)
             ->withPivot(['division', 'attr'])
             ->as('division');
+    }
+
+    public function scopeOnlyAges(Builder $query)
+    {
+        return $query->where('term', ClassificationTerm::Age);
+    }
+
+    public function scopeOnlyWeight(Builder $query)
+    {
+        return $query->where('term', ClassificationTerm::Weight);
     }
 }

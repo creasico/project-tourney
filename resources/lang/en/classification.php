@@ -9,4 +9,9 @@ return [
         'description' => 'description',
         'order' => 'Order',
     ],
+
+    'term' => [
+        'age' => 'Age Range',
+        'weight' => 'Weight Class',
+    ],
 ];

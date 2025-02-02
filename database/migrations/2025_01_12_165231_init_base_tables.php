@@ -52,6 +52,7 @@ return new class extends Migration
 
             $table->string('label');
             $table->string('description')->nullable();
+            $table->unsignedTinyInteger('term')->nullable();
             $table->unsignedSmallInteger('order')->nullable();
 
             $table->timestamps();

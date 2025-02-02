@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Enums\ClassificationTerm;
 use App\Models\Classification;
 use App\Models\PrizePool;
 use App\Models\User;
@@ -49,7 +50,7 @@ class DatabaseSeeder extends Seeder
         ];
 
         foreach ($rewards as $i => [$label, $description]) {
-            PrizePool::create([
+            PrizePool::query()->create([
                 'label' => $label,
                 'description' => $description,
                 'order' => $i + 1,
@@ -64,18 +65,31 @@ class DatabaseSeeder extends Seeder
         }
 
         $classifications = [
-            ['Dewasa', 'Misal usia lebih dari 18 tahun'],
-            ['Remaja', 'Misal usia antara 12-18 tahun'],
-            ['Anak', 'Misal usia antara 6-12 tahun'],
-            ['Usia dini', 'Misal usia dibawah 6 tahun'],
+            ClassificationTerm::Age->value => [
+                ['Dewasa', 'Misal usia lebih dari 18 tahun'],
+                ['Remaja', 'Misal usia antara 12-18 tahun'],
+                ['Anak', 'Misal usia antara 6-12 tahun'],
+                ['Usia dini', 'Misal usia dibawah 6 tahun'],
+            ],
+            ClassificationTerm::Weight->value => [
+                ['A', null],
+                ['B', null],
+                ['C', null],
+                ['D', null],
+                ['E', null],
+                ['F', null],
+            ],
         ];
 
-        foreach ($classifications as $i => [$label, $description]) {
-            Classification::create([
-                'label' => $label,
-                'description' => $description,
-                'order' => $i + 1,
-            ]);
+        foreach ($classifications as $term => $classes) {
+            foreach ($classes as $i => [$label, $description]) {
+                Classification::query()->create([
+                    'term' => $term,
+                    'label' => $label,
+                    'description' => $description,
+                    'order' => $i + 1,
+                ]);
+            }
         }
     }
 }
