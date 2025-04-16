@@ -6,7 +6,7 @@
     "php": "^8.2",
     "fakerphp/faker": "^1.23",
     "filament/filament": "^3.2",
-    "laravel/framework": "^11.31",
+    "laravel/framework": "^12.9",
     "laravel/tinker": "^2.9",
     "livewire/livewire": "^3.4",
     "sentry/sentry-laravel": "^4.10"
