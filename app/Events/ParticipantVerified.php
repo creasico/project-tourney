@@ -2,7 +2,7 @@
 
 namespace App\Events;
 
-use App\Models\Participant;
+use App\Models\Person;
 use App\Models\Tournament;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PrivateChannel;
@@ -17,7 +17,7 @@ class ParticipantVerified
      * Create a new event instance.
      */
     public function __construct(
-        readonly public Participant $participant,
+        readonly public Person $participant,
         readonly public Tournament $tournament,
     ) {}
 

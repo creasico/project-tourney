@@ -4,7 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\Classification;
 use App\Models\Continent;
-use App\Models\Participant;
+use App\Models\Person;
 use App\Models\Tournament;
 use Illuminate\Database\Eloquent\Factories\Sequence;
 use Illuminate\Database\Seeder;
@@ -35,11 +35,11 @@ class DummySeeder extends Seeder
                 'name' => 'Kontingen '.($sequence->index + 1),
             ])
             ->has(
-                Participant::factory(2)->asManager(),
+                Person::factory(2)->asManager(),
                 'members'
             )
             ->has(
-                Participant::factory(20)
+                Person::factory(20)
                     ->sequence(static fn () => [
                         'class_age_id' => fake()->randomElement($ageRanges)->getKey(),
                         'class_weight_id' => fake()->randomElement($weightRanges)->getKey(),
@@ -108,7 +108,7 @@ class DummySeeder extends Seeder
                         ? fake()->dateTimeBetween($model->start_date->subDays(10), $model->start_date)
                         : null,
                 ];
-            })
+            }, relationship: 'participants')
             ->createMany();
     }
 }

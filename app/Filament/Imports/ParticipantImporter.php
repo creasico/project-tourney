@@ -5,7 +5,7 @@ namespace App\Filament\Imports;
 use App\Enums\Gender;
 use App\Enums\ParticipantRole;
 use App\Models\Classification;
-use App\Models\Participant;
+use App\Models\Person;
 use Filament\Actions\Imports\ImportColumn;
 use Filament\Actions\Imports\Importer;
 use Filament\Actions\Imports\Models\Import;
@@ -13,7 +13,7 @@ use Illuminate\Validation\Rule;
 
 class ParticipantImporter extends Importer
 {
-    protected static ?string $model = Participant::class;
+    protected static ?string $model = Person::class;
 
     public static function getColumns(): array
     {
@@ -45,9 +45,9 @@ class ParticipantImporter extends Importer
         ];
     }
 
-    public function resolveRecord(): ?Participant
+    public function resolveRecord(): ?Person
     {
-        $participant = Participant::query()->firstOrNew([
+        $participant = Person::query()->firstOrNew([
             'name' => $this->data['name'],
             'gender' => $this->data['gender'],
             'role' => $this->data['role'],

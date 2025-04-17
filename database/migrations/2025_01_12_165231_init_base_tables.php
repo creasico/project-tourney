@@ -58,9 +58,10 @@ return new class extends Migration
             $table->timestamps();
         });
 
-        Schema::create('participants', function (Blueprint $table) {
+        Schema::create('people', function (Blueprint $table) {
             $table->ulid('id')->unique();
             $table->ulid('continent_id')->nullable();
+            $table->foreignId('user_id')->nullable();
             $table->ulid('class_age_id')->nullable();
             $table->ulid('class_weight_id')->nullable();
 
@@ -71,6 +72,7 @@ return new class extends Migration
             );
 
             $table->timestamps();
+            $table->foreign('user_id')->references('id')->on('users')->nullOnDelete();
             $table->foreign('continent_id')->references('id')->on('continents')->nullOnDelete();
             $table->foreign('class_age_id')->references('id')->on('classifications')->nullOnDelete();
             $table->foreign('class_weight_id')->references('id')->on('classifications')->nullOnDelete();
@@ -82,7 +84,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('participants');
+        Schema::dropIfExists('people');
         Schema::dropIfExists('classifications');
         Schema::dropIfExists('prize_pools');
         Schema::dropIfExists('tournaments');

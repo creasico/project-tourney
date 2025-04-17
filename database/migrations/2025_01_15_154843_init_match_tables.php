@@ -70,7 +70,7 @@ return new class extends Migration
 
         Schema::create('participations', function (Blueprint $table) {
             $table->foreignUlid('tournament_id')->constrained('tournaments')->cascadeOnDelete();
-            $table->foreignUlid('participant_id')->constrained('participants')->cascadeOnDelete();
+            $table->foreignUlid('participant_id')->constrained('people')->cascadeOnDelete();
             $table->ulid('match_id')->nullable();
             $table->ulid('class_age_id')->nullable();
             $table->ulid('class_weight_id')->nullable();
@@ -102,7 +102,7 @@ return new class extends Migration
 
         Schema::create('match_parties', function (Blueprint $table) {
             $table->foreignUlid('match_id')->constrained('match_ups')->cascadeOnDelete();
-            $table->foreignUlid('participant_id')->constrained('participants')->cascadeOnDelete();
+            $table->foreignUlid('participant_id')->constrained('people')->cascadeOnDelete();
 
             $table->enum('side', MatchSide::toArray())->nullable();
             $table->smallInteger('round')->nullable();

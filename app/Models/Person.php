@@ -10,10 +10,12 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
-class Participant extends Model
+class Person extends Model
 {
     /** @use HasFactory<\Database\Factories\ParticipantFactory> */
     use HasFactory, HasUlids;
+
+    use Helpers\WithClassification;
 
     protected static string $builder = Builders\ParticipantBuilder::class;
 
@@ -28,24 +30,6 @@ class Participant extends Model
     public function continent(): BelongsTo
     {
         return $this->belongsTo(Continent::class);
-    }
-
-    /**
-     * @return BelongsTo|Builders\ClassificationBuilder
-     */
-    protected function classification(string $field): BelongsTo
-    {
-        return $this->belongsTo(Classification::class, $field);
-    }
-
-    public function weight(): BelongsTo
-    {
-        return $this->classification('class_weight_id')->onlyWeights();
-    }
-
-    public function age(): BelongsTo
-    {
-        return $this->classification('class_age_id')->onlyAges();
     }
 
     public function tournaments(): BelongsToMany

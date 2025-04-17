@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\PrizePool>
  */
-class PriePoolFactory extends Factory
+class PrizePoolFactory extends Factory
 {
     /**
      * Define the model's default state.

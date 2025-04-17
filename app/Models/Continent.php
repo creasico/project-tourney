@@ -23,7 +23,7 @@ class Continent extends Model
 
     public function members(): HasMany
     {
-        return $this->hasMany(Participant::class);
+        return $this->hasMany(Person::class);
     }
 
     public function athletes(): HasMany

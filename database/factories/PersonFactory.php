@@ -5,12 +5,13 @@ namespace Database\Factories;
 use App\Enums\ParticipantRole;
 use App\Models\Classification;
 use App\Models\Continent;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Participant>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Person>
  */
-class ParticipantFactory extends Factory
+class PersonFactory extends Factory
 {
     use Helpers\WithGender;
 
@@ -23,6 +24,7 @@ class ParticipantFactory extends Factory
     {
         return [
             'continent_id' => Continent::factory(),
+            'user_id' => null,
             'class_age_id' => Classification::factory()->asAge(),
             'class_weight_id' => Classification::factory()->asWeight(),
             'gender' => $this->fakeGender(),
@@ -32,6 +34,13 @@ class ParticipantFactory extends Factory
             ]),
             'role' => fake()->randomElement(ParticipantRole::cases()),
         ];
+    }
+
+    public function withUser()
+    {
+        return $this->state([
+            'user_id' => User::factory(),
+        ]);
     }
 
     public function withRole(ParticipantRole $role)
