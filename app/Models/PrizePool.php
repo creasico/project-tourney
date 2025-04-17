@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class PrizePool extends Model
 {
-    /** @use HasFactory<\Database\Factories\PriePoolFactory> */
+    /** @use HasFactory<\Database\Factories\PrizePoolFactory> */
     use HasFactory, HasUlids;
 
     protected function casts(): array
@@ -21,7 +21,7 @@ class PrizePool extends Model
 
     public function prizes(): BelongsToMany
     {
-        return $this->belongsToMany(DivisionMatch::class, DivisionPrize::class)
+        return $this->belongsToMany(DivisionMatch::class, DivisionPrize::class, 'prize_id', 'division_id')
             ->withPivot(['amount', 'medal'])
             ->as('pool');
     }

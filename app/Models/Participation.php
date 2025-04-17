@@ -62,7 +62,7 @@ class Participation extends Pivot
     public function isKnocked(): Attribute
     {
         return Attribute::get(
-            fn () => $this->verified_at && now()->greaterThan($this->verified_at)
+            fn () => $this->knocked_at && now()->greaterThan($this->knocked_at)
         );
     }
 }

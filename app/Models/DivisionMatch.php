@@ -14,6 +14,8 @@ class DivisionMatch extends Model
     /** @use HasFactory<\Database\Factories\DivisionMatchFactory> */
     use HasFactory;
 
+    public $timestamps = false;
+
     protected function casts(): array
     {
         return [
@@ -29,7 +31,7 @@ class DivisionMatch extends Model
 
     public function prizes(): BelongsToMany
     {
-        return $this->belongsToMany(PrizePool::class, DivisionPrize::class)
+        return $this->belongsToMany(PrizePool::class, DivisionPrize::class, 'division_id', 'prize_id')
             ->withPivot(['amount', 'medal'])
             ->as('pool');
     }

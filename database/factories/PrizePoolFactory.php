@@ -17,7 +17,6 @@ class PrizePoolFactory extends Factory
     public function definition(): array
     {
         return [
-            'rank_number' => fake()->numberBetween(0, 10),
             'label' => fake()->words(asText: true),
             'description' => null,
         ];

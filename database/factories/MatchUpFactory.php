@@ -5,7 +5,7 @@ namespace Database\Factories;
 use App\Enums\MatchSide;
 use App\Models\Classification;
 use App\Models\Tournament;
-use Carbon\CarbonInterface;
+use DateTime;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -13,7 +13,7 @@ use Illuminate\Database\Eloquent\Factories\Factory;
  */
 class MatchUpFactory extends Factory
 {
-    private static ?CarbonInterface $startedAt = null;
+    private static ?DateTime $startedAt = null;
 
     /**
      * Define the model's default state.
@@ -27,7 +27,7 @@ class MatchUpFactory extends Factory
             'class_id' => Classification::factory(),
             'next_id' => null,
             'next_side' => fake()->randomElement(MatchSide::cases()),
-            'party' => fake()->numberBetween(0, 10),
+            'party_number' => fake()->numberBetween(0, 10),
             'round' => fake()->numberBetween(0, 10),
             'order' => fake()->numberBetween(0, 10),
             'is_bye' => fake()->boolean(),

@@ -25,7 +25,7 @@ class Classification extends Model
 
     public function tournaments(): BelongsToMany
     {
-        return $this->belongsToMany(Tournament::class, TournamentDivision::class)
+        return $this->belongsToMany(Tournament::class, TournamentDivision::class, 'class_id')
             ->withPivot(['division', 'attr'])
             ->as('division');
     }

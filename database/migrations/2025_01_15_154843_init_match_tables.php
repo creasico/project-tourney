@@ -26,11 +26,13 @@ return new class extends Migration
 
         Schema::create('division_matches', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('division_id')->constrained('tournament_divisions')->cascadeOnDelete();
+            $table->foreignId('division_id')->nullable();
 
             $table->string('label');
             $table->enum('gender', Gender::toArray())->nullable();
             $table->json('attr')->nullable();
+
+            $table->foreign('division_id')->references('id')->on('tournament_divisions')->nullOnDelete();
         });
 
         Schema::create('division_prizes', function (Blueprint $table) {
@@ -45,13 +47,13 @@ return new class extends Migration
 
         Schema::create('match_ups', function (Blueprint $table) {
             $table->ulid('id')->unique();
-            $table->foreignId('division_id')->constrained('division_matches')->cascadeOnDelete();
+            $table->foreignId('division_id')->nullable();
             $table->ulid('tournament_id')->nullable();
             $table->ulid('class_id')->nullable();
             $table->ulid('next_id')->nullable();
 
             $table->enum('next_side', MatchSide::toArray())->nullable();
-            $table->unsignedSmallInteger('party')->default(0);
+            $table->unsignedSmallInteger('party_number')->default(0);
             $table->smallInteger('round')->default(0);
             $table->unsignedSmallInteger('order')->default(0);
             $table->boolean('is_bye')->default(false);
@@ -60,6 +62,7 @@ return new class extends Migration
             $table->dateTime('finished_at')->nullable();
 
             $table->timestamps();
+            $table->foreign('division_id')->references('id')->on('division_matches')->nullOnDelete();
             $table->foreign('tournament_id')->references('id')->on('tournaments')->nullOnDelete();
             $table->foreign('class_id')->references('id')->on('classifications')->nullOnDelete();
         });

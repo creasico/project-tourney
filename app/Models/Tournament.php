@@ -15,6 +15,9 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
+/**
+ * @property-read \App\Enums\TournamentStatus $status
+ */
 class Tournament extends Model
 {
     /** @use HasFactory<\Database\Factories\TournamentFactory> */
@@ -57,7 +60,7 @@ class Tournament extends Model
 
     public function classes(): BelongsToMany
     {
-        return $this->belongsToMany(Classification::class, TournamentDivision::class)
+        return $this->belongsToMany(Classification::class, TournamentDivision::class, relatedPivotKey: 'class_id')
             ->withPivot(['division', 'attr'])
             ->as('division');
     }
