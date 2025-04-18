@@ -86,7 +86,6 @@ jobs:
         run: |
           cp .github/.env.example .env
           composer update --prefer-dist --no-interaction --no-progress --ansi
-          php artisan key:generate
 
       - name: Download assets
         id: download
@@ -96,6 +95,8 @@ jobs:
           path: public
 
       - name: Run unit tests
+        env:
+          APP_KEY: ${{ needs.build.outputs.app-key }}
         run: php artisan test --ansi --coverage
 
       # - name: Generate reports for CodeClimate
@@ -109,12 +110,12 @@ jobs:
       #     curl -LSs $CC_TEST_REPORTER_URL > ./cc-test-reporter && chmod +x ./cc-test-reporter
       #     ./cc-test-reporter format-coverage -t clover -o $CODECLIMATE_REPORT tests/reports/clover.xml
 
-      - name: Upload tests reports
-        if: needs.prepare.outputs.has-codeclimate == '1'
-        uses: actions/upload-artifact@v4
-        with:
-          name: test-reports-${{ matrix.php }}
-          path: tests/reports/codeclimate.${{ matrix.php }}.json
+      # - name: Upload tests reports
+      #   if: needs.prepare.outputs.has-codeclimate == '1'
+      #   uses: actions/upload-artifact@v4
+      #   with:
+      #     name: test-reports-${{ matrix.php }}
+      #     path: tests/reports/codeclimate.${{ matrix.php }}.json
 
   # e2e:
   #   name: Integration Test on BrowserStack
