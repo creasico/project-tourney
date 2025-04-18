@@ -30,8 +30,8 @@ vendor
 
 # Node.js lock files
 .pnpm-store
-# package-lock.json
-pnpm-lock.yaml
+package-lock.json
+# pnpm-lock.yaml
 yarn.lock
 
 # But Keep these
