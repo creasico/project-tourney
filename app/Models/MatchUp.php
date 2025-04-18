@@ -18,7 +18,7 @@ class MatchUp extends Model
     {
         return [
             'next_side' => MatchSide::class,
-            'party' => 'integer',
+            'party_number' => 'integer',
             'round' => 'integer',
             'order' => 'integer',
             'is_bye' => 'boolean',
@@ -40,8 +40,8 @@ class MatchUp extends Model
 
     public function participants(): BelongsToMany
     {
-        return $this->belongsToMany(Participant::class, MatchParty::class)
-            ->withPivot('side', 'round', 'status')
+        return $this->belongsToMany(Person::class, MatchParty::class, 'match_id', 'participant_id')
+            ->withPivot(['side', 'round', 'status'])
             ->as('party');
     }
 

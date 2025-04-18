@@ -28,7 +28,7 @@ class TournamentDivision extends Pivot
 
     public function classification(): BelongsTo
     {
-        return $this->belongsTo(Classification::class);
+        return $this->belongsTo(Classification::class, 'class_id');
     }
 
     public function matches(): HasMany

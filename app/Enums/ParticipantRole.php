@@ -17,4 +17,14 @@ enum ParticipantRole: int
     {
         return trans('participant.role.'.str($this->name)->slug());
     }
+
+    public function isAthlete(): bool
+    {
+        return $this === self::Athlete;
+    }
+
+    public function isManager(): bool
+    {
+        return $this === self::Manager;
+    }
 }

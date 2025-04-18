@@ -15,6 +15,9 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
+/**
+ * @property-read \App\Enums\TournamentStatus $status
+ */
 class Tournament extends Model
 {
     /** @use HasFactory<\Database\Factories\TournamentFactory> */
@@ -57,7 +60,7 @@ class Tournament extends Model
 
     public function classes(): BelongsToMany
     {
-        return $this->belongsToMany(Classification::class, TournamentDivision::class)
+        return $this->belongsToMany(Classification::class, TournamentDivision::class, relatedPivotKey: 'class_id')
             ->withPivot(['division', 'attr'])
             ->as('division');
     }
@@ -69,7 +72,7 @@ class Tournament extends Model
 
     public function participants(): BelongsToMany
     {
-        return $this->belongsToMany(Participant::class, Participation::class)
+        return $this->belongsToMany(Person::class, Participation::class, relatedPivotKey: 'participant_id')
             ->withPivot([
                 'rank_number', 'draw_number', 'medal',
                 'disqualification_reason', 'disqualified_at',
@@ -135,7 +138,7 @@ class Tournament extends Model
         );
     }
 
-    public function disqualify(Participant $participant, ?string $reason = null)
+    public function disqualify(Person $participant, ?string $reason = null)
     {
         $disqualified = $this->participants()->updateExistingPivot($participant, [
             'disqualification_reason' => $reason,
@@ -147,7 +150,7 @@ class Tournament extends Model
         return $disqualified;
     }
 
-    public function verify(Participant $participant, ?string $reason = null)
+    public function verify(Person $participant, ?string $reason = null)
     {
         $verified = $this->participants()->updateExistingPivot($participant, [
             'verified_at' => $this->freshTimestamp(),
@@ -158,7 +161,7 @@ class Tournament extends Model
         return $verified;
     }
 
-    public function knockOff(Participant $participant, ?string $reason = null)
+    public function knockOff(Person $participant, ?string $reason = null)
     {
         $knocked = $this->participants()->updateExistingPivot($participant, [
             'knocked_at' => $this->freshTimestamp(),

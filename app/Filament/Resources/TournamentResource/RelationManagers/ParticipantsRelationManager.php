@@ -3,7 +3,7 @@
 namespace App\Filament\Resources\TournamentResource\RelationManagers;
 
 use App\Enums\Gender;
-use App\Models\Participant;
+use App\Models\Person;
 use Filament\Forms\Components;
 use Filament\Forms\Form;
 use Filament\Resources\RelationManagers\RelationManager;
@@ -59,7 +59,7 @@ class ParticipantsRelationManager extends RelationManager
                     ->alignCenter(),
                 Columns\TextColumn::make('gender')
                     ->label(fn () => trans('participant.field.gender'))
-                    ->formatStateUsing(fn (Participant $record) => $record->gender->label())
+                    ->formatStateUsing(fn (Person $record) => $record->gender->label())
                     ->width('10%')
                     ->alignCenter(),
                 Columns\IconColumn::make('participation.is_verified')
@@ -108,20 +108,20 @@ class ParticipantsRelationManager extends RelationManager
                         ->label(fn () => trans('participant.action.verify'))
                         ->icon('heroicon-o-check-circle')
                         ->requiresConfirmation()
-                        ->action(function (Participant $participant) {
+                        ->action(function (Person $participant) {
                             $this->getOwnerRecord()->verify($participant);
                         })
-                        ->visible(function (Participant $participant) {
+                        ->visible(function (Person $participant) {
                             return ! $participant->participation->is_verified;
                         }),
                     Actions\Action::make('disqualify')
                         ->label(fn () => trans('participant.action.disqualify'))
                         ->icon('heroicon-o-x-mark')
                         ->requiresConfirmation()
-                        ->action(function (Participant $participant) {
+                        ->action(function (Person $participant) {
                             $this->getOwnerRecord()->disqualify($participant);
                         })
-                        ->visible(function (Participant $participant) {
+                        ->visible(function (Person $participant) {
                             return ! $participant->participation->is_disqualified;
                         }),
                     Actions\DissociateAction::make('deregister')
@@ -138,14 +138,14 @@ class ParticipantsRelationManager extends RelationManager
                     ->label(fn () => trans('participant.action.bulk_verify'))
                     ->icon('heroicon-o-check-circle')
                     ->requiresConfirmation()
-                    ->action(fn (Collection $records) => $records->each(function (Participant $participant) {
+                    ->action(fn (Collection $records) => $records->each(function (Person $participant) {
                         $this->getOwnerRecord()->verify($participant);
                     })),
                 Actions\BulkAction::make('bulk_disqualify')
                     ->label(fn () => trans('participant.action.bulk_disqualify'))
                     ->icon('heroicon-o-x-mark')
                     ->requiresConfirmation()
-                    ->action(fn (Collection $records) => $records->each(function (Participant $participant) {
+                    ->action(fn (Collection $records) => $records->each(function (Person $participant) {
                         $this->getOwnerRecord()->disqualify($participant);
                     })),
                 Actions\DissociateBulkAction::make('bulk_deregister')

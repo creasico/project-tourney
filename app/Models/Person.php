@@ -10,12 +10,14 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
-class Participant extends Model
+class Person extends Model
 {
-    /** @use HasFactory<\Database\Factories\ParticipantFactory> */
+    /** @use HasFactory<\Database\Factories\PersonFactory> */
     use HasFactory, HasUlids;
 
-    protected static string $builder = Builders\ParticipantBuilder::class;
+    use Helpers\WithClassification;
+
+    protected static string $builder = Builders\PersonBuilder::class;
 
     protected function casts(): array
     {
@@ -30,32 +32,26 @@ class Participant extends Model
         return $this->belongsTo(Continent::class);
     }
 
-    /**
-     * @return BelongsTo|Builders\ClassificationBuilder
-     */
-    protected function classification(string $field): BelongsTo
+    public function credential()
     {
-        return $this->belongsTo(Classification::class, $field);
-    }
-
-    public function weight(): BelongsTo
-    {
-        return $this->classification('class_weight_id')->onlyWeights();
-    }
-
-    public function age(): BelongsTo
-    {
-        return $this->classification('class_age_id')->onlyAges();
+        return $this->belongsTo(User::class, 'user_id');
     }
 
     public function tournaments(): BelongsToMany
     {
-        return $this->belongsToMany(Tournament::class, Participation::class)
+        return $this->belongsToMany(Tournament::class, Participation::class, foreignPivotKey: 'participant_id')
             ->withPivot([
                 'rank_number', 'draw_number', 'medal',
                 'disqualification_reason', 'disqualified_at',
                 'verified_at', 'knocked_at',
             ])
             ->as('participation');
+    }
+
+    public function matches(): BelongsToMany
+    {
+        return $this->belongsToMany(MatchUp::class, MatchParty::class, 'participant_id', 'match_id')
+            ->withPivot(['side', 'round', 'status'])
+            ->as('party');
     }
 }

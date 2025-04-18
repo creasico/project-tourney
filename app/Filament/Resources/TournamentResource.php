@@ -5,7 +5,7 @@ namespace App\Filament\Resources;
 use App\Enums\TournamentLevel;
 use App\Filament\Resources\TournamentResource\Pages;
 use App\Filament\Resources\TournamentResource\RelationManagers;
-use App\Models\Builders\ParticipantBuilder;
+use App\Models\Builders\PersonBuilder;
 use App\Models\Tournament;
 use App\View\Navigations\GroupManage;
 use Filament\Forms\Components;
@@ -92,7 +92,7 @@ class TournamentResource extends Resource
                     Columns\TextColumn::make('verified_count')
                         ->label(trans('participant.participation.verified'))
                         ->counts([
-                            'participants as verified_count' => fn (ParticipantBuilder $q) => $q->whereNotNull('verified_at'),
+                            'participants as verified_count' => fn (PersonBuilder $q) => $q->whereNotNull('verified_at'),
                         ])
                         ->numeric()
                         ->alignCenter()
@@ -100,7 +100,7 @@ class TournamentResource extends Resource
                     Columns\TextColumn::make('disqualified_count')
                         ->label(trans('participant.participation.disqualified'))
                         ->counts([
-                            'participants as disqualified_count' => fn (ParticipantBuilder $q) => $q->whereNotNull('disqualified_at'),
+                            'participants as disqualified_count' => fn (PersonBuilder $q) => $q->whereNotNull('disqualified_at'),
                         ])
                         ->numeric()
                         ->alignCenter()

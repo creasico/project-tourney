@@ -6,9 +6,9 @@ use App\Enums\ParticipantRole;
 use Illuminate\Database\Eloquent\Builder;
 
 /**
- * @mixin \App\Models\Participant
+ * @mixin \App\Models\Person
  */
-class ParticipantBuilder extends Builder
+class PersonBuilder extends Builder
 {
     public function onlyAthletes()
     {

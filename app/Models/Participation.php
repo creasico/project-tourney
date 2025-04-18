@@ -9,6 +9,8 @@ use Illuminate\Database\Eloquent\Relations\Pivot;
 
 class Participation extends Pivot
 {
+    use Helpers\WithClassification;
+
     protected $table = 'participations';
 
     protected static function boot()
@@ -35,22 +37,7 @@ class Participation extends Pivot
 
     public function participant(): BelongsTo
     {
-        return $this->belongsTo(Participant::class);
-    }
-
-    protected function classification(string $field): BelongsTo
-    {
-        return $this->belongsTo(Classification::class, $field);
-    }
-
-    public function weight(): BelongsTo
-    {
-        return $this->classification('class_weight_id')->onlyWeights();
-    }
-
-    public function age(): BelongsTo
-    {
-        return $this->classification('class_age_id')->onlyAges();
+        return $this->belongsTo(Person::class, 'participant_id');
     }
 
     public function prize(): BelongsTo
@@ -75,7 +62,7 @@ class Participation extends Pivot
     public function isKnocked(): Attribute
     {
         return Attribute::get(
-            fn () => $this->verified_at && now()->greaterThan($this->verified_at)
+            fn () => $this->knocked_at && now()->greaterThan($this->knocked_at)
         );
     }
 }
