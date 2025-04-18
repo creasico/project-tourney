@@ -1,6 +1,7 @@
 <?php
 
 declare(strict_types=1);
+
 use App\Enums\TournamentStatus;
 use App\Events\ParticipantDisqualified;
 use App\Events\ParticipantKnockedOff;
@@ -35,11 +36,15 @@ test('has many classes', function () {
         ->createOne();
 
     expect($model->classes)->toHaveCount(1);
+    expect($model->divisions)->toHaveCount(1);
 
     $class = $model->classes->first();
 
     expect($class)->toBeInstanceOf(Classification::class);
     expect($class->division)->toBeInstanceOf(TournamentDivision::class);
+
+    expect($class->division->tournament->getKey())->toBe($model->getKey());
+    expect($class->division->classification->getKey())->toBe($class->getKey());
 });
 
 test('has many participants', function () {

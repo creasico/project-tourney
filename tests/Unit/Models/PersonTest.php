@@ -1,6 +1,7 @@
 <?php
 
 declare(strict_types=1);
+
 use App\Enums\MatchSide;
 use App\Enums\MatchStatus;
 use App\Enums\MedalPrize;
@@ -96,4 +97,28 @@ test('belongs to many tournaments', function () {
     expect($tournament)->toBeInstanceOf(Tournament::class);
     expect($tournament->participation)->toBeInstanceOf(Participation::class);
     expect($tournament->participation->medal)->toBe(MedalPrize::Gold);
+});
+
+test('could be an athlete', function () {
+    $model = Person::factory()
+        ->asAthlete()
+        ->createOne();
+
+    expect($model->role->isAthlete())->toBeTrue();
+
+    $models = Person::onlyAthletes()->get();
+
+    expect($models->first()->getKey())->toBe($model->getKey());
+});
+
+test('could be a manager', function () {
+    $model = Person::factory()
+        ->asManager()
+        ->createOne();
+
+    expect($model->role->isManager())->toBeTrue();
+
+    $models = Person::onlyManagers()->get();
+
+    expect($models->first()->getKey())->toBe($model->getKey());
 });

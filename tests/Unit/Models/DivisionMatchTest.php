@@ -1,6 +1,7 @@
 <?php
 
 declare(strict_types=1);
+
 use App\Enums\MedalPrize;
 use App\Models\DivisionMatch;
 use App\Models\DivisionPrize;

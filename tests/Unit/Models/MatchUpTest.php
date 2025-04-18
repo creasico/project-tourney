@@ -1,6 +1,7 @@
 <?php
 
 declare(strict_types=1);
+
 use App\Enums\MatchSide;
 use App\Enums\MatchStatus;
 use App\Models\Classification;

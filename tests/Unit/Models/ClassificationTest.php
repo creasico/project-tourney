@@ -1,6 +1,7 @@
 <?php
 
 declare(strict_types=1);
+
 use App\Models\Classification;
 use App\Models\Tournament;
 use App\Models\TournamentDivision;
