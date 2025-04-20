@@ -34,10 +34,12 @@ class MatchesRelationManager extends RelationManager
         return $table
             ->recordTitleAttribute('party')
             ->columns([
-                Columns\TextColumn::make('party'),
+                Columns\Layout\Stack::make([
+                    //
+                ]),
             ])
-            ->filters([
-                //
+            ->contentGrid(fn () => [
+                'md' => 2,
             ])
             ->headerActions([
                 Actions\CreateAction::make(),

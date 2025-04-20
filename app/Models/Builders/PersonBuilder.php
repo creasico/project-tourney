@@ -2,6 +2,7 @@
 
 namespace App\Models\Builders;
 
+use App\Enums\Gender;
 use App\Enums\ParticipantRole;
 use Illuminate\Database\Eloquent\Builder;
 
@@ -18,5 +19,15 @@ class PersonBuilder extends Builder
     public function onlyManagers()
     {
         return $this->where('role', ParticipantRole::Manager);
+    }
+
+    public function onlyMales()
+    {
+        return $this->where('gender', Gender::Male);
+    }
+
+    public function onlyFemales()
+    {
+        return $this->where('gender', Gender::Female);
     }
 }

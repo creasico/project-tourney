@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\Classification;
 use App\Models\Continent;
+use App\Models\MatchUp;
 use App\Models\Person;
 use App\Models\Tournament;
 use Illuminate\Database\Eloquent\Factories\Sequence;
@@ -19,11 +20,13 @@ class DummySeeder extends Seeder
     {
         $continents = $this->generateContinents();
 
-        $this->generateTournaments($continents);
+        $tournaments = $this->generateTournaments($continents);
+
+        $this->generateMatches($tournaments);
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Collection
+     * @return \Illuminate\Database\Eloquent\Collection<int, Continent>
      */
     private function generateContinents()
     {
@@ -52,7 +55,7 @@ class DummySeeder extends Seeder
 
     /**
      * @param  \Illuminate\Database\Eloquent\Collection<int, Continent>  $continents
-     * @return \Illuminate\Database\Eloquent\Collection
+     * @return \Illuminate\Database\Eloquent\Collection<int, Tournament>
      */
     private function generateTournaments($continents)
     {
@@ -110,5 +113,18 @@ class DummySeeder extends Seeder
                 ];
             }, relationship: 'participants')
             ->createMany();
+    }
+
+    /**
+     * @param  \Illuminate\Database\Eloquent\Collection<int, Tournament>  $tournaments
+     * @return \Illuminate\Database\Eloquent\Collection<int, MatchUp>
+     */
+    private function generateMatches($tournaments)
+    {
+        $tournaments->each(function (Tournament $tournament) {
+            //
+        });
+
+        return collect();
     }
 }
