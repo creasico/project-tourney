@@ -40,12 +40,12 @@ class ClassificationResource extends Resource
             ->defaultSort('order')
             ->columns([
                 Columns\TextColumn::make('order')
-                    ->label(fn () => trans('classification.field.order'))
+                    ->label(trans('classification.field.order'))
                     ->numeric()
                     ->width(1)
                     ->alignCenter(),
                 Columns\TextColumn::make('label')
-                    ->label(fn () => trans('classification.field.label'))
+                    ->label(trans('classification.field.label'))
                     ->description(fn (Classification $record) => $record->description),
             ])
             ->filters([
@@ -55,7 +55,7 @@ class ClassificationResource extends Resource
                 Actions\ActionGroup::make([
                     Actions\EditAction::make('edit'),
                     Actions\DeleteAction::make('delete'),
-                ])->tooltip(fn () => trans('app.resource.action_label')),
+                ])->tooltip(trans('app.resource.action_label')),
             ]);
     }
 

@@ -14,10 +14,10 @@ trait WithMembershipRecord
     {
         $schema = [
             Components\TextInput::make('name')
-                ->label(fn () => trans('participant.field.name'))
+                ->label(trans('participant.field.name'))
                 ->required(),
             Components\Radio::make('gender')
-                ->label(fn () => trans('participant.field.gender'))
+                ->label(trans('participant.field.gender'))
                 ->options(Gender::toOptions())
                 ->required(),
         ];
@@ -45,9 +45,9 @@ trait WithMembershipRecord
     {
         $schema = [
             Columns\TextColumn::make('name')
-                ->label(fn () => trans('participant.field.name')),
+                ->label(trans('participant.field.name')),
             Columns\TextColumn::make('gender')
-                ->label(fn () => trans('participant.field.gender'))
+                ->label(trans('participant.field.gender'))
                 ->formatStateUsing(fn (Person $record) => $record->gender->label())
                 ->width('14%')
                 ->alignCenter(),
@@ -55,11 +55,11 @@ trait WithMembershipRecord
 
         if ($forAthlete) {
             $schema[] = Columns\TextColumn::make('age.label')
-                ->label(fn () => trans('classification.term.age'))
+                ->label(trans('classification.term.age'))
                 ->width('14%')
                 ->alignCenter();
             $schema[] = Columns\TextColumn::make('weight.label')
-                ->label(fn () => trans('classification.term.weight'))
+                ->label(trans('classification.term.weight'))
                 ->width('14%')
                 ->alignCenter();
         }
@@ -73,7 +73,7 @@ trait WithMembershipRecord
             Actions\ActionGroup::make([
                 Actions\EditAction::make('edit'),
                 Actions\DeleteAction::make('delete'),
-            ])->tooltip(fn () => trans('app.resource.action_label')),
+            ])->tooltip(trans('app.resource.action_label')),
         ];
     }
 }

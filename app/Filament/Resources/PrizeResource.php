@@ -25,12 +25,12 @@ class PrizeResource extends Resource
         return $form
             ->schema([
                 Components\TextInput::make('label')
-                    ->label(fn () => trans('prize.field.label'))
+                    ->label(trans('prize.field.label'))
                     ->required(),
                 Components\Textarea::make('description')
-                    ->label(fn () => trans('prize.field.description')),
+                    ->label(trans('prize.field.description')),
                 Components\TextInput::make('order')
-                    ->label(fn () => trans('prize.field.order'))
+                    ->label(trans('prize.field.order'))
                     ->numeric()
                     ->minValue(1),
             ])
@@ -44,12 +44,12 @@ class PrizeResource extends Resource
             ->defaultSort('order')
             ->columns([
                 Columns\TextColumn::make('order')
-                    ->label(fn () => trans('prize.field.order'))
+                    ->label(trans('prize.field.order'))
                     ->numeric()
                     ->width(1)
                     ->alignCenter(),
                 Columns\TextColumn::make('label')
-                    ->label(fn () => trans('prize.field.label'))
+                    ->label(trans('prize.field.label'))
                     ->description(fn (PrizePool $record) => $record->description),
             ])
             ->filters([
@@ -59,7 +59,7 @@ class PrizeResource extends Resource
                 Actions\ActionGroup::make([
                     Actions\EditAction::make('edit'),
                     Actions\DeleteAction::make('delete'),
-                ])->tooltip(fn () => trans('app.resource.action_label')),
+                ])->tooltip(trans('app.resource.action_label')),
             ]);
     }
 

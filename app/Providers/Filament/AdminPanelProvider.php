@@ -39,8 +39,8 @@ class AdminPanelProvider extends PanelProvider
                 'profile' => MenuItem::make()->label(fn () => auth()->user()->name),
             ])
             ->navigationGroups([
-                NavigationGroup::make(fn () => trans('navigation.manage'))->collapsible(false),
-                NavigationGroup::make(fn () => trans('navigation.system'))->collapsible(false),
+                NavigationGroup::make(trans('navigation.manage'))->collapsible(false),
+                NavigationGroup::make(trans('navigation.system'))->collapsible(false),
             ])
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')

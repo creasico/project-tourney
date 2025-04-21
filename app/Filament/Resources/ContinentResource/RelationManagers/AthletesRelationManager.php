@@ -27,7 +27,7 @@ class AthletesRelationManager extends RelationManager
     {
         return $form
             ->schema([
-                Components\Section::make(static fn () => trans('participant.section.bio_heading'))
+                Components\Section::make(trans('participant.section.bio_heading'))
                     ->aside()
                     ->schema($this->getMembershipFormSchema(true)),
             ]);
@@ -40,17 +40,17 @@ class AthletesRelationManager extends RelationManager
             ->columns($this->getMembershipTableColumns(true))
             ->filters([
                 Filters\SelectFilter::make('age')
-                    ->label(fn () => trans('classification.term.age'))
+                    ->label(trans('classification.term.age'))
                     ->relationship('age', 'label')
                     ->searchable()
                     ->preload(),
                 Filters\SelectFilter::make('weight')
-                    ->label(fn () => trans('classification.term.weight'))
+                    ->label(trans('classification.term.weight'))
                     ->relationship('weight', 'label')
                     ->searchable()
                     ->preload(),
                 Filters\SelectFilter::make('gender')
-                    ->label(fn () => trans('participant.field.gender'))
+                    ->label(trans('participant.field.gender'))
                     ->options(Gender::toOptions()),
             ])
             ->headerActions([

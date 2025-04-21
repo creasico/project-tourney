@@ -33,14 +33,18 @@ class ContinentResource extends Resource
 
     public static function form(Form $form): Form
     {
+        $nameField = fn () => Components\TextInput::make('name')
+            ->label(trans('continent.field.name'));
+
         return $form
             ->schema([
-                Components\Section::make(static fn () => trans('continent.section.info_heading'))
+                Components\Section::make(trans('continent.section.info_heading'))
                     ->aside()
+                    ->visibleOn('edit')
                     ->schema([
-                        Components\TextInput::make('name')
-                            ->label(fn () => trans('continent.field.name')),
+                        $nameField(),
                     ]),
+                $nameField()->visibleOn('create'),
             ])
             ->columns(1);
     }
@@ -63,14 +67,8 @@ class ContinentResource extends Resource
             $slug = str($class->label)->slug('_');
             $prefix = str($class->term->name)->lower();
 
-            $relations["athletes as {$prefix}_{$slug}_count"] = function (PersonBuilder $builder) use ($class) {
-                $builder->where(
-                    match ($class->term) {
-                        ClassificationTerm::Age => 'class_age_id',
-                        ClassificationTerm::Weight => 'class_weight_id',
-                    },
-                    $class->id,
-                );
+            $relations["athletes as {$prefix}_{$slug}_count"] = function (PersonBuilder $builder) use ($class, $prefix) {
+                $builder->where("class_{$prefix}_id", $class->id);
             };
         }
 
@@ -93,38 +91,36 @@ class ContinentResource extends Resource
                 );
         });
 
-        // dd($sections->toArray());
-
         $infolist->getRecord()->loadCount($relations);
 
         return $infolist
             ->schema([
-                InfolistsComponents\Section::make(static fn () => trans('continent.section.stat_heading'))
+                InfolistsComponents\Section::make(trans('continent.section.stat_heading'))
                     ->aside()
                     ->columns(2)
                     ->schema([
                         InfolistsComponents\TextEntry::make('managers_count')
-                            ->label(fn () => trans('continent.field.managers_count'))
+                            ->label(trans('continent.field.managers_count'))
                             ->color('primary')
                             ->weight(FontWeight::Bold)
                             ->numeric(),
                         InfolistsComponents\TextEntry::make('athletes_count')
-                            ->label(fn () => trans('continent.field.athletes_count'))
+                            ->label(trans('continent.field.athletes_count'))
                             ->color('primary')
                             ->weight(FontWeight::Bold)
                             ->numeric(),
                     ]),
-                InfolistsComponents\Section::make(static fn () => trans('continent.section.info_heading'))
+                InfolistsComponents\Section::make(trans('continent.section.info_heading'))
                     ->aside()
                     ->columns(2)
                     ->schema([
                         InfolistsComponents\TextEntry::make('males_count')
-                            ->label(fn () => trans('continent.field.males_count'))
+                            ->label(trans('continent.field.males_count'))
                             ->color('primary')
                             ->weight(FontWeight::Bold)
                             ->numeric(),
                         InfolistsComponents\TextEntry::make('females_count')
-                            ->label(fn () => trans('continent.field.females_count'))
+                            ->label(trans('continent.field.females_count'))
                             ->color('primary')
                             ->weight(FontWeight::Bold)
                             ->numeric(),
@@ -136,17 +132,18 @@ class ContinentResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->defaultSort('updated_at', 'desc')
             ->columns([
                 Columns\TextColumn::make('name')
-                    ->label(fn () => trans('continent.field.name')),
+                    ->label(trans('continent.field.name')),
                 Columns\TextColumn::make('managers_count')
-                    ->label(fn () => trans('continent.field.managers_count'))
+                    ->label(trans('continent.field.managers_count'))
                     ->counts(['managers'])
                     ->numeric()
                     ->width('10%')
                     ->alignCenter(),
                 Columns\TextColumn::make('athletes_count')
-                    ->label(fn () => trans('continent.field.athletes_count'))
+                    ->label(trans('continent.field.athletes_count'))
                     ->counts(['athletes'])
                     ->numeric()
                     ->width('10%')
@@ -159,7 +156,7 @@ class ContinentResource extends Resource
                 Actions\ActionGroup::make([
                     Actions\ViewAction::make('view'),
                     Actions\DeleteAction::make('delete'),
-                ])->tooltip(fn () => trans('app.resource.action_label')),
+                ])->tooltip(trans('app.resource.action_label')),
             ])
             ->bulkActions([
                 Actions\BulkActionGroup::make([
@@ -180,7 +177,7 @@ class ContinentResource extends Resource
     {
         return [
             'index' => Pages\ListContinents::route('/'),
-            'create' => Pages\CreateContinent::route('/create'),
+            // 'create' => Pages\CreateContinent::route('/create'),
             'view' => Pages\ViewContinent::route('/{record}'),
             'edit' => Pages\EditContinent::route('/{record}/edit'),
         ];

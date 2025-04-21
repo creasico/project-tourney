@@ -17,11 +17,11 @@ class Settings extends Page
     public function getFormSchema(): array
     {
         return [
-            Components\Section::make(static fn () => trans('continent.section.info_heading'))
+            Components\Section::make(trans('continent.section.info_heading'))
                 ->aside()
                 ->schema([
                     Components\TextInput::make('name')
-                        ->label(fn () => trans('continent.field.name')),
+                        ->label(trans('continent.field.name')),
                 ]),
         ];
     }

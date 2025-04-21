@@ -25,7 +25,7 @@ class ManagersRelationManager extends RelationManager
     {
         return $form
             ->schema([
-                Components\Section::make(static fn () => trans('participant.section.bio_heading'))
+                Components\Section::make(trans('participant.section.bio_heading'))
                     ->aside()
                     ->schema($this->getMembershipFormSchema()),
             ]);

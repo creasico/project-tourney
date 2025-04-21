@@ -48,7 +48,7 @@ class UserResource extends Resource
                     Actions\EditAction::make('edit'),
                     Actions\DeleteAction::make('delete'),
                 ])
-                    ->tooltip(fn () => trans('app.resource.action_label'))
+                    ->tooltip(trans('app.resource.action_label'))
                     ->visible(fn (User $record) => $record->isNot(auth()->user())),
             ])
             ->recordUrl(fn (User $record) => $record->is(auth()->user()) ? route('filament.admin.auth.profile') : null)

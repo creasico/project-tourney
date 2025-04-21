@@ -28,7 +28,7 @@ class TournamentResource extends Resource
 
     public static function getFormInfoSection()
     {
-        return Components\Section::make(static fn () => trans('tournament.section.info_heading'))
+        return Components\Section::make(trans('tournament.section.info_heading'))
             ->disabled(fn (?Tournament $record) => $record?->is_started)
             ->aside()
             ->schema([
