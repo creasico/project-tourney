@@ -30,6 +30,7 @@ return [
         'divisions' => 'Division',
         'division' => 'Chart Count',
         'class' => 'Class',
+        'class_term' => 'Category',
     ],
 
     'prize' => [

@@ -2,10 +2,12 @@
 
 namespace App\Filament\Resources\TournamentResource;
 
+use App\Enums\ClassificationTerm;
 use App\Filament\Resources\TournamentResource;
 use Filament\Forms\Components;
 use Filament\Forms\Form;
 use Filament\Forms\Get;
+use Filament\Forms\Set;
 use Illuminate\Database\Eloquent\Builder;
 
 /**
@@ -62,13 +64,26 @@ trait CreationWizardForm
                                 ->label(trans('tournament.field.divisions'))
                                 ->columns(2)
                                 ->schema([
+                                    Components\Select::make('class_term')
+                                        ->label(trans('tournament.field.class_term'))
+                                        ->options(ClassificationTerm::toOptions())
+                                        ->afterStateUpdated(fn (Set $set) => $set('class_id', null))
+                                        ->live()
+                                        ->required(),
                                     Components\Select::make('class_id')
                                         ->label(trans('tournament.field.class'))
                                         ->relationship(
                                             name: 'classification',
                                             titleAttribute: 'label',
-                                            modifyQueryUsing: static fn (Builder $query) => $query->latest('order')
+                                            modifyQueryUsing: static function (Builder $query, Get $get) {
+                                                $term = $get('class_term');
+
+                                                return $query
+                                                    ->when(is_numeric($term), fn (Builder $query) => $query->where('term', $term))
+                                                    ->oldest('order');
+                                            }
                                         )
+                                        ->disabled(fn (Get $get) => in_array($get('class_term'), [null, '']))
                                         ->required(),
                                     Components\TextInput::make('division')
                                         ->label(trans('tournament.field.division'))

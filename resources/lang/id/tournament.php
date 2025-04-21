@@ -30,6 +30,7 @@ return [
         'divisions' => 'Pembagian',
         'division' => 'Juml. Bagan',
         'class' => 'Kelas',
+        'class_term' => 'Kategori',
     ],
 
     'prize' => [
