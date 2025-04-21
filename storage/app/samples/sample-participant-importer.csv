@@ -1,1 +1,2000 @@
-﻿continent,age,weight,name,gender,role
+continent,age,weight,name,gender
+Kontingen 1,Anak,A,Cinthia Agustina,male
+Kontingen 1,Anak,A,Saiful Pertiwi,female
+Kontingen 1,Anak,A,Siti Usamah,male
+Kontingen 1,Anak,A,Jessica Utami,female
+Kontingen 1,Anak,A,Siti Usamah,male
+Kontingen 1,Anak,A,Jessica Utami,female
+Kontingen 1,Anak,B,Tira Palastri,male
+Kontingen 1,Anak,B,Taswir Jailani,male
+Kontingen 1,Anak,B,Asirwanda Sitorus,female
+Kontingen 1,Anak,B,Warsa Nurdiyanti,female
+Kontingen 1,Anak,B,Warsa Nurdiyanti,female
+Kontingen 1,Anak,C,Ani Mardhiyah,male
+Kontingen 1,Anak,C,Prabowo Yuliarti,male
+Kontingen 1,Anak,C,Janet Saputra,female
+Kontingen 1,Anak,C,Heru Anggraini,female
+Kontingen 1,Anak,C,Pranawa Dabukke,female
+Kontingen 1,Anak,C,Pranawa Dabukke,female
+Kontingen 1,Anak,D,Rachel Prastuti,male
+Kontingen 1,Anak,E,Tami Marbun,female
+Kontingen 1,Anak,E,Bakidin Habibi,male
+Kontingen 1,Anak,E,Bakidin Habibi,male
+Kontingen 1,Anak,F,Cakrawala Prakasa,female
+Kontingen 1,Anak,F,Mursita Wijayanti,male
+Kontingen 1,Anak,F,Amalia Uwais,male
+Kontingen 1,Anak,F,Amalia Uwais,male
+Kontingen 1,Dewasa,A,Rini Pradipta,female
+Kontingen 1,Dewasa,A,Rudi Wulandari,male
+Kontingen 1,Dewasa,A,Warsita Irawan,female
+Kontingen 1,Dewasa,A,Warsita Irawan,female
+Kontingen 1,Dewasa,A,Warta Wacana,male
+Kontingen 1,Dewasa,B,Dian Hidayat,female
+Kontingen 1,Dewasa,B,Cahyono Kusmawati,male
+Kontingen 1,Dewasa,B,Baktiono Lestari,male
+Kontingen 1,Dewasa,B,Lala Puspita,male
+Kontingen 1,Dewasa,B,Ami Puspasari,female
+Kontingen 1,Dewasa,C,Vicky Rahmawati,female
+Kontingen 1,Dewasa,C,Laila Budiman,female
+Kontingen 1,Dewasa,C,Ivan Wulandari,male
+Kontingen 1,Dewasa,C,Ivan Wulandari,male
+Kontingen 1,Dewasa,C,Harjasa Kuswoyo,female
+Kontingen 1,Dewasa,C,Hesti Narpati,female
+Kontingen 1,Dewasa,C,Usyi Namaga,male
+Kontingen 1,Dewasa,D,Rika Melani,female
+Kontingen 1,Dewasa,D,Asirwada Namaga,male
+Kontingen 1,Dewasa,D,Sakti Farida,male
+Kontingen 1,Dewasa,D,Ismail Nugroho,male
+Kontingen 1,Dewasa,D,Sakti Farida,male
+Kontingen 1,Dewasa,D,Ismail Nugroho,male
+Kontingen 1,Dewasa,D,Hana Farida,male
+Kontingen 1,Dewasa,E,Violet Purwanti,male
+Kontingen 1,Dewasa,E,Violet Purwanti,male
+Kontingen 1,Dewasa,E,Mutia Palastri,female
+Kontingen 1,Dewasa,E,Zalindra Maulana,male
+Kontingen 1,Dewasa,F,Raden Yuniar,male
+Kontingen 1,Dewasa,F,Hasim Narpati,female
+Kontingen 1,Dewasa,F,Ulva Najmudin,male
+Kontingen 1,Dewasa,F,Ulva Najmudin,male
+Kontingen 1,Dewasa,F,Gamblang Pertiwi,female
+Kontingen 1,Dewasa,F,Puti Maheswara,male
+Kontingen 1,Remaja,A,Karen Nainggolan,female
+Kontingen 1,Remaja,A,Cahya Prayoga,female
+Kontingen 1,Remaja,A,Cahya Prayoga,female
+Kontingen 1,Remaja,A,Salwa Siregar,male
+Kontingen 1,Remaja,A,Cindy Pudjiastuti,male
+Kontingen 1,Remaja,B,Ella Uyainah,female
+Kontingen 1,Remaja,B,Cakrabirawa Purnawati,female
+Kontingen 1,Remaja,B,Taswir Jailani,male
+Kontingen 1,Remaja,B,Asirwanda Sitorus,female
+Kontingen 1,Remaja,B,Taswir Laksita,male
+Kontingen 1,Remaja,C,Zamira Yuliarti,male
+Kontingen 1,Remaja,C,Tania Hidayat,male
+Kontingen 1,Remaja,C,Zelaya Wibisono,male
+Kontingen 1,Remaja,C,Raihan Usamah,female
+Kontingen 1,Remaja,C,Raihan Usamah,female
+Kontingen 1,Remaja,C,Prabowo Yuliarti,male
+Kontingen 1,Remaja,C,Opan Wulandari,female
+Kontingen 1,Remaja,C,Janet Saputra,female
+Kontingen 1,Remaja,C,Zamira Yuliarti,male
+Kontingen 1,Remaja,D,Yunita Wasita,male
+Kontingen 1,Remaja,D,Cemplunk Prasasta,male
+Kontingen 1,Remaja,D,Gamani Rahayu,female
+Kontingen 1,Remaja,D,Chelsea Widodo,male
+Kontingen 1,Remaja,E,Candra Mardhiyah,male
+Kontingen 1,Remaja,E,Lukman Suartini,male
+Kontingen 1,Remaja,E,Cornelia Saptono,male
+Kontingen 1,Remaja,E,Lukman Suartini,male
+Kontingen 1,Remaja,E,Cornelia Saptono,male
+Kontingen 1,Remaja,E,Talia Usada,male
+Kontingen 1,Remaja,E,Tirta Laksmiwati,female
+Kontingen 1,Remaja,E,Tami Putra,female
+Kontingen 1,Remaja,F,Restu Prabowo,male
+Kontingen 1,Remaja,F,Febi Purnawati,male
+Kontingen 1,Remaja,F,Febi Purnawati,male
+Kontingen 1,Remaja,F,Ina Kurniawan,male
+Kontingen 1,Remaja,F,Diana Simbolon,male
+Kontingen 1,Remaja,F,Azalea Uwais,female
+Kontingen 1,Remaja,F,Tina Astuti,female
+Kontingen 1,Usia dini,A,Julia Uwais,male
+Kontingen 1,Usia dini,A,Artanto Mansur,male
+Kontingen 1,Usia dini,A,Gada Prabowo,female
+Kontingen 1,Usia dini,A,Lukman Rajasa,male
+Kontingen 1,Usia dini,A,Teguh Namaga,male
+Kontingen 1,Usia dini,A,Surya Permadi,male
+Kontingen 1,Usia dini,B,Adiarja Usada,male
+Kontingen 1,Usia dini,B,Winda Simbolon,female
+Kontingen 1,Usia dini,B,Ayu Natsir,male
+Kontingen 1,Usia dini,B,Winda Simbolon,female
+Kontingen 1,Usia dini,B,Ayu Natsir,male
+Kontingen 1,Usia dini,C,Opan Wulandari,female
+Kontingen 1,Usia dini,C,Baktiono Maulana,male
+Kontingen 1,Usia dini,C,Cagak Waskita,male
+Kontingen 1,Usia dini,C,Dalimin Simanjuntak,male
+Kontingen 1,Usia dini,D,Yulia Widiastuti,female
+Kontingen 1,Usia dini,D,Titin Hidayat,female
+Kontingen 1,Usia dini,D,Kamal Waskita,female
+Kontingen 1,Usia dini,E,Satya Simanjuntak,male
+Kontingen 1,Usia dini,E,Jono Maryadi,male
+Kontingen 1,Usia dini,E,Ina Suryono,female
+Kontingen 1,Usia dini,E,Dian Prabowo,male
+Kontingen 1,Usia dini,F,Samsul Yulianti,female
+Kontingen 1,Usia dini,F,Alambana Januar,male
+Kontingen 1,Usia dini,F,Ilsa Hardiansyah,female
+Kontingen 1,Usia dini,F,Gabriella Budiman,female
+Kontingen 10,Anak,A,Lidya Natsir,female
+Kontingen 10,Anak,A,Lidya Natsir,female
+Kontingen 10,Anak,B,Manah Siregar,female
+Kontingen 10,Anak,B,Dewi Safitri,male
+Kontingen 10,Anak,B,Makuta Adriansyah,male
+Kontingen 10,Anak,C,Puti Simanjuntak,male
+Kontingen 10,Anak,C,Lili Mulyani,male
+Kontingen 10,Anak,C,Hendra Suartini,female
+Kontingen 10,Anak,C,Umar Pangestu,female
+Kontingen 10,Anak,C,Umar Pangestu,female
+Kontingen 10,Anak,D,Kania Damanik,female
+Kontingen 10,Anak,D,Samiah Putra,female
+Kontingen 10,Anak,D,Hasna Mardhiyah,male
+Kontingen 10,Anak,D,Samiah Putra,female
+Kontingen 10,Anak,D,Hasna Mardhiyah,male
+Kontingen 10,Anak,E,Dimas Habibi,female
+Kontingen 10,Anak,F,Diah Prastuti,female
+Kontingen 10,Anak,F,Diah Prastuti,female
+Kontingen 10,Dewasa,A,Luluh Irawan,male
+Kontingen 10,Dewasa,A,Kezia Rahayu,female
+Kontingen 10,Dewasa,A,Karimah Kuswandari,male
+Kontingen 10,Dewasa,A,Karimah Kuswandari,male
+Kontingen 10,Dewasa,A,Diah Sihombing,female
+Kontingen 10,Dewasa,B,Cawuk Susanti,male
+Kontingen 10,Dewasa,B,Safina Halim,female
+Kontingen 10,Dewasa,B,Pia Farida,male
+Kontingen 10,Dewasa,B,Jaka Wasita,female
+Kontingen 10,Dewasa,B,Tirta Wijayanti,male
+Kontingen 10,Dewasa,B,Yessi Agustina,female
+Kontingen 10,Dewasa,B,Cakrabuana Pratiwi,female
+Kontingen 10,Dewasa,B,Cawuk Susanti,male
+Kontingen 10,Dewasa,B,Pandu Mansur,female
+Kontingen 10,Dewasa,C,Gina Oktaviani,male
+Kontingen 10,Dewasa,C,Soleh Widiastuti,male
+Kontingen 10,Dewasa,D,Tami Safitri,male
+Kontingen 10,Dewasa,D,Nardi Saragih,male
+Kontingen 10,Dewasa,E,Ade Winarsih,male
+Kontingen 10,Dewasa,E,Karja Wahyudin,female
+Kontingen 10,Dewasa,E,Yessi Yolanda,female
+Kontingen 10,Dewasa,E,Humaira Jailani,female
+Kontingen 10,Dewasa,E,Halima Pratama,male
+Kontingen 10,Dewasa,E,Karja Wahyudin,female
+Kontingen 10,Dewasa,E,Yessi Yolanda,female
+Kontingen 10,Dewasa,E,Humaira Jailani,female
+Kontingen 10,Dewasa,E,Halima Pratama,male
+Kontingen 10,Dewasa,E,Belinda Iswahyudi,male
+Kontingen 10,Dewasa,E,Hamima Laksita,male
+Kontingen 10,Dewasa,F,Zulfa Haryanto,male
+Kontingen 10,Dewasa,F,Jagapati Mandala,female
+Kontingen 10,Dewasa,F,Tira Mustofa,female
+Kontingen 10,Dewasa,F,Victoria Utami,female
+Kontingen 10,Dewasa,F,Tira Mustofa,female
+Kontingen 10,Dewasa,F,Victoria Utami,female
+Kontingen 10,Dewasa,F,Raharja Purnawati,female
+Kontingen 10,Dewasa,F,Jagapati Mandala,female
+Kontingen 10,Dewasa,F,Sari Latupono,female
+Kontingen 10,Remaja,A,Prayogo Maulana,female
+Kontingen 10,Remaja,A,Diah Sihombing,female
+Kontingen 10,Remaja,A,Nova Rahmawati,female
+Kontingen 10,Remaja,A,Nova Suwarno,male
+Kontingen 10,Remaja,A,Irma Nasyiah,female
+Kontingen 10,Remaja,A,Ella Nainggolan,male
+Kontingen 10,Remaja,B,Bakiadi Anggraini,male
+Kontingen 10,Remaja,B,Yessi Agustina,female
+Kontingen 10,Remaja,B,Cakrabuana Pratiwi,female
+Kontingen 10,Remaja,B,Darijan Pradipta,male
+Kontingen 10,Remaja,B,Karimah Anggraini,male
+Kontingen 10,Remaja,B,Farah Puspasari,male
+Kontingen 10,Remaja,B,Cayadi Siregar,female
+Kontingen 10,Remaja,B,Farah Puspasari,male
+Kontingen 10,Remaja,B,Cayadi Siregar,female
+Kontingen 10,Remaja,B,Reksa Nainggolan,female
+Kontingen 10,Remaja,B,Rachel Megantara,female
+Kontingen 10,Remaja,B,Cakrajiya Puspita,female
+Kontingen 10,Remaja,B,Melinda Pradana,female
+Kontingen 10,Remaja,B,Karimah Anggraini,male
+Kontingen 10,Remaja,B,Dewi Safitri,male
+Kontingen 10,Remaja,C,Maya Kusmawati,female
+Kontingen 10,Remaja,C,Bakiman Hasanah,male
+Kontingen 10,Remaja,C,Danang Maryadi,female
+Kontingen 10,Remaja,C,Elma Utami,male
+Kontingen 10,Remaja,C,Jamalia Winarno,male
+Kontingen 10,Remaja,C,Elma Utami,male
+Kontingen 10,Remaja,C,Jamalia Winarno,male
+Kontingen 10,Remaja,C,Zelaya Simbolon,male
+Kontingen 10,Remaja,C,Rahmi Novitasari,male
+Kontingen 10,Remaja,C,Cahyadi Salahudin,male
+Kontingen 10,Remaja,C,Hendra Suartini,female
+Kontingen 10,Remaja,D,Yuni Saragih,female
+Kontingen 10,Remaja,D,Asman Simanjuntak,female
+Kontingen 10,Remaja,D,Safina Gunarto,male
+Kontingen 10,Remaja,D,Cayadi Wasita,female
+Kontingen 10,Remaja,D,Raisa Utami,male
+Kontingen 10,Remaja,D,Damu Kusmawati,female
+Kontingen 10,Remaja,E,Ratih Situmorang,female
+Kontingen 10,Remaja,E,Ina Yolanda,male
+Kontingen 10,Remaja,F,Victoria Farida,male
+Kontingen 10,Remaja,F,Nabila Setiawan,female
+Kontingen 10,Remaja,F,Karen Maheswara,female
+Kontingen 10,Remaja,F,Karen Maheswara,female
+Kontingen 10,Remaja,F,Unjani Hassanah,male
+Kontingen 10,Remaja,F,Balamantri Riyanti,male
+Kontingen 10,Usia dini,A,Ami Zulaika,male
+Kontingen 10,Usia dini,A,Padmi Yolanda,female
+Kontingen 10,Usia dini,A,Ella Nainggolan,male
+Kontingen 10,Usia dini,A,Heru Wasita,female
+Kontingen 10,Usia dini,A,Wawan Pertiwi,female
+Kontingen 10,Usia dini,A,Danang Yuliarti,female
+Kontingen 10,Usia dini,B,Upik Permadi,male
+Kontingen 10,Usia dini,B,Upik Permadi,male
+Kontingen 10,Usia dini,B,Shania Wahyuni,female
+Kontingen 10,Usia dini,B,Lamar Usada,female
+Kontingen 10,Usia dini,B,Kurnia Rahimah,female
+Kontingen 10,Usia dini,B,Kani Wijaya,male
+Kontingen 10,Usia dini,B,Bahuwirya Nurdiyanti,male
+Kontingen 10,Usia dini,B,Cindy Prakasa,female
+Kontingen 10,Usia dini,B,Syahrini Saragih,male
+Kontingen 10,Usia dini,C,Hana Prayoga,male
+Kontingen 10,Usia dini,C,Umar Saefullah,female
+Kontingen 10,Usia dini,C,Fitriani Putra,female
+Kontingen 10,Usia dini,C,Luthfi Maulana,male
+Kontingen 10,Usia dini,D,Usyi Suartini,male
+Kontingen 10,Usia dini,D,Damu Kusmawati,female
+Kontingen 10,Usia dini,D,Ratih Permata,male
+Kontingen 10,Usia dini,D,Hana Laksita,male
+Kontingen 10,Usia dini,E,Zaenab Riyanti,female
+Kontingen 10,Usia dini,E,Mutia Pranowo,male
+Kontingen 10,Usia dini,E,Ajimat Winarsih,male
+Kontingen 10,Usia dini,F,Sari Latupono,female
+Kontingen 10,Usia dini,F,Ulya Rahmawati,female
+Kontingen 10,Usia dini,F,Bakiman Kusmawati,female
+Kontingen 10,Usia dini,F,Eluh Hasanah,female
+Kontingen 10,Usia dini,F,Agnes Hutagalung,male
+Kontingen 10,Usia dini,F,Eluh Hasanah,female
+Kontingen 10,Usia dini,F,Agnes Hutagalung,male
+Kontingen 10,Usia dini,F,Tania Siregar,male
+Kontingen 11,Anak,A,Surya Permadi,male
+Kontingen 11,Anak,B,Restu Wastuti,male
+Kontingen 11,Anak,C,Galang Samosir,female
+Kontingen 11,Anak,C,Among Mahendra,female
+Kontingen 11,Anak,C,Caturangga Situmorang,male
+Kontingen 11,Anak,C,Rahmat Maryati,male
+Kontingen 11,Anak,C,Hasna Rajasa,male
+Kontingen 11,Anak,C,Rahmat Maryati,male
+Kontingen 11,Anak,C,Hasna Rajasa,male
+Kontingen 11,Anak,D,Tina Setiawan,female
+Kontingen 11,Anak,D,Aisyah Mandasari,male
+Kontingen 11,Anak,D,Dodo Utama,male
+Kontingen 11,Anak,D,Dodo Utama,male
+Kontingen 11,Anak,E,Ifa Haryanto,male
+Kontingen 11,Anak,E,Gamblang Hastuti,female
+Kontingen 11,Anak,E,Capa Hidayanto,male
+Kontingen 11,Anak,E,Nabila Prasetyo,female
+Kontingen 11,Anak,E,Capa Hidayanto,male
+Kontingen 11,Anak,E,Nabila Prasetyo,female
+Kontingen 11,Anak,F,Ilsa Hariyah,female
+Kontingen 11,Anak,F,Ana Usamah,male
+Kontingen 11,Anak,F,Ilsa Hariyah,female
+Kontingen 11,Anak,F,Ana Usamah,male
+Kontingen 11,Dewasa,A,Hasim Saragih,female
+Kontingen 11,Dewasa,A,Hasim Saragih,female
+Kontingen 11,Dewasa,A,Amelia Marpaung,male
+Kontingen 11,Dewasa,A,Niyaga Pratiwi,male
+Kontingen 11,Dewasa,A,Dina Mangunsong,female
+Kontingen 11,Dewasa,A,Hasta Safitri,female
+Kontingen 11,Dewasa,A,Praba Narpati,female
+Kontingen 11,Dewasa,A,Catur Usada,female
+Kontingen 11,Dewasa,A,Tira Maryati,male
+Kontingen 11,Dewasa,B,Mahfud Puspasari,female
+Kontingen 11,Dewasa,B,Luwes Halimah,male
+Kontingen 11,Dewasa,B,Irfan Widiastuti,male
+Kontingen 11,Dewasa,B,Candrakanta Uyainah,male
+Kontingen 11,Dewasa,B,Irfan Widiastuti,male
+Kontingen 11,Dewasa,B,Candrakanta Uyainah,male
+Kontingen 11,Dewasa,B,Balijan Purwanti,male
+Kontingen 11,Dewasa,B,Genta Wibowo,male
+Kontingen 11,Dewasa,B,Kani Aryani,female
+Kontingen 11,Dewasa,B,Febi Puspasari,female
+Kontingen 11,Dewasa,C,Adika Iswahyudi,female
+Kontingen 11,Dewasa,C,Garan Puspasari,female
+Kontingen 11,Dewasa,C,Dinda Suartini,female
+Kontingen 11,Dewasa,C,Garan Puspasari,female
+Kontingen 11,Dewasa,C,Dinda Suartini,female
+Kontingen 11,Dewasa,C,Irma Sitompul,female
+Kontingen 11,Dewasa,C,Niyaga Mulyani,female
+Kontingen 11,Dewasa,C,Rika Saptono,male
+Kontingen 11,Dewasa,C,Adika Iswahyudi,female
+Kontingen 11,Dewasa,C,Cager Hidayanto,female
+Kontingen 11,Dewasa,D,Kenzie Suwarno,female
+Kontingen 11,Dewasa,D,Bala Dabukke,female
+Kontingen 11,Dewasa,D,Putu Pratiwi,female
+Kontingen 11,Dewasa,D,Jindra Riyanti,male
+Kontingen 11,Dewasa,D,Lulut Maulana,female
+Kontingen 11,Dewasa,D,Karta Mahendra,male
+Kontingen 11,Dewasa,D,Makuta Mandala,male
+Kontingen 11,Dewasa,D,Kenzie Suwarno,female
+Kontingen 11,Dewasa,D,Bala Dabukke,female
+Kontingen 11,Dewasa,E,Patricia Widiastuti,male
+Kontingen 11,Dewasa,E,Amalia Dabukke,female
+Kontingen 11,Dewasa,E,Zahra Utami,female
+Kontingen 11,Dewasa,E,Hairyanto Saputra,male
+Kontingen 11,Dewasa,E,Ifa Haryanto,male
+Kontingen 11,Dewasa,F,Kamaria Hassanah,female
+Kontingen 11,Dewasa,F,Salsabila Mangunsong,male
+Kontingen 11,Dewasa,F,Samsul Yulianti,female
+Kontingen 11,Dewasa,F,Raina Puspasari,male
+Kontingen 11,Dewasa,F,Ulya Lailasari,male
+Kontingen 11,Dewasa,F,Raina Puspasari,male
+Kontingen 11,Dewasa,F,Ulya Lailasari,male
+Kontingen 11,Dewasa,F,Titin Halimah,male
+Kontingen 11,Remaja,A,Tira Maryati,male
+Kontingen 11,Remaja,A,Yuni Budiyanto,female
+Kontingen 11,Remaja,A,Yuni Budiyanto,female
+Kontingen 11,Remaja,B,Vanesa Hasanah,female
+Kontingen 11,Remaja,B,Karja Pudjiastuti,male
+Kontingen 11,Remaja,B,Wardaya Yulianti,female
+Kontingen 11,Remaja,B,Kardi Maryati,male
+Kontingen 11,Remaja,B,Tomi Maulana,male
+Kontingen 11,Remaja,B,Safina Halim,female
+Kontingen 11,Remaja,B,Makuta Adriansyah,male
+Kontingen 11,Remaja,C,Cager Hidayanto,female
+Kontingen 11,Remaja,C,Ratih Mulyani,female
+Kontingen 11,Remaja,C,Cawuk Yuniar,male
+Kontingen 11,Remaja,C,Lala Wahyuni,male
+Kontingen 11,Remaja,C,Jamil Andriani,female
+Kontingen 11,Remaja,C,Pandu Anggraini,male
+Kontingen 11,Remaja,C,Talia Melani,male
+Kontingen 11,Remaja,C,Pandu Anggraini,male
+Kontingen 11,Remaja,C,Talia Melani,male
+Kontingen 11,Remaja,C,Damar Waskita,male
+Kontingen 11,Remaja,C,Kamaria Hutagalung,male
+Kontingen 11,Remaja,D,Gasti Padmasari,female
+Kontingen 11,Remaja,D,Ratih Permata,male
+Kontingen 11,Remaja,E,Gasti Widiastuti,female
+Kontingen 11,Remaja,E,Dalimin Manullang,male
+Kontingen 11,Remaja,E,Prayitna Yolanda,male
+Kontingen 11,Remaja,E,Setya Agustina,female
+Kontingen 11,Remaja,E,Praba Suryatmi,male
+Kontingen 11,Remaja,F,Rangga Mulyani,female
+Kontingen 11,Remaja,F,Makuta Mandala,female
+Kontingen 11,Usia dini,A,Catur Usada,female
+Kontingen 11,Usia dini,A,Teguh Namaga,male
+Kontingen 11,Usia dini,A,Yance Sihombing,female
+Kontingen 11,Usia dini,A,Niyaga Salahudin,female
+Kontingen 11,Usia dini,B,Pandu Mansur,female
+Kontingen 11,Usia dini,B,Tantri Maryati,male
+Kontingen 11,Usia dini,B,Bambang Pertiwi,male
+Kontingen 11,Usia dini,B,Nadine Pratama,male
+Kontingen 11,Usia dini,B,Nadine Pratama,male
+Kontingen 11,Usia dini,B,Hilda Rahmawati,male
+Kontingen 11,Usia dini,B,Iriana Suryatmi,male
+Kontingen 11,Usia dini,C,Tina Handayani,female
+Kontingen 11,Usia dini,C,Kayla Sirait,male
+Kontingen 11,Usia dini,C,Ami Kusmawati,male
+Kontingen 11,Usia dini,C,Zalindra Purwanti,male
+Kontingen 11,Usia dini,C,Mahesa Irawan,male
+Kontingen 11,Usia dini,D,Juli Padmasari,female
+Kontingen 11,Usia dini,D,Winda Nasyiah,male
+Kontingen 11,Usia dini,D,Juli Padmasari,female
+Kontingen 11,Usia dini,D,Winda Nasyiah,male
+Kontingen 11,Usia dini,E,Gilda Prastuti,male
+Kontingen 11,Usia dini,E,Lidya Winarno,male
+Kontingen 11,Usia dini,E,Ina Suryono,female
+Kontingen 11,Usia dini,E,Maimunah Simbolon,male
+Kontingen 11,Usia dini,E,Fitria Widiastuti,male
+Kontingen 11,Usia dini,E,Pangeran Kusumo,male
+Kontingen 11,Usia dini,F,Hari Mangunsong,female
+Kontingen 11,Usia dini,F,Farah Yuliarti,male
+Kontingen 12,Anak,A,Heryanto Hartati,female
+Kontingen 12,Anak,A,Jaka Manullang,male
+Kontingen 12,Anak,A,Harto Prabowo,male
+Kontingen 12,Anak,A,Harto Prabowo,male
+Kontingen 12,Anak,B,Imam Fujiati,male
+Kontingen 12,Anak,C,Queen Lestari,male
+Kontingen 12,Anak,C,Kala Saefullah,female
+Kontingen 12,Anak,C,Mahesa Suryatmi,female
+Kontingen 12,Anak,C,Amalia Sihotang,female
+Kontingen 12,Anak,C,Asmianto Mansur,female
+Kontingen 12,Anak,C,Umi Puspita,female
+Kontingen 12,Anak,C,Amalia Sihotang,female
+Kontingen 12,Anak,C,Asmianto Mansur,female
+Kontingen 12,Anak,C,Umi Puspita,female
+Kontingen 12,Anak,D,Nyoman Pangestu,female
+Kontingen 12,Anak,D,Cemani Maryati,male
+Kontingen 12,Anak,D,Cemani Maryati,male
+Kontingen 12,Anak,F,Ina Kurniawan,male
+Kontingen 12,Anak,F,Alambana Januar,male
+Kontingen 12,Dewasa,A,Makuta Nashiruddin,male
+Kontingen 12,Dewasa,A,Surya Purwanti,male
+Kontingen 12,Dewasa,A,Dalima Hutapea,female
+Kontingen 12,Dewasa,A,Kamaria Winarno,male
+Kontingen 12,Dewasa,A,Dalima Hutapea,female
+Kontingen 12,Dewasa,A,Kamaria Winarno,male
+Kontingen 12,Dewasa,B,Emin Tarihoran,female
+Kontingen 12,Dewasa,B,Ana Permadi,female
+Kontingen 12,Dewasa,B,Raharja Safitri,male
+Kontingen 12,Dewasa,B,Genta Agustina,female
+Kontingen 12,Dewasa,B,Tantri Maryati,male
+Kontingen 12,Dewasa,B,Mahfud Puspasari,female
+Kontingen 12,Dewasa,C,Ophelia Santoso,female
+Kontingen 12,Dewasa,C,Vega Hastuti,male
+Kontingen 12,Dewasa,C,Parman Purnawati,female
+Kontingen 12,Dewasa,C,Vega Hastuti,male
+Kontingen 12,Dewasa,C,Parman Purnawati,female
+Kontingen 12,Dewasa,C,Warsa Hassanah,male
+Kontingen 12,Dewasa,C,Wulan Mulyani,female
+Kontingen 12,Dewasa,C,Zizi Usada,female
+Kontingen 12,Dewasa,C,Ganjaran Anggraini,female
+Kontingen 12,Dewasa,C,Ratih Mulyani,female
+Kontingen 12,Dewasa,C,Cawuk Yuniar,male
+Kontingen 12,Dewasa,C,Galang Samosir,female
+Kontingen 12,Dewasa,D,Hardana Riyanti,female
+Kontingen 12,Dewasa,D,Sari Gunawan,male
+Kontingen 12,Dewasa,D,Hardana Riyanti,female
+Kontingen 12,Dewasa,D,Sari Gunawan,male
+Kontingen 12,Dewasa,D,Gamani Hasanah,female
+Kontingen 12,Dewasa,E,Caket Prakasa,male
+Kontingen 12,Dewasa,E,Hana Pudjiastuti,male
+Kontingen 12,Dewasa,E,Ilyas Sitorus,female
+Kontingen 12,Dewasa,E,Cahya Hassanah,female
+Kontingen 12,Dewasa,E,Patricia Widiastuti,male
+Kontingen 12,Dewasa,F,Mala Yulianti,male
+Kontingen 12,Dewasa,F,Gina Waluyo,male
+Kontingen 12,Remaja,A,Vicky Puspita,female
+Kontingen 12,Remaja,A,Diana Salahudin,male
+Kontingen 12,Remaja,A,Dartono Waluyo,male
+Kontingen 12,Remaja,A,Danuja Wahyuni,female
+Kontingen 12,Remaja,A,Dartono Waluyo,male
+Kontingen 12,Remaja,A,Danuja Wahyuni,female
+Kontingen 12,Remaja,A,Jane Aryani,male
+Kontingen 12,Remaja,A,Raina Budiman,male
+Kontingen 12,Remaja,A,Ifa Laksmiwati,male
+Kontingen 12,Remaja,A,Olivia Nuraini,male
+Kontingen 12,Remaja,B,Rini Rajata,female
+Kontingen 12,Remaja,B,Cawisadi Hastuti,female
+Kontingen 12,Remaja,B,Kadir Najmudin,female
+Kontingen 12,Remaja,B,Raina Suartini,male
+Kontingen 12,Remaja,C,Yani Mulyani,female
+Kontingen 12,Remaja,C,Widya Gunarto,male
+Kontingen 12,Remaja,C,Dinda Sudiati,male
+Kontingen 12,Remaja,C,Dinda Sudiati,male
+Kontingen 12,Remaja,C,Ellis Habibi,male
+Kontingen 12,Remaja,C,Jamil Andriani,female
+Kontingen 12,Remaja,D,Salimah Lailasari,female
+Kontingen 12,Remaja,D,Gasti Suartini,male
+Kontingen 12,Remaja,D,Jasmani Tamba,female
+Kontingen 12,Remaja,D,Kiandra Napitupulu,female
+Kontingen 12,Remaja,D,Kiandra Napitupulu,female
+Kontingen 12,Remaja,D,Hasna Wastuti,male
+Kontingen 12,Remaja,D,Balamantri Saputra,female
+Kontingen 12,Remaja,D,Zulaikha Anggraini,female
+Kontingen 12,Remaja,E,Gangsar Widiastuti,male
+Kontingen 12,Remaja,E,Vicky Purnawati,female
+Kontingen 12,Remaja,E,Cakrawala Pranowo,male
+Kontingen 12,Remaja,E,Gilang Haryanti,female
+Kontingen 12,Remaja,E,Gandewa Winarno,male
+Kontingen 12,Remaja,E,Jamalia Suryatmi,male
+Kontingen 12,Remaja,E,Gilda Prastuti,male
+Kontingen 12,Remaja,E,Gamblang Hastuti,female
+Kontingen 12,Remaja,E,Amalia Dabukke,female
+Kontingen 12,Remaja,F,Puti Mayasari,male
+Kontingen 12,Remaja,F,Cinthia Utama,male
+Kontingen 12,Remaja,F,Prakosa Novitasari,male
+Kontingen 12,Remaja,F,Zaenab Lailasari,female
+Kontingen 12,Remaja,F,Carla Sudiati,male
+Kontingen 12,Usia dini,A,Eja Wahyuni,female
+Kontingen 12,Usia dini,A,Wakiman Adriansyah,female
+Kontingen 12,Usia dini,A,Rahmi Wahyuni,male
+Kontingen 12,Usia dini,A,Lutfan Suwarno,female
+Kontingen 12,Usia dini,A,Gada Prabowo,female
+Kontingen 12,Usia dini,A,Kenzie Megantara,female
+Kontingen 12,Usia dini,A,Irwan Anggriawan,male
+Kontingen 12,Usia dini,A,Shakila Anggraini,female
+Kontingen 12,Usia dini,B,Cakrabirawa Purnawati,female
+Kontingen 12,Usia dini,B,Mala Melani,male
+Kontingen 12,Usia dini,B,Emong Hidayat,male
+Kontingen 12,Usia dini,B,Dalima Natsir,male
+Kontingen 12,Usia dini,B,Usyi Thamrin,male
+Kontingen 12,Usia dini,B,Wasis Nasyiah,female
+Kontingen 12,Usia dini,B,Jane Yuliarti,female
+Kontingen 12,Usia dini,B,Wasis Nasyiah,female
+Kontingen 12,Usia dini,B,Jane Yuliarti,female
+Kontingen 12,Usia dini,B,Aisyah Pudjiastuti,male
+Kontingen 12,Usia dini,B,Devi Wastuti,male
+Kontingen 12,Usia dini,C,Kamila Kusmawati,female
+Kontingen 12,Usia dini,C,Martani Wacana,female
+Kontingen 12,Usia dini,C,Hadi Prasetyo,female
+Kontingen 12,Usia dini,C,Ratih Tarihoran,male
+Kontingen 12,Usia dini,C,Mutia Wibowo,male
+Kontingen 12,Usia dini,C,Suci Kusumo,female
+Kontingen 12,Usia dini,D,Nyana Saefullah,female
+Kontingen 12,Usia dini,D,Olga Hartati,female
+Kontingen 12,Usia dini,D,Tiara Prabowo,female
+Kontingen 12,Usia dini,D,Yono Hasanah,female
+Kontingen 12,Usia dini,D,Harsanto Nugroho,male
+Kontingen 12,Usia dini,D,Luluh Permata,male
+Kontingen 12,Usia dini,D,Jasmani Melani,female
+Kontingen 12,Usia dini,E,Calista Megantara,male
+Kontingen 12,Usia dini,E,Kurnia Nuraini,male
+Kontingen 12,Usia dini,E,Calista Megantara,male
+Kontingen 12,Usia dini,E,Kurnia Nuraini,male
+Kontingen 12,Usia dini,F,Tugiman Hassanah,male
+Kontingen 12,Usia dini,F,Tugiman Hassanah,male
+Kontingen 12,Usia dini,F,Teddy Thamrin,female
+Kontingen 12,Usia dini,F,Tira Mustofa,female
+Kontingen 13,Anak,A,Yance Mahendra,female
+Kontingen 13,Anak,A,Darsirah Anggriawan,female
+Kontingen 13,Anak,A,Latif Mandasari,male
+Kontingen 13,Anak,A,Balapati Zulkarnain,male
+Kontingen 13,Anak,A,Latif Mandasari,male
+Kontingen 13,Anak,A,Balapati Zulkarnain,male
+Kontingen 13,Anak,B,Wulan Kuswandari,female
+Kontingen 13,Anak,C,Kardi Winarno,male
+Kontingen 13,Anak,C,Febi Hutagalung,male
+Kontingen 13,Anak,C,Febi Hutagalung,male
+Kontingen 13,Anak,D,Ghani Laksmiwati,female
+Kontingen 13,Anak,D,Farah Oktaviani,male
+Kontingen 13,Anak,D,Rafid Wacana,male
+Kontingen 13,Anak,D,Jaswadi Mansur,male
+Kontingen 13,Anak,D,Jaswadi Mansur,male
+Kontingen 13,Anak,E,Mutia Pranowo,male
+Kontingen 13,Anak,E,Gamani Lailasari,female
+Kontingen 13,Anak,E,Pangeran Lestari,female
+Kontingen 13,Anak,E,Makara Mustofa,male
+Kontingen 13,Anak,E,Gamani Lailasari,female
+Kontingen 13,Anak,E,Pangeran Lestari,female
+Kontingen 13,Anak,E,Makara Mustofa,male
+Kontingen 13,Anak,F,Faizah Wacana,male
+Kontingen 13,Anak,F,Dimas Widiastuti,male
+Kontingen 13,Anak,F,Dimas Widiastuti,male
+Kontingen 13,Dewasa,A,Puspa Rahayu,female
+Kontingen 13,Dewasa,A,Hamima Winarsih,female
+Kontingen 13,Dewasa,A,Wasis Najmudin,female
+Kontingen 13,Dewasa,A,Wasis Najmudin,female
+Kontingen 13,Dewasa,A,Adhiarja Mardhiyah,female
+Kontingen 13,Dewasa,A,Panca Firmansyah,female
+Kontingen 13,Dewasa,B,Julia Firgantoro,male
+Kontingen 13,Dewasa,B,Rama Halim,male
+Kontingen 13,Dewasa,B,Latika Rahayu,male
+Kontingen 13,Dewasa,B,Lamar Usada,female
+Kontingen 13,Dewasa,B,Anastasia Lestari,female
+Kontingen 13,Dewasa,B,Amelia Setiawan,female
+Kontingen 13,Dewasa,C,Umar Saefullah,female
+Kontingen 13,Dewasa,C,Michelle Thamrin,male
+Kontingen 13,Dewasa,C,Patricia Gunarto,male
+Kontingen 13,Dewasa,C,Among Mahendra,female
+Kontingen 13,Dewasa,D,Calista Palastri,female
+Kontingen 13,Dewasa,D,Aswani Sihombing,male
+Kontingen 13,Dewasa,D,Gandewa Prastuti,female
+Kontingen 13,Dewasa,D,Maida Fujiati,female
+Kontingen 13,Dewasa,D,Nurul Saragih,female
+Kontingen 13,Dewasa,D,Paiman Laksita,male
+Kontingen 13,Dewasa,D,Gasti Padmasari,female
+Kontingen 13,Dewasa,E,Cinta Aryani,male
+Kontingen 13,Dewasa,E,Zulaikha Prakasa,female
+Kontingen 13,Dewasa,E,Zulaikha Prakasa,female
+Kontingen 13,Dewasa,E,Tina Siregar,female
+Kontingen 13,Dewasa,E,Gasti Widiastuti,female
+Kontingen 13,Dewasa,F,Hartana Firmansyah,male
+Kontingen 13,Dewasa,F,Jarwi Lestari,female
+Kontingen 13,Dewasa,F,Kamila Hasanah,male
+Kontingen 13,Dewasa,F,Darmaji Purwanti,female
+Kontingen 13,Dewasa,F,Darmaji Purwanti,female
+Kontingen 13,Dewasa,F,Jaya Wasita,female
+Kontingen 13,Dewasa,F,Vinsen Mandala,female
+Kontingen 13,Remaja,A,Shakila Usamah,male
+Kontingen 13,Remaja,A,Prima Farida,female
+Kontingen 13,Remaja,B,Upik Maulana,female
+Kontingen 13,Remaja,B,Shania Wahyuni,female
+Kontingen 13,Remaja,B,Kasiyah Puspita,female
+Kontingen 13,Remaja,B,Cawisadi Puspasari,male
+Kontingen 13,Remaja,B,Kasiyah Puspita,female
+Kontingen 13,Remaja,B,Cawisadi Puspasari,male
+Kontingen 13,Remaja,C,Gaiman Lailasari,male
+Kontingen 13,Remaja,C,Yahya Winarsih,male
+Kontingen 13,Remaja,D,Rosman Wijaya,female
+Kontingen 13,Remaja,D,Maya Rajata,female
+Kontingen 13,Remaja,D,Dasa Marbun,female
+Kontingen 13,Remaja,D,Lurhur Susanti,female
+Kontingen 13,Remaja,D,Emas Mansur,female
+Kontingen 13,Remaja,D,Kiandra Riyanti,female
+Kontingen 13,Remaja,D,Putu Pratiwi,female
+Kontingen 13,Remaja,E,Yulia Hastuti,female
+Kontingen 13,Remaja,E,Laila Wibisono,female
+Kontingen 13,Remaja,E,Indah Pradana,female
+Kontingen 13,Remaja,F,Harsana Rahimah,female
+Kontingen 13,Remaja,F,Carla Prabowo,female
+Kontingen 13,Remaja,F,Uli Fujiati,male
+Kontingen 13,Remaja,F,Kamaria Hassanah,female
+Kontingen 13,Usia dini,A,Mitra Prasetya,female
+Kontingen 13,Usia dini,A,Jelita Yulianti,male
+Kontingen 13,Usia dini,A,Hamima Prastuti,female
+Kontingen 13,Usia dini,A,Maya Hariyah,female
+Kontingen 13,Usia dini,A,Putri Mangunsong,male
+Kontingen 13,Usia dini,A,Lidya Natsir,female
+Kontingen 13,Usia dini,A,Karimah Kuswandari,male
+Kontingen 13,Usia dini,B,Nasab Waluyo,female
+Kontingen 13,Usia dini,B,Nasab Waluyo,female
+Kontingen 13,Usia dini,B,Gatot Rahimah,female
+Kontingen 13,Usia dini,B,Kurnia Permata,male
+Kontingen 13,Usia dini,C,Taswir Utama,female
+Kontingen 13,Usia dini,C,Taswir Utama,female
+Kontingen 13,Usia dini,C,Darmana Kusumo,male
+Kontingen 13,Usia dini,C,Elma Utami,male
+Kontingen 13,Usia dini,C,Jamalia Winarno,male
+Kontingen 13,Usia dini,D,Shania Melani,female
+Kontingen 13,Usia dini,D,Ibun Pratiwi,male
+Kontingen 13,Usia dini,D,Ratna Prasetyo,male
+Kontingen 13,Usia dini,D,Najwa Melani,male
+Kontingen 13,Usia dini,D,Ajeng Santoso,male
+Kontingen 13,Usia dini,D,Sidiq Sihombing,male
+Kontingen 13,Usia dini,D,Sidiq Sihombing,male
+Kontingen 13,Usia dini,D,Zulaikha Maryati,male
+Kontingen 13,Usia dini,D,Vanya Megantara,male
+Kontingen 13,Usia dini,D,Marsito Prastuti,female
+Kontingen 13,Usia dini,D,Samiah Putra,female
+Kontingen 13,Usia dini,E,Tantri Hakim,female
+Kontingen 13,Usia dini,E,Puspa Dongoran,female
+Kontingen 13,Usia dini,E,Elvina Hastuti,male
+Kontingen 13,Usia dini,E,Muhammad Padmasari,male
+Kontingen 13,Usia dini,E,Puspa Dongoran,female
+Kontingen 13,Usia dini,E,Elvina Hastuti,male
+Kontingen 13,Usia dini,E,Muhammad Padmasari,male
+Kontingen 13,Usia dini,E,Tasdik Wulandari,female
+Kontingen 13,Usia dini,E,Anggabaya Setiawan,female
+Kontingen 13,Usia dini,F,Restu Ardianto,female
+Kontingen 13,Usia dini,F,Dwi Kuswandari,female
+Kontingen 13,Usia dini,F,Gilda Palastri,female
+Kontingen 13,Usia dini,F,Gilda Palastri,female
+Kontingen 13,Usia dini,F,Almira Wastuti,male
+Kontingen 13,Usia dini,F,Caturangga Uyainah,male
+Kontingen 13,Usia dini,F,Victoria Utami,female
+Kontingen 13,Usia dini,F,Eluh Hasanah,female
+Kontingen 14,Anak,A,Devi Pudjiastuti,female
+Kontingen 14,Anak,A,Salwa Suryono,female
+Kontingen 14,Anak,A,Salwa Suryono,female
+Kontingen 14,Anak,B,Eka Handayani,female
+Kontingen 14,Anak,B,Wardaya Yulianti,female
+Kontingen 14,Anak,B,Aisyah Pudjiastuti,male
+Kontingen 14,Anak,C,Tirta Narpati,male
+Kontingen 14,Anak,C,Jelita Melani,female
+Kontingen 14,Anak,C,Martani Wacana,female
+Kontingen 14,Anak,C,Darmana Kusumo,male
+Kontingen 14,Anak,C,Padmi Agustina,male
+Kontingen 14,Anak,C,Padmi Agustina,male
+Kontingen 14,Anak,D,Zulaikha Maryati,male
+Kontingen 14,Anak,E,Ratih Situmorang,female
+Kontingen 14,Anak,F,Mumpuni Pratama,male
+Kontingen 14,Anak,F,Teddy Thamrin,female
+Kontingen 14,Anak,F,Purwa Maryadi,female
+Kontingen 14,Anak,F,Purwa Maryadi,female
+Kontingen 14,Dewasa,A,Mitra Prasetya,female
+Kontingen 14,Dewasa,A,Akarsana Prastuti,female
+Kontingen 14,Dewasa,A,Septi Handayani,male
+Kontingen 14,Dewasa,A,Ganjaran Wahyudin,male
+Kontingen 14,Dewasa,A,Septi Handayani,male
+Kontingen 14,Dewasa,A,Ganjaran Wahyudin,male
+Kontingen 14,Dewasa,B,Karja Pudjiastuti,male
+Kontingen 14,Dewasa,B,Yono Uwais,male
+Kontingen 14,Dewasa,B,Arsipatra Mahendra,male
+Kontingen 14,Dewasa,B,Martana Hutasoit,female
+Kontingen 14,Dewasa,B,Cinthia Nasyiah,female
+Kontingen 14,Dewasa,B,Bambang Pertiwi,male
+Kontingen 14,Dewasa,C,Ina Lestari,female
+Kontingen 14,Dewasa,C,Uda Utami,female
+Kontingen 14,Dewasa,C,Uda Utami,female
+Kontingen 14,Dewasa,C,Tantri Usamah,female
+Kontingen 14,Dewasa,C,Lala Wahyuni,male
+Kontingen 14,Dewasa,C,Queen Lestari,male
+Kontingen 14,Dewasa,D,Cahyadi Sihombing,female
+Kontingen 14,Dewasa,D,Cahyadi Sihombing,female
+Kontingen 14,Dewasa,D,Galih Waluyo,male
+Kontingen 14,Dewasa,E,Pardi Utami,female
+Kontingen 14,Dewasa,E,Dalimin Manullang,male
+Kontingen 14,Dewasa,F,Hari Mangunsong,female
+Kontingen 14,Dewasa,F,Ifa Maryadi,female
+Kontingen 14,Dewasa,F,Clara Prabowo,female
+Kontingen 14,Remaja,A,Jelita Yulianti,male
+Kontingen 14,Remaja,B,Hilda Rahmawati,male
+Kontingen 14,Remaja,B,Syahrini Wahyuni,male
+Kontingen 14,Remaja,B,Syahrini Wahyuni,male
+Kontingen 14,Remaja,B,Kasim Yuliarti,female
+Kontingen 14,Remaja,B,Paiman Samosir,male
+Kontingen 14,Remaja,B,Restu Wastuti,male
+Kontingen 14,Remaja,C,Ibrahim Habibi,male
+Kontingen 14,Remaja,C,Damar Waskita,male
+Kontingen 14,Remaja,C,Rahayu Utami,female
+Kontingen 14,Remaja,C,Laswi Wahyuni,female
+Kontingen 14,Remaja,C,Bambang Wulandari,female
+Kontingen 14,Remaja,C,Laswi Wahyuni,female
+Kontingen 14,Remaja,C,Bambang Wulandari,female
+Kontingen 14,Remaja,C,Kamaria Wahyuni,male
+Kontingen 14,Remaja,C,Ifa Mayasari,male
+Kontingen 14,Remaja,C,Ani Januar,male
+Kontingen 14,Remaja,C,Wirda Uwais,female
+Kontingen 14,Remaja,C,Caturangga Situmorang,male
+Kontingen 14,Remaja,D,Tiara Pratiwi,female
+Kontingen 14,Remaja,D,Tiara Pratiwi,female
+Kontingen 14,Remaja,D,Okto Puspasari,male
+Kontingen 14,Remaja,D,Kadir Permata,female
+Kontingen 14,Remaja,D,Tina Setiawan,female
+Kontingen 14,Remaja,D,Jindra Riyanti,male
+Kontingen 14,Remaja,E,Tedi Wulandari,female
+Kontingen 14,Remaja,E,Aisyah Hutagalung,male
+Kontingen 14,Remaja,E,Irnanto Najmudin,male
+Kontingen 14,Remaja,E,Ana Kuswandari,male
+Kontingen 14,Remaja,E,Vega Irawan,male
+Kontingen 14,Remaja,E,Kamaria Melani,female
+Kontingen 14,Remaja,F,Unjani Hassanah,male
+Kontingen 14,Remaja,F,Balamantri Riyanti,male
+Kontingen 14,Remaja,F,Wulan Siregar,female
+Kontingen 14,Remaja,F,Rahmat Budiman,female
+Kontingen 14,Remaja,F,Rahmat Budiman,female
+Kontingen 14,Remaja,F,Lalita Wijayanti,female
+Kontingen 14,Remaja,F,Salsabila Mangunsong,male
+Kontingen 14,Usia dini,A,Nova Rahmawati,female
+Kontingen 14,Usia dini,A,Agus Permata,male
+Kontingen 14,Usia dini,A,Faizah Mayasari,male
+Kontingen 14,Usia dini,A,Elisa Nugroho,female
+Kontingen 14,Usia dini,A,Agus Permata,male
+Kontingen 14,Usia dini,A,Faizah Mayasari,male
+Kontingen 14,Usia dini,A,Elisa Nugroho,female
+Kontingen 14,Usia dini,A,Akarsana Prastuti,female
+Kontingen 14,Usia dini,B,Reksa Nainggolan,female
+Kontingen 14,Usia dini,B,Rachel Megantara,female
+Kontingen 14,Usia dini,B,Cakrajiya Puspita,female
+Kontingen 14,Usia dini,B,Vanesa Hasanah,female
+Kontingen 14,Usia dini,B,Galiono Mandala,male
+Kontingen 14,Usia dini,B,Kamal Hassanah,female
+Kontingen 14,Usia dini,B,Adiarja Wijaya,male
+Kontingen 14,Usia dini,B,Adiarja Wijaya,male
+Kontingen 14,Usia dini,B,Galiono Mandala,male
+Kontingen 14,Usia dini,B,Kamal Hassanah,female
+Kontingen 14,Usia dini,B,Gangsa Winarsih,male
+Kontingen 14,Usia dini,B,Farah Puspasari,male
+Kontingen 14,Usia dini,B,Cayadi Siregar,female
+Kontingen 14,Usia dini,C,Raihan Hidayanto,female
+Kontingen 14,Usia dini,C,Raihan Hidayanto,female
+Kontingen 14,Usia dini,C,Rahayu Utami,female
+Kontingen 14,Usia dini,C,Karsana Suryatmi,male
+Kontingen 14,Usia dini,C,Titin Prastuti,female
+Kontingen 14,Usia dini,C,Bajragin Farida,male
+Kontingen 14,Usia dini,D,Ega Mangunsong,female
+Kontingen 14,Usia dini,D,Panji Kurniawan,male
+Kontingen 14,Usia dini,D,Panji Kurniawan,male
+Kontingen 14,Usia dini,D,Ega Mangunsong,female
+Kontingen 14,Usia dini,D,Hasna Mardhiyah,male
+Kontingen 14,Usia dini,E,Prayitna Yolanda,male
+Kontingen 14,Usia dini,E,Maimunah Simbolon,male
+Kontingen 14,Usia dini,E,Fitria Widiastuti,male
+Kontingen 14,Usia dini,E,Yessi Novitasari,male
+Kontingen 14,Usia dini,E,Taufan Pudjiastuti,female
+Kontingen 14,Usia dini,E,Taufan Pudjiastuti,female
+Kontingen 14,Usia dini,E,Yessi Novitasari,male
+Kontingen 14,Usia dini,E,Tedi Wulandari,female
+Kontingen 14,Usia dini,E,Anastasia Najmudin,male
+Kontingen 14,Usia dini,E,Ulva Tampubolon,male
+Kontingen 14,Usia dini,E,Sidiq Hidayanto,female
+Kontingen 14,Usia dini,E,Janet Namaga,female
+Kontingen 14,Usia dini,E,Karja Wahyudin,female
+Kontingen 14,Usia dini,E,Yessi Yolanda,female
+Kontingen 14,Usia dini,E,Humaira Jailani,female
+Kontingen 14,Usia dini,F,Humaira Kusmawati,male
+Kontingen 14,Usia dini,F,Banara Zulaika,female
+Kontingen 14,Usia dini,F,Banara Zulaika,female
+Kontingen 14,Usia dini,F,Azalea Napitupulu,male
+Kontingen 14,Usia dini,F,Bagya Waskita,male
+Kontingen 14,Usia dini,F,Lanang Narpati,female
+Kontingen 14,Usia dini,F,Yulia Oktaviani,female
+Kontingen 14,Usia dini,F,Irsad Namaga,female
+Kontingen 14,Usia dini,F,Rahman Haryanto,male
+Kontingen 14,Usia dini,F,Diah Prastuti,female
+Kontingen 14,Usia dini,F,Karen Maheswara,female
+Kontingen 15,Anak,A,Jane Aryani,male
+Kontingen 15,Anak,A,Raina Budiman,male
+Kontingen 15,Anak,A,Putri Prakasa,male
+Kontingen 15,Anak,A,Rafid Nashiruddin,female
+Kontingen 15,Anak,A,Panca Laksmiwati,female
+Kontingen 15,Anak,A,Rafid Nashiruddin,female
+Kontingen 15,Anak,A,Panca Laksmiwati,female
+Kontingen 15,Anak,B,Lala Maheswara,male
+Kontingen 15,Anak,B,Joko Ramadan,female
+Kontingen 15,Anak,C,Umar Marbun,female
+Kontingen 15,Anak,C,Lanjar Gunawan,male
+Kontingen 15,Anak,C,Umar Marbun,female
+Kontingen 15,Anak,C,Lanjar Gunawan,male
+Kontingen 15,Anak,D,Umi Budiman,female
+Kontingen 15,Anak,D,Diah Halim,female
+Kontingen 15,Anak,D,Diah Halim,female
+Kontingen 15,Anak,E,Gandewa Winarno,male
+Kontingen 15,Anak,E,Dian Prabowo,male
+Kontingen 15,Anak,E,Nurul Waluyo,female
+Kontingen 15,Anak,E,Nurul Waluyo,female
+Kontingen 15,Anak,F,Langgeng Rahayu,male
+Kontingen 15,Dewasa,A,Yuliana Fujiati,male
+Kontingen 15,Dewasa,A,Wira Fujiati,male
+Kontingen 15,Dewasa,A,Mahmud Iswahyudi,female
+Kontingen 15,Dewasa,A,Heryanto Hartati,female
+Kontingen 15,Dewasa,A,Makuta Nashiruddin,male
+Kontingen 15,Dewasa,B,Kardi Maryati,male
+Kontingen 15,Dewasa,B,Eli Purwanti,male
+Kontingen 15,Dewasa,B,Maimunah Rahayu,female
+Kontingen 15,Dewasa,B,Gamanto Utama,male
+Kontingen 15,Dewasa,B,Rini Rajata,female
+Kontingen 15,Dewasa,C,Kamaria Wahyuni,male
+Kontingen 15,Dewasa,C,Ifa Mayasari,male
+Kontingen 15,Dewasa,C,Kani Kusmawati,male
+Kontingen 15,Dewasa,C,Elvin Palastri,male
+Kontingen 15,Dewasa,C,Tedi Puspita,female
+Kontingen 15,Dewasa,C,Asmuni Lestari,female
+Kontingen 15,Dewasa,C,Widya Nasyiah,female
+Kontingen 15,Dewasa,D,Gamani Rahayu,female
+Kontingen 15,Dewasa,D,Lili Pangestu,male
+Kontingen 15,Dewasa,D,Lidya Rajasa,male
+Kontingen 15,Dewasa,D,Lili Pangestu,male
+Kontingen 15,Dewasa,D,Lidya Rajasa,male
+Kontingen 15,Dewasa,D,Bakiono Widiastuti,female
+Kontingen 15,Dewasa,D,Drajat Salahudin,female
+Kontingen 15,Dewasa,E,Gilang Haryanti,female
+Kontingen 15,Dewasa,E,Laila Wibisono,female
+Kontingen 15,Dewasa,E,Marsudi Handayani,female
+Kontingen 15,Dewasa,E,Kasusra Utami,male
+Kontingen 15,Dewasa,E,Ikin Wahyuni,male
+Kontingen 15,Dewasa,E,Kasusra Utami,male
+Kontingen 15,Dewasa,E,Ikin Wahyuni,male
+Kontingen 15,Dewasa,E,Heru Dongoran,male
+Kontingen 15,Dewasa,E,Gangsar Widiastuti,male
+Kontingen 15,Dewasa,F,Rangga Mulyani,female
+Kontingen 15,Dewasa,F,Mutia Kusmawati,male
+Kontingen 15,Dewasa,F,Mutia Kusmawati,male
+Kontingen 15,Dewasa,F,Embuh Purwanti,male
+Kontingen 15,Dewasa,F,Edi Hutapea,female
+Kontingen 15,Dewasa,F,Puti Mayasari,male
+Kontingen 15,Remaja,A,Atma Sitompul,female
+Kontingen 15,Remaja,A,Vera Habibi,female
+Kontingen 15,Remaja,A,Jagaraga Nugroho,male
+Kontingen 15,Remaja,A,Jagaraga Nugroho,male
+Kontingen 15,Remaja,A,Marsito Purnawati,female
+Kontingen 15,Remaja,A,Winda Yulianti,female
+Kontingen 15,Remaja,A,Anggabaya Habibi,female
+Kontingen 15,Remaja,B,Lala Maheswara,male
+Kontingen 15,Remaja,B,Chelsea Budiman,female
+Kontingen 15,Remaja,B,Luwes Halimah,male
+Kontingen 15,Remaja,C,Baktiono Maulana,male
+Kontingen 15,Remaja,C,Queen Permata,male
+Kontingen 15,Remaja,C,Queen Permata,male
+Kontingen 15,Remaja,D,Aslijan Pangestu,female
+Kontingen 15,Remaja,D,Adika Wacana,female
+Kontingen 15,Remaja,D,Jatmiko Hidayanto,male
+Kontingen 15,Remaja,D,Jatmiko Hidayanto,male
+Kontingen 15,Remaja,D,Umi Budiman,female
+Kontingen 15,Remaja,D,Lulut Maulana,female
+Kontingen 15,Remaja,D,Aisyah Mandasari,male
+Kontingen 15,Remaja,E,Setya Agustina,female
+Kontingen 15,Remaja,E,Aisyah Hutagalung,male
+Kontingen 15,Remaja,E,Saadat Mayasari,female
+Kontingen 15,Remaja,E,Saadat Mayasari,female
+Kontingen 15,Remaja,E,Maimunah Wibowo,male
+Kontingen 15,Remaja,E,Sarah Firgantoro,male
+Kontingen 15,Remaja,E,Chelsea Handayani,male
+Kontingen 15,Remaja,E,Nyoman Suryatmi,female
+Kontingen 15,Remaja,E,Lidya Winarno,male
+Kontingen 15,Remaja,E,Zahra Utami,female
+Kontingen 15,Remaja,F,Ilsa Hardiansyah,female
+Kontingen 15,Remaja,F,Jagapati Maheswara,female
+Kontingen 15,Remaja,F,Adhiarja Utama,male
+Kontingen 15,Remaja,F,Karta Mandasari,female
+Kontingen 15,Remaja,F,Adhiarja Utama,male
+Kontingen 15,Remaja,F,Karta Mandasari,female
+Kontingen 15,Remaja,F,Tri Nasyiah,male
+Kontingen 15,Remaja,F,Karja Maryadi,male
+Kontingen 15,Remaja,F,Aisyah Maryati,female
+Kontingen 15,Remaja,F,Danu Mangunsong,female
+Kontingen 15,Usia dini,A,Ajimat Haryanti,male
+Kontingen 15,Usia dini,A,Farhunnisa Pertiwi,female
+Kontingen 15,Usia dini,A,Ajimat Haryanti,male
+Kontingen 15,Usia dini,A,Farhunnisa Pertiwi,female
+Kontingen 15,Usia dini,A,Najib Firmansyah,male
+Kontingen 15,Usia dini,B,Kadir Najmudin,female
+Kontingen 15,Usia dini,B,Hesti Prasasta,male
+Kontingen 15,Usia dini,B,Garda Saefullah,female
+Kontingen 15,Usia dini,B,Saadat Wijayanti,female
+Kontingen 15,Usia dini,B,Garda Saefullah,female
+Kontingen 15,Usia dini,B,Saadat Wijayanti,female
+Kontingen 15,Usia dini,B,Yono Uwais,male
+Kontingen 15,Usia dini,B,Joko Ramadan,female
+Kontingen 15,Usia dini,B,Eli Purwanti,male
+Kontingen 15,Usia dini,B,Asmianto Maryadi,female
+Kontingen 15,Usia dini,B,Danu Prasetya,male
+Kontingen 15,Usia dini,B,Ibrahim Sirait,male
+Kontingen 15,Usia dini,B,Upik Permadi,male
+Kontingen 15,Usia dini,C,Anita Aryani,male
+Kontingen 15,Usia dini,C,Anita Aryani,male
+Kontingen 15,Usia dini,C,Empluk Melani,male
+Kontingen 15,Usia dini,C,Umar Pangestu,female
+Kontingen 15,Usia dini,D,Hasna Wastuti,male
+Kontingen 15,Usia dini,D,Dasa Marbun,female
+Kontingen 15,Usia dini,E,Irnanto Najmudin,male
+Kontingen 15,Usia dini,E,Michelle Mayasari,female
+Kontingen 15,Usia dini,E,Halima Pratama,male
+Kontingen 15,Usia dini,F,Cinthia Utama,male
+Kontingen 15,Usia dini,F,Wulan Siregar,female
+Kontingen 15,Usia dini,F,Lalita Tamba,female
+Kontingen 15,Usia dini,F,Mujur Prayoga,male
+Kontingen 15,Usia dini,F,Agnes Hutagalung,male
+Kontingen 2,Anak,B,Pia Farida,male
+Kontingen 2,Anak,B,Balijan Purwanti,male
+Kontingen 2,Anak,B,Hilda Permata,male
+Kontingen 2,Anak,B,Nrima Marbun,female
+Kontingen 2,Anak,B,Novi Situmorang,male
+Kontingen 2,Anak,B,Kurnia Rahimah,female
+Kontingen 2,Anak,B,Devi Wastuti,male
+Kontingen 2,Anak,B,Novi Situmorang,male
+Kontingen 2,Anak,B,Kurnia Rahimah,female
+Kontingen 2,Anak,B,Devi Wastuti,male
+Kontingen 2,Anak,C,Diah Firgantoro,female
+Kontingen 2,Anak,C,Yusuf Susanti,male
+Kontingen 2,Anak,C,Soleh Widiastuti,male
+Kontingen 2,Anak,C,Fitriani Putra,female
+Kontingen 2,Anak,C,Zalindra Purwanti,male
+Kontingen 2,Anak,C,Fitriani Putra,female
+Kontingen 2,Anak,C,Zalindra Purwanti,male
+Kontingen 2,Anak,D,Yono Hasanah,female
+Kontingen 2,Anak,D,Yono Hasanah,female
+Kontingen 2,Anak,F,Salimah Ardianto,male
+Kontingen 2,Anak,F,Prabowo Nainggolan,female
+Kontingen 2,Anak,F,Kambali Nurdiyanti,female
+Kontingen 2,Anak,F,Sabar Winarsih,male
+Kontingen 2,Anak,F,Tania Siregar,male
+Kontingen 2,Anak,F,Sabar Winarsih,male
+Kontingen 2,Anak,F,Tania Siregar,male
+Kontingen 2,Dewasa,A,Jagaraga Pranowo,male
+Kontingen 2,Dewasa,A,Ika Sudiati,male
+Kontingen 2,Dewasa,A,Heru Wasita,female
+Kontingen 2,Dewasa,A,Heru Wasita,female
+Kontingen 2,Dewasa,A,Julia Uwais,male
+Kontingen 2,Dewasa,A,Galur Oktaviani,male
+Kontingen 2,Dewasa,A,Belinda Habibi,male
+Kontingen 2,Dewasa,B,Puti Padmasari,female
+Kontingen 2,Dewasa,B,Kani Wijaya,male
+Kontingen 2,Dewasa,B,Kani Wijaya,male
+Kontingen 2,Dewasa,B,Dian Hidayat,female
+Kontingen 2,Dewasa,B,Yuliana Pangestu,male
+Kontingen 2,Dewasa,C,Irma Sitompul,female
+Kontingen 2,Dewasa,C,Ozy Widodo,female
+Kontingen 2,Dewasa,C,Kayla Sirait,male
+Kontingen 2,Dewasa,C,Hadi Prasetyo,female
+Kontingen 2,Dewasa,C,Kayla Sirait,male
+Kontingen 2,Dewasa,C,Hadi Prasetyo,female
+Kontingen 2,Dewasa,C,Vicky Rahmawati,female
+Kontingen 2,Dewasa,C,Elisa Prasetyo,female
+Kontingen 2,Dewasa,C,Ajiono Iswahyudi,female
+Kontingen 2,Dewasa,D,Puji Nugroho,male
+Kontingen 2,Dewasa,D,Ibrani Setiawan,female
+Kontingen 2,Dewasa,D,Hana Laksita,male
+Kontingen 2,Dewasa,D,Hana Laksita,male
+Kontingen 2,Dewasa,D,Prabowo Purwanti,female
+Kontingen 2,Dewasa,D,Natalia Tampubolon,female
+Kontingen 2,Dewasa,D,Nova Sihotang,male
+Kontingen 2,Dewasa,E,Dartono Wijaya,male
+Kontingen 2,Dewasa,E,Julia Rahmawati,female
+Kontingen 2,Dewasa,E,Tira Utami,female
+Kontingen 2,Dewasa,E,Laila Iswahyudi,male
+Kontingen 2,Dewasa,F,Soleh Firgantoro,female
+Kontingen 2,Dewasa,F,Martana Waskita,male
+Kontingen 2,Remaja,A,Oni Mayasari,female
+Kontingen 2,Remaja,A,Rahmi Wahyuni,male
+Kontingen 2,Remaja,A,Rahmi Wahyuni,male
+Kontingen 2,Remaja,A,Surya Purwanti,male
+Kontingen 2,Remaja,A,Vicky Puspita,female
+Kontingen 2,Remaja,A,Cinthia Agustina,male
+Kontingen 2,Remaja,A,Budi Siregar,female
+Kontingen 2,Remaja,A,Usman Tarihoran,female
+Kontingen 2,Remaja,B,Maryanto Saragih,male
+Kontingen 2,Remaja,B,Ratih Salahudin,female
+Kontingen 2,Remaja,C,Bakiman Novitasari,female
+Kontingen 2,Remaja,C,Prabu Nuraini,female
+Kontingen 2,Remaja,C,Tina Handayani,female
+Kontingen 2,Remaja,C,Tina Handayani,female
+Kontingen 2,Remaja,C,Kala Saefullah,female
+Kontingen 2,Remaja,C,Laila Budiman,female
+Kontingen 2,Remaja,C,Tania Hidayat,male
+Kontingen 2,Remaja,D,Hendra Mulyani,male
+Kontingen 2,Remaja,D,Tiara Prabowo,female
+Kontingen 2,Remaja,D,Tiara Prabowo,female
+Kontingen 2,Remaja,D,Titi Prasetya,male
+Kontingen 2,Remaja,E,Daryani Pudjiastuti,female
+Kontingen 2,Remaja,E,Vicky Purnawati,female
+Kontingen 2,Remaja,E,Candra Mardhiyah,male
+Kontingen 2,Remaja,E,Dimas Natsir,female
+Kontingen 2,Remaja,F,Nabila Hutapea,male
+Kontingen 2,Remaja,F,Ajiman Sudiati,female
+Kontingen 2,Remaja,F,Harsanto Tarihoran,female
+Kontingen 2,Usia dini,A,Amelia Marpaung,male
+Kontingen 2,Usia dini,A,Olivia Andriani,female
+Kontingen 2,Usia dini,A,Putri Prakasa,male
+Kontingen 2,Usia dini,A,Tantri Palastri,female
+Kontingen 2,Usia dini,B,Suci Pratiwi,female
+Kontingen 2,Usia dini,B,Cayadi Handayani,male
+Kontingen 2,Usia dini,B,Damu Narpati,female
+Kontingen 2,Usia dini,B,Mala Melani,male
+Kontingen 2,Usia dini,B,Emong Hidayat,male
+Kontingen 2,Usia dini,B,Vicky Natsir,male
+Kontingen 2,Usia dini,C,Hartaka Manullang,male
+Kontingen 2,Usia dini,C,Kiandra Iswahyudi,male
+Kontingen 2,Usia dini,C,Ami Kusmawati,male
+Kontingen 2,Usia dini,C,Ratih Tarihoran,male
+Kontingen 2,Usia dini,C,Mutia Wibowo,male
+Kontingen 2,Usia dini,C,Ami Kusmawati,male
+Kontingen 2,Usia dini,C,Ratih Tarihoran,male
+Kontingen 2,Usia dini,C,Mutia Wibowo,male
+Kontingen 2,Usia dini,C,Ophelia Santoso,female
+Kontingen 2,Usia dini,C,Widya Gunarto,male
+Kontingen 2,Usia dini,C,Kani Kusmawati,male
+Kontingen 2,Usia dini,C,Elvin Palastri,male
+Kontingen 2,Usia dini,C,Ibun Handayani,male
+Kontingen 2,Usia dini,D,Kairav Siregar,female
+Kontingen 2,Usia dini,D,Aslijan Pangestu,female
+Kontingen 2,Usia dini,D,Adika Wacana,female
+Kontingen 2,Usia dini,D,Nova Padmasari,male
+Kontingen 2,Usia dini,D,Kamila Simbolon,male
+Kontingen 2,Usia dini,E,Gatra Wastuti,female
+Kontingen 2,Usia dini,E,Ajimat Winarsih,male
+Kontingen 2,Usia dini,E,Ajimat Winarsih,male
+Kontingen 2,Usia dini,E,Marsudi Handayani,female
+Kontingen 2,Usia dini,E,Zizi Permata,female
+Kontingen 2,Usia dini,F,Saadat Puspasari,male
+Kontingen 2,Usia dini,F,Cinta Sihotang,female
+Kontingen 2,Usia dini,F,Jagapati Maheswara,female
+Kontingen 2,Usia dini,F,Rudi Maryati,female
+Kontingen 2,Usia dini,F,Nadia Fujiati,male
+Kontingen 3,Anak,A,Niyaga Pratiwi,male
+Kontingen 3,Anak,A,Adhiarja Mardhiyah,female
+Kontingen 3,Anak,A,Panca Firmansyah,female
+Kontingen 3,Anak,A,Latika Usamah,male
+Kontingen 3,Anak,A,Nova Suwarno,male
+Kontingen 3,Anak,B,Amelia Setiawan,female
+Kontingen 3,Anak,B,Gatot Rahimah,female
+Kontingen 3,Anak,B,Gangsa Winarsih,male
+Kontingen 3,Anak,B,Gatot Rahimah,female
+Kontingen 3,Anak,B,Gangsa Winarsih,male
+Kontingen 3,Anak,C,Warsa Hassanah,male
+Kontingen 3,Anak,C,Aurora Andriani,female
+Kontingen 3,Anak,C,Zelaya Simbolon,male
+Kontingen 3,Anak,D,Vanya Megantara,male
+Kontingen 3,Anak,D,Marsito Prastuti,female
+Kontingen 3,Anak,D,Titin Hidayat,female
+Kontingen 3,Anak,D,Vanya Megantara,male
+Kontingen 3,Anak,D,Marsito Prastuti,female
+Kontingen 3,Anak,D,Titin Hidayat,female
+Kontingen 3,Anak,F,Okta Aryani,female
+Kontingen 3,Anak,F,Azalea Napitupulu,male
+Kontingen 3,Anak,F,Lalita Tamba,female
+Kontingen 3,Anak,F,Mujur Prayoga,male
+Kontingen 3,Anak,F,Azalea Napitupulu,male
+Kontingen 3,Anak,F,Lalita Tamba,female
+Kontingen 3,Anak,F,Mujur Prayoga,male
+Kontingen 3,Dewasa,A,Dina Mangunsong,female
+Kontingen 3,Dewasa,A,Hasta Safitri,female
+Kontingen 3,Dewasa,A,Ifa Ardianto,male
+Kontingen 3,Dewasa,A,Hamima Prastuti,female
+Kontingen 3,Dewasa,A,Hamima Prastuti,female
+Kontingen 3,Dewasa,A,Artanto Mansur,male
+Kontingen 3,Dewasa,B,Ella Uyainah,female
+Kontingen 3,Dewasa,B,Kartika Winarsih,male
+Kontingen 3,Dewasa,B,Makara Pertiwi,female
+Kontingen 3,Dewasa,B,Azalea Handayani,male
+Kontingen 3,Dewasa,C,Michelle Thamrin,male
+Kontingen 3,Dewasa,C,Patricia Gunarto,male
+Kontingen 3,Dewasa,C,Najwa Jailani,female
+Kontingen 3,Dewasa,C,Bakti Hasanah,male
+Kontingen 3,Dewasa,C,Karsana Suryatmi,male
+Kontingen 3,Dewasa,C,Titin Prastuti,female
+Kontingen 3,Dewasa,C,Cagak Waskita,male
+Kontingen 3,Dewasa,C,Karsana Suryatmi,male
+Kontingen 3,Dewasa,C,Titin Prastuti,female
+Kontingen 3,Dewasa,C,Cagak Waskita,male
+Kontingen 3,Dewasa,D,Gamani Hasanah,female
+Kontingen 3,Dewasa,D,Rika Melani,female
+Kontingen 3,Dewasa,D,Salman Marbun,male
+Kontingen 3,Dewasa,E,Satya Simanjuntak,male
+Kontingen 3,Dewasa,E,Langgeng Nuraini,male
+Kontingen 3,Dewasa,E,Harsaya Hutapea,female
+Kontingen 3,Dewasa,E,Kusuma Suwarno,female
+Kontingen 3,Dewasa,E,Gangsa Simbolon,male
+Kontingen 3,Dewasa,F,Ifa Maryadi,female
+Kontingen 3,Dewasa,F,Hardana Sihombing,male
+Kontingen 3,Dewasa,F,Rudi Maryati,female
+Kontingen 3,Dewasa,F,Rudi Maryati,female
+Kontingen 3,Dewasa,F,Tari Siregar,female
+Kontingen 3,Dewasa,F,Patricia Wulandari,male
+Kontingen 3,Remaja,A,Maria Salahudin,male
+Kontingen 3,Remaja,A,Yunita Gunarto,female
+Kontingen 3,Remaja,A,Irma Nasyiah,female
+Kontingen 3,Remaja,A,Jaka Manullang,male
+Kontingen 3,Remaja,A,Saiful Pertiwi,female
+Kontingen 3,Remaja,A,Lukman Rajasa,male
+Kontingen 3,Remaja,A,Karen Nainggolan,female
+Kontingen 3,Remaja,B,Genta Agustina,female
+Kontingen 3,Remaja,B,Anastasia Lestari,female
+Kontingen 3,Remaja,B,Garda Yuliarti,male
+Kontingen 3,Remaja,C,Janet Wibowo,female
+Kontingen 3,Remaja,C,Amelia Waluyo,male
+Kontingen 3,Remaja,C,Yani Mulyani,female
+Kontingen 3,Remaja,C,Cakrabuana Prabowo,male
+Kontingen 3,Remaja,D,Nurul Saragih,female
+Kontingen 3,Remaja,D,Galih Waluyo,male
+Kontingen 3,Remaja,D,Nyoman Pangestu,female
+Kontingen 3,Remaja,D,Yunita Wasita,male
+Kontingen 3,Remaja,D,Yulia Widiastuti,female
+Kontingen 3,Remaja,D,Cemplunk Prasasta,male
+Kontingen 3,Remaja,F,Galur Mandasari,female
+Kontingen 3,Remaja,F,Cornelia Suartini,male
+Kontingen 3,Remaja,F,Gabriella Budiman,female
+Kontingen 3,Remaja,F,Gabriella Budiman,female
+Kontingen 3,Remaja,F,Mala Yulianti,male
+Kontingen 3,Remaja,F,Mursita Wijayanti,male
+Kontingen 3,Remaja,F,Hasim Narpati,female
+Kontingen 3,Remaja,F,Tantri Sihombing,male
+Kontingen 3,Usia dini,A,Ghani Hidayat,female
+Kontingen 3,Usia dini,A,Tantri Palastri,female
+Kontingen 3,Usia dini,A,Tantri Palastri,female
+Kontingen 3,Usia dini,A,Wakiman Adriansyah,female
+Kontingen 3,Usia dini,A,Atma Sitompul,female
+Kontingen 3,Usia dini,A,Yuliana Fujiati,male
+Kontingen 3,Usia dini,A,Elvina Waluyo,female
+Kontingen 3,Usia dini,A,Padmi Novitasari,female
+Kontingen 3,Usia dini,B,Genta Wibowo,male
+Kontingen 3,Usia dini,B,Asmianto Maryadi,female
+Kontingen 3,Usia dini,B,Asmianto Maryadi,female
+Kontingen 3,Usia dini,B,Ana Permadi,female
+Kontingen 3,Usia dini,B,Wahyu Nurdiyanti,male
+Kontingen 3,Usia dini,C,Rahmi Novitasari,male
+Kontingen 3,Usia dini,C,Ibun Handayani,male
+Kontingen 3,Usia dini,C,Ibun Handayani,male
+Kontingen 3,Usia dini,C,Kamila Kusmawati,female
+Kontingen 3,Usia dini,C,Sabar Firgantoro,male
+Kontingen 3,Usia dini,C,Ibrahim Nainggolan,male
+Kontingen 3,Usia dini,D,Karta Mahendra,male
+Kontingen 3,Usia dini,D,Makuta Mandala,male
+Kontingen 3,Usia dini,D,Asman Simanjuntak,female
+Kontingen 3,Usia dini,D,Nova Padmasari,male
+Kontingen 3,Usia dini,D,Nova Padmasari,male
+Kontingen 3,Usia dini,D,Olga Hartati,female
+Kontingen 3,Usia dini,D,Darmana Kuswandari,female
+Kontingen 3,Usia dini,E,Hana Pudjiastuti,male
+Kontingen 3,Usia dini,E,Anastasia Najmudin,male
+Kontingen 3,Usia dini,E,Anastasia Najmudin,male
+Kontingen 3,Usia dini,E,Cakrawala Pranowo,male
+Kontingen 3,Usia dini,E,Yessi Maheswara,male
+Kontingen 3,Usia dini,E,Diana Nuraini,male
+Kontingen 3,Usia dini,F,Jaya Wasita,female
+Kontingen 3,Usia dini,F,Bagya Waskita,male
+Kontingen 3,Usia dini,F,Bagya Waskita,male
+Kontingen 3,Usia dini,F,Langgeng Rahayu,male
+Kontingen 3,Usia dini,F,Eka Prastuti,female
+Kontingen 3,Usia dini,F,Edi Nasyiah,female
+Kontingen 3,Usia dini,F,Paris Mulyani,male
+Kontingen 3,Usia dini,F,Harsana Mayasari,male
+Kontingen 4,Anak,A,Galur Oktaviani,male
+Kontingen 4,Anak,A,Ifa Laksmiwati,male
+Kontingen 4,Anak,A,Shakila Usamah,male
+Kontingen 4,Anak,A,Prima Farida,female
+Kontingen 4,Anak,B,Baktiono Lestari,male
+Kontingen 4,Anak,B,Tomi Maulana,male
+Kontingen 4,Anak,B,Raina Suartini,male
+Kontingen 4,Anak,B,Usyi Kusmawati,female
+Kontingen 4,Anak,B,Eva Ramadan,male
+Kontingen 4,Anak,B,Indah Najmudin,female
+Kontingen 4,Anak,B,Usyi Kusmawati,female
+Kontingen 4,Anak,B,Eva Ramadan,male
+Kontingen 4,Anak,B,Indah Najmudin,female
+Kontingen 4,Anak,D,Balamantri Saputra,female
+Kontingen 4,Anak,D,Kunthara Uyainah,male
+Kontingen 4,Anak,D,Kunthara Uyainah,male
+Kontingen 4,Anak,E,Pardi Utami,female
+Kontingen 4,Anak,E,Heru Dongoran,male
+Kontingen 4,Anak,E,Yessi Maheswara,male
+Kontingen 4,Anak,E,Ratih Pangestu,female
+Kontingen 4,Anak,E,Yessi Maheswara,male
+Kontingen 4,Anak,E,Ratih Pangestu,female
+Kontingen 4,Dewasa,A,Anita Sihombing,male
+Kontingen 4,Dewasa,A,Anita Sihombing,male
+Kontingen 4,Dewasa,A,Gada Prabowo,female
+Kontingen 4,Dewasa,A,Rini Pradipta,female
+Kontingen 4,Dewasa,A,Julia Pradipta,male
+Kontingen 4,Dewasa,A,Gina Samosir,female
+Kontingen 4,Dewasa,B,Arsipatra Mahendra,male
+Kontingen 4,Dewasa,B,Lala Puspita,male
+Kontingen 4,Dewasa,B,Kasim Yuliarti,female
+Kontingen 4,Dewasa,B,Melinda Lazuardi,male
+Kontingen 4,Dewasa,B,Melinda Lazuardi,male
+Kontingen 4,Dewasa,B,Adiarja Usada,male
+Kontingen 4,Dewasa,B,Elma Mangunsong,female
+Kontingen 4,Dewasa,B,Rangga Mansur,male
+Kontingen 4,Dewasa,C,Asmuni Lestari,female
+Kontingen 4,Dewasa,C,Lamar Aryani,female
+Kontingen 4,Dewasa,C,Nilam Ardianto,female
+Kontingen 4,Dewasa,D,Bakiono Widiastuti,female
+Kontingen 4,Dewasa,D,Natalia Tampubolon,female
+Kontingen 4,Dewasa,D,Safina Gunarto,male
+Kontingen 4,Dewasa,D,Rachel Prastuti,male
+Kontingen 4,Dewasa,E,Mutia Palastri,female
+Kontingen 4,Dewasa,E,Indah Pradana,female
+Kontingen 4,Dewasa,E,Ana Kuswandari,male
+Kontingen 4,Dewasa,E,Zulaikha Pratama,female
+Kontingen 4,Dewasa,E,Zulaikha Pratama,female
+Kontingen 4,Dewasa,E,Tami Marbun,female
+Kontingen 4,Dewasa,E,Ganep Hutasoit,male
+Kontingen 4,Dewasa,F,Embuh Purwanti,male
+Kontingen 4,Dewasa,F,Prakosa Novitasari,male
+Kontingen 4,Dewasa,F,Paris Mulyani,male
+Kontingen 4,Dewasa,F,Paris Mulyani,male
+Kontingen 4,Dewasa,F,Lili Iswahyudi,female
+Kontingen 4,Remaja,A,Eja Wahyuni,female
+Kontingen 4,Remaja,A,Cinthia Natsir,male
+Kontingen 4,Remaja,B,Paiman Samosir,male
+Kontingen 4,Remaja,B,Emin Tarihoran,female
+Kontingen 4,Remaja,B,Julia Firgantoro,male
+Kontingen 4,Remaja,B,Hilda Permata,male
+Kontingen 4,Remaja,B,Sabrina Oktaviani,female
+Kontingen 4,Remaja,C,Ani Januar,male
+Kontingen 4,Remaja,C,Wirda Uwais,female
+Kontingen 4,Remaja,C,Amalia Suartini,female
+Kontingen 4,Remaja,C,Amalia Suartini,female
+Kontingen 4,Remaja,C,Zelaya Wibisono,male
+Kontingen 4,Remaja,C,Heru Anggraini,female
+Kontingen 4,Remaja,D,Drajat Salahudin,female
+Kontingen 4,Remaja,D,Hana Farida,male
+Kontingen 4,Remaja,D,Prabowo Purwanti,female
+Kontingen 4,Remaja,D,Emas Mansur,female
+Kontingen 4,Remaja,D,Drajat Kusmawati,female
+Kontingen 4,Remaja,D,Drajat Kusmawati,female
+Kontingen 4,Remaja,D,Nyana Saefullah,female
+Kontingen 4,Remaja,D,Salimah Lailasari,female
+Kontingen 4,Remaja,D,Ibrani Setiawan,female
+Kontingen 4,Remaja,D,Padmi Hartati,female
+Kontingen 4,Remaja,E,Langgeng Nuraini,male
+Kontingen 4,Remaja,E,Jamalia Suryatmi,male
+Kontingen 4,Remaja,E,Prabowo Permadi,male
+Kontingen 4,Remaja,F,Martana Waskita,male
+Kontingen 4,Remaja,F,Tri Nasyiah,male
+Kontingen 4,Remaja,F,Aslijan Dabukke,female
+Kontingen 4,Remaja,F,Aslijan Dabukke,female
+Kontingen 4,Remaja,F,Salimah Ardianto,male
+Kontingen 4,Remaja,F,Cinta Sihotang,female
+Kontingen 4,Remaja,F,Rahayu Rajata,female
+Kontingen 4,Remaja,F,Caket Winarsih,female
+Kontingen 4,Usia dini,A,Elvina Waluyo,female
+Kontingen 4,Usia dini,A,Elvina Waluyo,female
+Kontingen 4,Usia dini,A,Anita Sihombing,male
+Kontingen 4,Usia dini,B,Ami Puspasari,female
+Kontingen 4,Usia dini,B,Dalima Natsir,male
+Kontingen 4,Usia dini,B,Usyi Thamrin,male
+Kontingen 4,Usia dini,B,Cawisadi Hastuti,female
+Kontingen 4,Usia dini,B,Hesti Prasasta,male
+Kontingen 4,Usia dini,B,Usyi Kusmawati,female
+Kontingen 4,Usia dini,B,Bancar Hasanah,female
+Kontingen 4,Usia dini,B,Dewi Aryani,female
+Kontingen 4,Usia dini,C,Ellis Habibi,male
+Kontingen 4,Usia dini,C,Bahuwarna Yulianti,male
+Kontingen 4,Usia dini,C,Bahuwarna Yulianti,male
+Kontingen 4,Usia dini,C,Tedi Puspita,female
+Kontingen 4,Usia dini,C,Amalia Suartini,female
+Kontingen 4,Usia dini,C,Among Natsir,male
+Kontingen 4,Usia dini,C,Ilyas Natsir,male
+Kontingen 4,Usia dini,D,Lurhur Susanti,female
+Kontingen 4,Usia dini,D,Darmana Kuswandari,female
+Kontingen 4,Usia dini,D,Margana Wibowo,female
+Kontingen 4,Usia dini,D,Darmana Kuswandari,female
+Kontingen 4,Usia dini,D,Margana Wibowo,female
+Kontingen 4,Usia dini,D,Margana Wibowo,female
+Kontingen 4,Usia dini,D,Drajat Kusmawati,female
+Kontingen 4,Usia dini,D,Laila Wijayanti,female
+Kontingen 4,Usia dini,E,Zalindra Maulana,male
+Kontingen 4,Usia dini,E,Laila Iswahyudi,male
+Kontingen 4,Usia dini,E,Caket Prakasa,male
+Kontingen 4,Usia dini,E,Michelle Mayasari,female
+Kontingen 4,Usia dini,E,Zulaikha Pratama,female
+Kontingen 4,Usia dini,F,Edi Hutapea,female
+Kontingen 4,Usia dini,F,Carla Prabowo,female
+Kontingen 4,Usia dini,F,Eka Prastuti,female
+Kontingen 4,Usia dini,F,Edi Nasyiah,female
+Kontingen 4,Usia dini,F,Kasiyah Rahmawati,female
+Kontingen 4,Usia dini,F,Eka Prastuti,female
+Kontingen 4,Usia dini,F,Edi Nasyiah,female
+Kontingen 4,Usia dini,F,Kasiyah Rahmawati,female
+Kontingen 4,Usia dini,F,Kasiyah Rahmawati,female
+Kontingen 4,Usia dini,F,Carub Novitasari,female
+Kontingen 4,Usia dini,F,Zahra Sihombing,female
+Kontingen 5,Anak,A,Gandi Farida,female
+Kontingen 5,Anak,A,Salwa Siregar,male
+Kontingen 5,Anak,A,Tantri Lazuardi,male
+Kontingen 5,Anak,A,Tantri Lazuardi,male
+Kontingen 5,Anak,C,Lamar Aryani,female
+Kontingen 5,Anak,C,Malik Tarihoran,female
+Kontingen 5,Anak,D,Latika Hutapea,female
+Kontingen 5,Anak,D,Mursita Saputra,female
+Kontingen 5,Anak,D,Mursita Saputra,female
+Kontingen 5,Anak,E,Edward Mandasari,male
+Kontingen 5,Anak,E,Kania Puspita,female
+Kontingen 5,Anak,E,Yani Widiastuti,male
+Kontingen 5,Anak,E,Yani Widiastuti,male
+Kontingen 5,Anak,F,Kariman Susanti,female
+Kontingen 5,Anak,F,Karja Maryadi,male
+Kontingen 5,Anak,F,Harsanto Tarihoran,female
+Kontingen 5,Anak,F,Wadi Handayani,male
+Kontingen 5,Anak,F,Darmana Suryono,male
+Kontingen 5,Anak,F,Wadi Handayani,male
+Kontingen 5,Anak,F,Darmana Suryono,male
+Kontingen 5,Dewasa,A,Winda Yulianti,female
+Kontingen 5,Dewasa,A,Kanda Firmansyah,female
+Kontingen 5,Dewasa,A,Kanda Firmansyah,female
+Kontingen 5,Dewasa,A,Rudi Wulandari,male
+Kontingen 5,Dewasa,B,Elma Mangunsong,female
+Kontingen 5,Dewasa,B,Hendri Firgantoro,male
+Kontingen 5,Dewasa,B,Cindy Prakasa,female
+Kontingen 5,Dewasa,B,Cindy Prakasa,female
+Kontingen 5,Dewasa,B,Tira Palastri,male
+Kontingen 5,Dewasa,B,Salimah Rajasa,male
+Kontingen 5,Dewasa,C,Baktiono Purwanti,male
+Kontingen 5,Dewasa,C,Eko Kusmawati,male
+Kontingen 5,Dewasa,C,Baktiono Purwanti,male
+Kontingen 5,Dewasa,C,Eko Kusmawati,male
+Kontingen 5,Dewasa,C,Ani Mardhiyah,male
+Kontingen 5,Dewasa,C,Malik Tarihoran,female
+Kontingen 5,Dewasa,D,Chelsea Widodo,male
+Kontingen 5,Dewasa,D,Padmi Hartati,female
+Kontingen 5,Dewasa,D,Latika Simbolon,female
+Kontingen 5,Dewasa,D,Nadine Safitri,male
+Kontingen 5,Dewasa,D,Latika Simbolon,female
+Kontingen 5,Dewasa,D,Nadine Safitri,male
+Kontingen 5,Dewasa,D,Latika Susanti,female
+Kontingen 5,Dewasa,D,Ifa Tampubolon,female
+Kontingen 5,Dewasa,D,Kiandra Hariyah,male
+Kontingen 5,Dewasa,D,Ganda Anggraini,female
+Kontingen 5,Dewasa,D,Wulan Utama,female
+Kontingen 5,Dewasa,D,Paris Situmorang,male
+Kontingen 5,Dewasa,E,Ganep Hutasoit,male
+Kontingen 5,Dewasa,E,Chelsea Handayani,male
+Kontingen 5,Dewasa,E,Saiful Latupono,female
+Kontingen 5,Dewasa,E,Maria Pertiwi,female
+Kontingen 5,Dewasa,E,Makara Lazuardi,male
+Kontingen 5,Dewasa,F,Rahayu Rajata,female
+Kontingen 5,Dewasa,F,Cakrawala Prakasa,female
+Kontingen 5,Dewasa,F,Raden Yuniar,male
+Kontingen 5,Dewasa,F,Gina Samosir,male
+Kontingen 5,Remaja,A,Marsito Purnawati,female
+Kontingen 5,Remaja,A,Budi Siregar,female
+Kontingen 5,Remaja,A,Darman Purnawati,male
+Kontingen 5,Remaja,A,Rina Pertiwi,male
+Kontingen 5,Remaja,A,Darman Purnawati,male
+Kontingen 5,Remaja,A,Rina Pertiwi,male
+Kontingen 5,Remaja,A,Malika Handayani,male
+Kontingen 5,Remaja,A,Daliono Rahayu,female
+Kontingen 5,Remaja,B,Makara Pertiwi,female
+Kontingen 5,Remaja,B,Lantar Laksita,male
+Kontingen 5,Remaja,B,Mujur Maheswara,male
+Kontingen 5,Remaja,B,Ratih Salahudin,female
+Kontingen 5,Remaja,B,Bahuwirya Nurdiyanti,male
+Kontingen 5,Remaja,B,Bahuwirya Nurdiyanti,male
+Kontingen 5,Remaja,B,Rama Halim,male
+Kontingen 5,Remaja,B,Latika Rahayu,male
+Kontingen 5,Remaja,B,Nrima Marbun,female
+Kontingen 5,Remaja,B,Suci Pratiwi,female
+Kontingen 5,Remaja,B,Cindy Agustina,male
+Kontingen 5,Remaja,B,Ghani Pangestu,male
+Kontingen 5,Remaja,C,Luthfi Maulana,male
+Kontingen 5,Remaja,C,Luthfi Maulana,male
+Kontingen 5,Remaja,C,Ozy Widodo,female
+Kontingen 5,Remaja,C,Pranata Sitorus,female
+Kontingen 5,Remaja,C,Ajimat Kusmawati,male
+Kontingen 5,Remaja,D,Ifa Tampubolon,female
+Kontingen 5,Remaja,D,Kiandra Hariyah,male
+Kontingen 5,Remaja,D,Shania Melani,female
+Kontingen 5,Remaja,D,Ibun Pratiwi,male
+Kontingen 5,Remaja,D,Latika Hutapea,female
+Kontingen 5,Remaja,D,Gina Agustina,female
+Kontingen 5,Remaja,E,Harsaya Hutapea,female
+Kontingen 5,Remaja,E,Maimunah Wibowo,male
+Kontingen 5,Remaja,E,Sarah Firgantoro,male
+Kontingen 5,Remaja,E,Tira Utami,female
+Kontingen 5,Remaja,E,Kania Puspita,female
+Kontingen 5,Remaja,F,Lili Iswahyudi,female
+Kontingen 5,Remaja,F,Azalea Uwais,female
+Kontingen 5,Remaja,F,Lurhur Nainggolan,female
+Kontingen 5,Remaja,F,Amalia Wahyudin,female
+Kontingen 5,Remaja,F,Lurhur Nainggolan,female
+Kontingen 5,Remaja,F,Amalia Wahyudin,female
+Kontingen 5,Remaja,F,Hartana Firmansyah,male
+Kontingen 5,Remaja,F,Faizah Wacana,male
+Kontingen 5,Remaja,F,Jarwi Lestari,female
+Kontingen 5,Remaja,F,Ajiman Sudiati,female
+Kontingen 5,Remaja,F,Prabowo Nainggolan,female
+Kontingen 5,Remaja,F,Adinata Marpaung,female
+Kontingen 5,Remaja,F,Mahesa Mandala,female
+Kontingen 5,Remaja,F,Jagaraga Mansur,male
+Kontingen 5,Usia dini,A,Cinthia Natsir,male
+Kontingen 5,Usia dini,A,Diana Salahudin,male
+Kontingen 5,Usia dini,A,Vera Habibi,female
+Kontingen 5,Usia dini,A,Alika Mansur,male
+Kontingen 5,Usia dini,B,Kartika Winarsih,male
+Kontingen 5,Usia dini,B,Taswir Laksita,male
+Kontingen 5,Usia dini,B,Kiandra Yolanda,female
+Kontingen 5,Usia dini,B,Kiandra Yolanda,female
+Kontingen 5,Usia dini,B,Imam Fujiati,male
+Kontingen 5,Usia dini,B,Raharja Safitri,male
+Kontingen 5,Usia dini,B,Eva Ramadan,male
+Kontingen 5,Usia dini,B,Indah Najmudin,female
+Kontingen 5,Usia dini,B,Chandra Zulkarnain,male
+Kontingen 5,Usia dini,C,Kasusra Hakim,male
+Kontingen 5,Usia dini,C,Kasusra Hakim,male
+Kontingen 5,Usia dini,C,Mahesa Suryatmi,female
+Kontingen 5,Usia dini,D,Latika Susanti,female
+Kontingen 5,Usia dini,D,Gasti Suartini,male
+Kontingen 5,Usia dini,D,Sakti Farida,male
+Kontingen 5,Usia dini,E,Kusuma Suwarno,female
+Kontingen 5,Usia dini,E,Saiful Latupono,female
+Kontingen 5,Usia dini,E,Jono Maryadi,male
+Kontingen 5,Usia dini,E,Lukman Suartini,male
+Kontingen 5,Usia dini,F,Gina Samosir,male
+Kontingen 5,Usia dini,F,Diana Simbolon,male
+Kontingen 5,Usia dini,F,Tantri Sihombing,male
+Kontingen 5,Usia dini,F,Jaiman Melani,female
+Kontingen 5,Usia dini,F,Jaiman Melani,female
+Kontingen 5,Usia dini,F,Aslijan Dabukke,female
+Kontingen 5,Usia dini,F,Mitra Lestari,female
+Kontingen 6,Anak,A,Latika Yulianti,female
+Kontingen 6,Anak,A,Vanesa Budiman,female
+Kontingen 6,Anak,A,Lutfan Suwarno,female
+Kontingen 6,Anak,A,Kenzie Megantara,female
+Kontingen 6,Anak,A,Lutfan Suwarno,female
+Kontingen 6,Anak,A,Kenzie Megantara,female
+Kontingen 6,Anak,B,Tira Nasyiah,male
+Kontingen 6,Anak,B,Unjani Suryatmi,female
+Kontingen 6,Anak,B,Jayeng Mustofa,female
+Kontingen 6,Anak,C,Dina Budiman,male
+Kontingen 6,Anak,D,Nardi Saragih,male
+Kontingen 6,Anak,E,Darmanto Laksmiwati,male
+Kontingen 6,Anak,E,Anggabaya Setiawan,female
+Kontingen 6,Anak,E,Anggabaya Setiawan,female
+Kontingen 6,Dewasa,A,Alika Padmasari,male
+Kontingen 6,Dewasa,A,Gada Prabowo,female
+Kontingen 6,Dewasa,A,Gada Prabowo,female
+Kontingen 6,Dewasa,A,Gandi Farida,female
+Kontingen 6,Dewasa,A,Febi Zulkarnain,female
+Kontingen 6,Dewasa,A,Melinda Ardianto,male
+Kontingen 6,Dewasa,B,Cahyono Kusmawati,male
+Kontingen 6,Dewasa,B,Puti Padmasari,female
+Kontingen 6,Dewasa,B,Hendri Firgantoro,male
+Kontingen 6,Dewasa,C,Gara Nasyiah,female
+Kontingen 6,Dewasa,C,Bakiman Novitasari,female
+Kontingen 6,Dewasa,C,Hartaka Manullang,male
+Kontingen 6,Dewasa,D,Icha Yulianti,female
+Kontingen 6,Dewasa,D,Asirwada Namaga,male
+Kontingen 6,Dewasa,E,Gina Setiawan,male
+Kontingen 6,Dewasa,E,Belinda Iswahyudi,male
+Kontingen 6,Dewasa,E,Wadi Siregar,male
+Kontingen 6,Dewasa,E,Tasdik Wulandari,female
+Kontingen 6,Dewasa,E,Tasdik Wulandari,female
+Kontingen 6,Dewasa,F,Cengkal Wijaya,female
+Kontingen 6,Dewasa,F,Mahmud Astuti,male
+Kontingen 6,Dewasa,F,Adinata Marpaung,female
+Kontingen 6,Dewasa,F,Ajimat Sudiati,female
+Kontingen 6,Dewasa,F,Simon Suryatmi,female
+Kontingen 6,Dewasa,F,Restu Prabowo,male
+Kontingen 6,Dewasa,F,Soleh Firgantoro,female
+Kontingen 6,Remaja,A,Ellis Hidayanto,male
+Kontingen 6,Remaja,A,Malika Handayani,male
+Kontingen 6,Remaja,A,Putri Mangunsong,male
+Kontingen 6,Remaja,A,Putri Mangunsong,male
+Kontingen 6,Remaja,A,Puspa Rahayu,female
+Kontingen 6,Remaja,A,Oni Mayasari,female
+Kontingen 6,Remaja,A,Olivia Andriani,female
+Kontingen 6,Remaja,A,Vanesa Budiman,female
+Kontingen 6,Remaja,B,Jaka Wasita,female
+Kontingen 6,Remaja,B,Viman Megantara,male
+Kontingen 6,Remaja,B,Viman Megantara,male
+Kontingen 6,Remaja,B,Salman Susanti,male
+Kontingen 6,Remaja,C,Banawi Hariyah,female
+Kontingen 6,Remaja,C,Koko Maheswara,female
+Kontingen 6,Remaja,C,Mahesa Irawan,male
+Kontingen 6,Remaja,C,Suci Kusumo,female
+Kontingen 6,Remaja,C,Mahesa Irawan,male
+Kontingen 6,Remaja,C,Suci Kusumo,female
+Kontingen 6,Remaja,C,Kardi Winarno,male
+Kontingen 6,Remaja,C,Kiandra Iswahyudi,male
+Kontingen 6,Remaja,C,Prabu Nuraini,female
+Kontingen 6,Remaja,C,Koko Maheswara,female
+Kontingen 6,Remaja,C,Rahmi Kuswandari,male
+Kontingen 6,Remaja,C,Irnanto Pratiwi,male
+Kontingen 6,Remaja,D,Gasti Laksmiwati,male
+Kontingen 6,Remaja,D,Tami Safitri,male
+Kontingen 6,Remaja,D,Humaira Hastuti,male
+Kontingen 6,Remaja,D,Ghani Laksmiwati,female
+Kontingen 6,Remaja,D,Ratna Prasetyo,male
+Kontingen 6,Remaja,D,Farah Oktaviani,male
+Kontingen 6,Remaja,D,Calista Palastri,female
+Kontingen 6,Remaja,D,Rafid Wacana,male
+Kontingen 6,Remaja,D,Hendra Mulyani,male
+Kontingen 6,Remaja,D,Dalimin Andriani,male
+Kontingen 6,Remaja,D,Elisa Wastuti,male
+Kontingen 6,Remaja,E,Eva Nashiruddin,male
+Kontingen 6,Remaja,E,Hamima Laksita,male
+Kontingen 6,Remaja,E,Luluh Usamah,male
+Kontingen 6,Remaja,E,Janet Namaga,female
+Kontingen 6,Remaja,E,Janet Namaga,female
+Kontingen 6,Remaja,E,Wadi Siregar,male
+Kontingen 6,Remaja,E,Galih Winarno,female
+Kontingen 6,Remaja,E,Kayla Rahimah,female
+Kontingen 6,Remaja,E,Rahman Rahmawati,male
+Kontingen 6,Remaja,F,Ibun Rahayu,female
+Kontingen 6,Remaja,F,Mahesa Mandala,female
+Kontingen 6,Remaja,F,Farah Yuliarti,male
+Kontingen 6,Remaja,F,Caturangga Uyainah,male
+Kontingen 6,Remaja,F,Farah Yuliarti,male
+Kontingen 6,Remaja,F,Caturangga Uyainah,male
+Kontingen 6,Remaja,F,Restu Ardianto,female
+Kontingen 6,Remaja,F,Kambali Nurdiyanti,female
+Kontingen 6,Usia dini,A,Vicky Hutagalung,female
+Kontingen 6,Usia dini,A,Yance Sihombing,female
+Kontingen 6,Usia dini,A,Maya Hariyah,female
+Kontingen 6,Usia dini,A,Yance Sihombing,female
+Kontingen 6,Usia dini,A,Maya Hariyah,female
+Kontingen 6,Usia dini,A,Syahrini Wahyudin,male
+Kontingen 6,Usia dini,A,Dwi Pratiwi,male
+Kontingen 6,Usia dini,A,Ida Nasyidah,female
+Kontingen 6,Usia dini,B,Kurnia Permata,male
+Kontingen 6,Usia dini,B,Kurnia Permata,male
+Kontingen 6,Usia dini,B,Winda Simbolon,female
+Kontingen 6,Usia dini,B,Melinda Lazuardi,male
+Kontingen 6,Usia dini,B,Kiandra Yolanda,female
+Kontingen 6,Usia dini,B,Luwes Habibi,female
+Kontingen 6,Usia dini,C,Puti Puspita,female
+Kontingen 6,Usia dini,C,Rahmi Kuswandari,male
+Kontingen 6,Usia dini,C,Jarwa Putra,female
+Kontingen 6,Usia dini,C,Bajragin Farida,male
+Kontingen 6,Usia dini,C,Bajragin Farida,male
+Kontingen 6,Usia dini,C,Ivan Wulandari,male
+Kontingen 6,Usia dini,C,Bahuwarna Yulianti,male
+Kontingen 6,Usia dini,C,Baktiono Purwanti,male
+Kontingen 6,Usia dini,C,Kasusra Hakim,male
+Kontingen 6,Usia dini,C,Carla Dabukke,male
+Kontingen 6,Usia dini,D,Dalimin Andriani,male
+Kontingen 6,Usia dini,D,Harsanto Nugroho,male
+Kontingen 6,Usia dini,D,Harsanto Nugroho,male
+Kontingen 6,Usia dini,D,Jasmani Tamba,female
+Kontingen 6,Usia dini,D,Maya Rajata,female
+Kontingen 6,Usia dini,D,Kunthara Uyainah,male
+Kontingen 6,Usia dini,D,Latika Simbolon,female
+Kontingen 6,Usia dini,E,Ulva Tampubolon,male
+Kontingen 6,Usia dini,E,Sidiq Hidayanto,female
+Kontingen 6,Usia dini,E,Ulva Tampubolon,male
+Kontingen 6,Usia dini,E,Sidiq Hidayanto,female
+Kontingen 6,Usia dini,E,Bakidin Habibi,male
+Kontingen 6,Usia dini,E,Ratih Pangestu,female
+Kontingen 6,Usia dini,E,Kenes Zulaika,male
+Kontingen 6,Usia dini,E,Chelsea Lazuardi,female
+Kontingen 6,Usia dini,F,Ismail Oktaviani,female
+Kontingen 6,Usia dini,F,Jagaraga Mansur,male
+Kontingen 6,Usia dini,F,Almira Wastuti,male
+Kontingen 6,Usia dini,F,Lanang Narpati,female
+Kontingen 6,Usia dini,F,Almira Wastuti,male
+Kontingen 6,Usia dini,F,Lanang Narpati,female
+Kontingen 6,Usia dini,F,Harsana Rahimah,female
+Kontingen 6,Usia dini,F,Ulva Najmudin,male
+Kontingen 6,Usia dini,F,Lurhur Nainggolan,female
+Kontingen 6,Usia dini,F,Gara Hutapea,female
+Kontingen 6,Usia dini,F,Johan Wulandari,male
+Kontingen 7,Anak,B,Febi Puspasari,female
+Kontingen 7,Anak,B,Martana Hutasoit,female
+Kontingen 7,Anak,B,Cinta Padmasari,male
+Kontingen 7,Anak,B,Danu Prasetya,male
+Kontingen 7,Anak,B,Danu Prasetya,male
+Kontingen 7,Anak,C,Niyaga Mulyani,female
+Kontingen 7,Anak,C,Wulan Mulyani,female
+Kontingen 7,Anak,C,Zizi Usada,female
+Kontingen 7,Anak,C,Tantri Usamah,female
+Kontingen 7,Anak,C,Nrima Rahmawati,female
+Kontingen 7,Anak,D,Cayadi Wasita,female
+Kontingen 7,Anak,D,Zulaikha Anggraini,female
+Kontingen 7,Anak,E,Cahya Hassanah,female
+Kontingen 7,Anak,E,Ina Yolanda,male
+Kontingen 7,Anak,E,Praba Suryatmi,male
+Kontingen 7,Anak,F,Uli Fujiati,male
+Kontingen 7,Anak,F,Rahman Haryanto,male
+Kontingen 7,Anak,F,Rahman Haryanto,male
+Kontingen 7,Dewasa,A,Najib Firmansyah,male
+Kontingen 7,Dewasa,A,Najib Firmansyah,male
+Kontingen 7,Dewasa,A,Latika Yulianti,female
+Kontingen 7,Dewasa,A,Ellis Hidayanto,male
+Kontingen 7,Dewasa,A,Vicky Hutagalung,female
+Kontingen 7,Dewasa,A,Eka Mustofa,male
+Kontingen 7,Dewasa,A,Jail Wacana,male
+Kontingen 7,Dewasa,A,Ami Zulaika,male
+Kontingen 7,Dewasa,B,Kani Aryani,female
+Kontingen 7,Dewasa,B,Salimah Maryati,male
+Kontingen 7,Dewasa,B,Bancar Hasanah,female
+Kontingen 7,Dewasa,B,Bancar Hasanah,female
+Kontingen 7,Dewasa,B,Lantar Laksita,male
+Kontingen 7,Dewasa,B,Mujur Maheswara,male
+Kontingen 7,Dewasa,C,Dalimin Simanjuntak,male
+Kontingen 7,Dewasa,C,Dalimin Simanjuntak,male
+Kontingen 7,Dewasa,C,Diah Firgantoro,female
+Kontingen 7,Dewasa,C,Yusuf Susanti,male
+Kontingen 7,Dewasa,C,Tiara Prabowo,female
+Kontingen 7,Dewasa,C,Marsito Padmasari,female
+Kontingen 7,Dewasa,C,Ella Agustina,female
+Kontingen 7,Dewasa,C,Maya Kusmawati,female
+Kontingen 7,Dewasa,C,Gina Oktaviani,male
+Kontingen 7,Dewasa,D,Paiman Laksita,male
+Kontingen 7,Dewasa,D,Kamal Waskita,female
+Kontingen 7,Dewasa,D,Kamal Waskita,female
+Kontingen 7,Dewasa,E,Tina Siregar,female
+Kontingen 7,Dewasa,E,Edward Mandasari,male
+Kontingen 7,Dewasa,E,Eva Nashiruddin,male
+Kontingen 7,Dewasa,F,Gina Waluyo,male
+Kontingen 7,Dewasa,F,Hafshah Habibi,female
+Kontingen 7,Dewasa,F,Zaenab Lailasari,female
+Kontingen 7,Dewasa,F,Yulia Oktaviani,female
+Kontingen 7,Dewasa,F,Irsad Namaga,female
+Kontingen 7,Dewasa,F,Nadia Fujiati,male
+Kontingen 7,Dewasa,F,Harsana Mayasari,male
+Kontingen 7,Dewasa,F,Yulia Oktaviani,female
+Kontingen 7,Dewasa,F,Irsad Namaga,female
+Kontingen 7,Dewasa,F,Nadia Fujiati,male
+Kontingen 7,Dewasa,F,Harsana Mayasari,male
+Kontingen 7,Dewasa,F,Nabila Hutapea,male
+Kontingen 7,Dewasa,F,Kariman Susanti,female
+Kontingen 7,Remaja,A,Olivia Nuraini,male
+Kontingen 7,Remaja,A,Padmi Novitasari,female
+Kontingen 7,Remaja,A,Padmi Novitasari,female
+Kontingen 7,Remaja,A,Yance Mahendra,female
+Kontingen 7,Remaja,A,Darsirah Anggriawan,female
+Kontingen 7,Remaja,A,Ika Sudiati,male
+Kontingen 7,Remaja,A,Devi Suryatmi,male
+Kontingen 7,Remaja,B,Tirta Wijayanti,male
+Kontingen 7,Remaja,B,Melinda Pradana,female
+Kontingen 7,Remaja,B,Vicky Natsir,male
+Kontingen 7,Remaja,B,Wahyu Nurdiyanti,male
+Kontingen 7,Remaja,B,Vicky Natsir,male
+Kontingen 7,Remaja,B,Wahyu Nurdiyanti,male
+Kontingen 7,Remaja,B,Upik Maulana,female
+Kontingen 7,Remaja,B,Eka Handayani,female
+Kontingen 7,Remaja,B,Cayadi Handayani,male
+Kontingen 7,Remaja,B,Damu Narpati,female
+Kontingen 7,Remaja,B,Unjani Suryatmi,female
+Kontingen 7,Remaja,C,Rika Saptono,male
+Kontingen 7,Remaja,C,Ganjaran Anggraini,female
+Kontingen 7,Remaja,C,Cahyadi Salahudin,male
+Kontingen 7,Remaja,C,Sabar Firgantoro,male
+Kontingen 7,Remaja,C,Ibrahim Nainggolan,male
+Kontingen 7,Remaja,C,Sabar Firgantoro,male
+Kontingen 7,Remaja,C,Ibrahim Nainggolan,male
+Kontingen 7,Remaja,C,Najwa Jailani,female
+Kontingen 7,Remaja,C,Gara Nasyiah,female
+Kontingen 7,Remaja,C,Jarwa Putra,female
+Kontingen 7,Remaja,C,Bakiman Hasanah,male
+Kontingen 7,Remaja,D,Rosman Wijaya,female
+Kontingen 7,Remaja,D,Humaira Hastuti,male
+Kontingen 7,Remaja,D,Candrakanta Januar,male
+Kontingen 7,Remaja,D,Jaswadi Winarno,male
+Kontingen 7,Remaja,E,Sakura Anggraini,female
+Kontingen 7,Remaja,E,Diana Nuraini,male
+Kontingen 7,Remaja,E,Diana Nuraini,male
+Kontingen 7,Remaja,E,Gatra Wastuti,female
+Kontingen 7,Remaja,E,Amelia Mahendra,male
+Kontingen 7,Remaja,F,Raharja Purnawati,female
+Kontingen 7,Remaja,F,Titin Halimah,male
+Kontingen 7,Remaja,F,Makuta Mandala,female
+Kontingen 7,Remaja,F,Ajimat Sudiati,female
+Kontingen 7,Remaja,F,Simon Suryatmi,female
+Kontingen 7,Remaja,F,Caraka Utami,male
+Kontingen 7,Usia dini,A,Praba Narpati,female
+Kontingen 7,Usia dini,A,Siti Usamah,male
+Kontingen 7,Usia dini,A,Cahya Prayoga,female
+Kontingen 7,Usia dini,A,Tantri Lazuardi,male
+Kontingen 7,Usia dini,B,Ibrahim Sirait,male
+Kontingen 7,Usia dini,B,Ibrahim Sirait,male
+Kontingen 7,Usia dini,B,Ayu Natsir,male
+Kontingen 7,Usia dini,B,Tiara Sirait,female
+Kontingen 7,Usia dini,C,Pranawa Pradipta,female
+Kontingen 7,Usia dini,C,Kamaria Hutagalung,male
+Kontingen 7,Usia dini,C,Empluk Melani,male
+Kontingen 7,Usia dini,C,Empluk Melani,male
+Kontingen 7,Usia dini,C,Pranawa Dabukke,female
+Kontingen 7,Usia dini,C,Eko Kusmawati,male
+Kontingen 7,Usia dini,C,Nyoman Uyainah,male
+Kontingen 7,Usia dini,C,Kamaria Gunarto,female
+Kontingen 7,Usia dini,D,Raisa Utami,male
+Kontingen 7,Usia dini,D,Kamila Simbolon,male
+Kontingen 7,Usia dini,D,Kamila Simbolon,male
+Kontingen 7,Usia dini,D,Aswani Sihombing,male
+Kontingen 7,Usia dini,D,Najwa Melani,male
+Kontingen 7,Usia dini,D,Nadine Safitri,male
+Kontingen 7,Usia dini,D,Rika Nurdiyanti,male
+Kontingen 7,Usia dini,E,Hairyanto Saputra,male
+Kontingen 7,Usia dini,E,Ilyas Sitorus,female
+Kontingen 7,Usia dini,E,Lalita Pranowo,female
+Kontingen 7,Usia dini,E,Zizi Permata,female
+Kontingen 7,Usia dini,E,Zizi Permata,female
+Kontingen 7,Usia dini,E,Yulia Hastuti,female
+Kontingen 7,Usia dini,E,Cinta Aryani,male
+Kontingen 7,Usia dini,E,Cornelia Saptono,male
+Kontingen 7,Usia dini,F,Vinsen Mandala,female
+Kontingen 7,Usia dini,F,Carla Sudiati,male
+Kontingen 7,Usia dini,F,Wadi Handayani,male
+Kontingen 8,Anak,A,Wira Fujiati,male
+Kontingen 8,Anak,A,Belinda Habibi,male
+Kontingen 8,Anak,A,Usman Tarihoran,female
+Kontingen 8,Anak,B,Cinthia Nasyiah,female
+Kontingen 8,Anak,C,Among Natsir,male
+Kontingen 8,Anak,C,Among Natsir,male
+Kontingen 8,Anak,E,Dimas Natsir,female
+Kontingen 8,Anak,E,Chelsea Lazuardi,female
+Kontingen 8,Anak,E,Chelsea Lazuardi,female
+Kontingen 8,Anak,F,Clara Prabowo,female
+Kontingen 8,Anak,F,Tina Astuti,female
+Kontingen 8,Anak,F,Carub Novitasari,female
+Kontingen 8,Anak,F,Carub Novitasari,female
+Kontingen 8,Dewasa,A,Anggabaya Habibi,female
+Kontingen 8,Dewasa,A,Cindy Pudjiastuti,male
+Kontingen 8,Dewasa,A,Syahrini Wahyudin,male
+Kontingen 8,Dewasa,A,Dwi Pratiwi,male
+Kontingen 8,Dewasa,A,Syahrini Wahyudin,male
+Kontingen 8,Dewasa,A,Dwi Pratiwi,male
+Kontingen 8,Dewasa,A,Jagaraga Pranowo,male
+Kontingen 8,Dewasa,A,Luluh Irawan,male
+Kontingen 8,Dewasa,A,Padmi Yolanda,female
+Kontingen 8,Dewasa,B,Maimunah Rahayu,female
+Kontingen 8,Dewasa,B,Gamanto Utama,male
+Kontingen 8,Dewasa,B,Chandra Zulkarnain,male
+Kontingen 8,Dewasa,B,Chandra Zulkarnain,male
+Kontingen 8,Dewasa,B,Maryanto Saragih,male
+Kontingen 8,Dewasa,B,Tira Nasyiah,male
+Kontingen 8,Dewasa,B,Bakiadi Anggraini,male
+Kontingen 8,Dewasa,C,Harjasa Kuswoyo,female
+Kontingen 8,Dewasa,C,Elisa Prasetyo,female
+Kontingen 8,Dewasa,C,Ajiono Iswahyudi,female
+Kontingen 8,Dewasa,C,Ilyas Natsir,male
+Kontingen 8,Dewasa,C,Ilyas Natsir,male
+Kontingen 8,Dewasa,C,Dina Budiman,male
+Kontingen 8,Dewasa,C,Puti Simanjuntak,male
+Kontingen 8,Dewasa,D,Titi Prasetya,male
+Kontingen 8,Dewasa,D,Puji Nugroho,male
+Kontingen 8,Dewasa,D,Gasti Laksmiwati,male
+Kontingen 8,Dewasa,E,Gangsa Simbolon,male
+Kontingen 8,Dewasa,E,Tirta Laksmiwati,female
+Kontingen 8,Dewasa,E,Kenes Zulaika,male
+Kontingen 8,Dewasa,E,Kenes Zulaika,male
+Kontingen 8,Dewasa,E,Dartono Wijaya,male
+Kontingen 8,Dewasa,E,Darmanto Laksmiwati,male
+Kontingen 8,Dewasa,F,Gamblang Pertiwi,female
+Kontingen 8,Dewasa,F,Aisyah Maryati,female
+Kontingen 8,Dewasa,F,Mitra Lestari,female
+Kontingen 8,Dewasa,F,Mitra Lestari,female
+Kontingen 8,Dewasa,F,Saadat Puspasari,male
+Kontingen 8,Dewasa,F,Ismail Oktaviani,female
+Kontingen 8,Dewasa,F,Ibun Rahayu,female
+Kontingen 8,Dewasa,F,Victoria Farida,male
+Kontingen 8,Dewasa,F,Zulfa Haryanto,male
+Kontingen 8,Remaja,A,Mahmud Iswahyudi,female
+Kontingen 8,Remaja,A,Ida Nasyidah,female
+Kontingen 8,Remaja,A,Ida Nasyidah,female
+Kontingen 8,Remaja,A,Maria Salahudin,male
+Kontingen 8,Remaja,A,Latika Usamah,male
+Kontingen 8,Remaja,A,Ghani Hidayat,female
+Kontingen 8,Remaja,A,Alika Padmasari,male
+Kontingen 8,Remaja,B,Dewi Aryani,female
+Kontingen 8,Remaja,B,Dewi Aryani,female
+Kontingen 8,Remaja,B,Jayeng Mustofa,female
+Kontingen 8,Remaja,B,Cinta Padmasari,male
+Kontingen 8,Remaja,B,Darijan Pradipta,male
+Kontingen 8,Remaja,C,Usyi Namaga,male
+Kontingen 8,Remaja,C,Cakrabuana Prabowo,male
+Kontingen 8,Remaja,C,Carla Dabukke,male
+Kontingen 8,Remaja,C,Carla Dabukke,male
+Kontingen 8,Remaja,C,Ibrahim Habibi,male
+Kontingen 8,Remaja,C,Ina Lestari,female
+Kontingen 8,Remaja,C,Tirta Narpati,male
+Kontingen 8,Remaja,C,Nrima Rahmawati,female
+Kontingen 8,Remaja,C,Danang Maryadi,female
+Kontingen 8,Remaja,D,Laila Wijayanti,female
+Kontingen 8,Remaja,D,Rika Nurdiyanti,male
+Kontingen 8,Remaja,D,Laila Wijayanti,female
+Kontingen 8,Remaja,D,Rika Nurdiyanti,male
+Kontingen 8,Remaja,D,Icha Yulianti,female
+Kontingen 8,Remaja,D,Usyi Suartini,male
+Kontingen 8,Remaja,D,Yuni Saragih,female
+Kontingen 8,Remaja,E,Vega Irawan,male
+Kontingen 8,Remaja,E,Kamaria Melani,female
+Kontingen 8,Remaja,E,Tami Putra,female
+Kontingen 8,Remaja,E,Luluh Usamah,male
+Kontingen 8,Remaja,E,Lalita Pranowo,female
+Kontingen 8,Remaja,E,Ade Winarsih,male
+Kontingen 8,Remaja,F,Puti Maheswara,male
+Kontingen 8,Remaja,F,Tari Siregar,female
+Kontingen 8,Remaja,F,Lalita Wijayanti,female
+Kontingen 8,Remaja,F,Gara Hutapea,female
+Kontingen 8,Remaja,F,Johan Wulandari,male
+Kontingen 8,Remaja,F,Gara Hutapea,female
+Kontingen 8,Remaja,F,Johan Wulandari,male
+Kontingen 8,Remaja,F,Mumpuni Pratama,male
+Kontingen 8,Remaja,F,Okta Aryani,female
+Kontingen 8,Remaja,F,Hardana Sihombing,male
+Kontingen 8,Remaja,F,Nabila Setiawan,female
+Kontingen 8,Remaja,F,Ulya Rahmawati,female
+Kontingen 8,Usia dini,A,Warta Wacana,male
+Kontingen 8,Usia dini,A,Alika Mansur,male
+Kontingen 8,Usia dini,A,Alika Mansur,male
+Kontingen 8,Usia dini,A,Jessica Utami,female
+Kontingen 8,Usia dini,A,Warsita Irawan,female
+Kontingen 8,Usia dini,B,Yuliana Pangestu,male
+Kontingen 8,Usia dini,B,Chelsea Budiman,female
+Kontingen 8,Usia dini,B,Luwes Habibi,female
+Kontingen 8,Usia dini,B,Luwes Habibi,female
+Kontingen 8,Usia dini,B,Warsa Nurdiyanti,female
+Kontingen 8,Usia dini,C,Widya Nasyiah,female
+Kontingen 8,Usia dini,C,Hesti Narpati,female
+Kontingen 8,Usia dini,C,Nyoman Uyainah,male
+Kontingen 8,Usia dini,C,Nyoman Uyainah,male
+Kontingen 8,Usia dini,C,Gaiman Lailasari,male
+Kontingen 8,Usia dini,D,Nova Sihotang,male
+Kontingen 8,Usia dini,D,Kiandra Riyanti,female
+Kontingen 8,Usia dini,D,Okto Puspasari,male
+Kontingen 8,Usia dini,D,Kadir Permata,female
+Kontingen 8,Usia dini,D,Gandewa Prastuti,female
+Kontingen 8,Usia dini,D,Ajeng Santoso,male
+Kontingen 8,Usia dini,D,Maida Fujiati,female
+Kontingen 8,Usia dini,D,Ismail Nugroho,male
+Kontingen 8,Usia dini,D,Mursita Saputra,female
+Kontingen 8,Usia dini,D,Gamanto Adriansyah,female
+Kontingen 8,Usia dini,D,Aditya Ardianto,female
+Kontingen 8,Usia dini,E,Nyoman Suryatmi,female
+Kontingen 8,Usia dini,E,Talia Usada,male
+Kontingen 8,Usia dini,E,Violet Purwanti,male
+Kontingen 8,Usia dini,E,Hesti Riyanti,female
+Kontingen 8,Usia dini,F,Danu Mangunsong,female
+Kontingen 8,Usia dini,F,Zahra Sihombing,female
+Kontingen 8,Usia dini,F,Zahra Sihombing,female
+Kontingen 8,Usia dini,F,Kamila Hasanah,male
+Kontingen 8,Usia dini,F,Amalia Uwais,male
+Kontingen 8,Usia dini,F,Febi Purnawati,male
+Kontingen 8,Usia dini,F,Darmana Suryono,male
+Kontingen 8,Usia dini,F,Amalia Wahyudin,female
+Kontingen 8,Usia dini,F,Jaiman Melani,female
+Kontingen 8,Usia dini,F,Patricia Palastri,male
+Kontingen 9,Anak,A,Julia Pradipta,male
+Kontingen 9,Anak,A,Eka Mustofa,male
+Kontingen 9,Anak,A,Jail Wacana,male
+Kontingen 9,Anak,A,Halim Laksita,female
+Kontingen 9,Anak,A,Wawan Pertiwi,female
+Kontingen 9,Anak,A,Halim Laksita,female
+Kontingen 9,Anak,A,Wawan Pertiwi,female
+Kontingen 9,Anak,B,Azalea Handayani,male
+Kontingen 9,Anak,B,Salimah Rajasa,male
+Kontingen 9,Anak,B,Cindy Agustina,male
+Kontingen 9,Anak,B,Iriana Suryatmi,male
+Kontingen 9,Anak,B,Iriana Suryatmi,male
+Kontingen 9,Anak,C,Nilam Ardianto,female
+Kontingen 9,Anak,C,Irnanto Pratiwi,male
+Kontingen 9,Anak,D,Wulan Utama,female
+Kontingen 9,Anak,D,Jaswadi Winarno,male
+Kontingen 9,Anak,D,Jasmani Melani,female
+Kontingen 9,Anak,D,Jasmani Melani,female
+Kontingen 9,Anak,E,Rahman Rahmawati,male
+Kontingen 9,Anak,E,Tirtayasa Prayoga,male
+Kontingen 9,Anak,E,Tirtayasa Prayoga,male
+Kontingen 9,Anak,F,Caket Winarsih,female
+Kontingen 9,Anak,F,Patricia Palastri,male
+Kontingen 9,Anak,F,Hamzah Pertiwi,female
+Kontingen 9,Anak,F,Patricia Palastri,male
+Kontingen 9,Anak,F,Hamzah Pertiwi,female
+Kontingen 9,Dewasa,A,Melinda Ardianto,male
+Kontingen 9,Dewasa,A,Daliono Rahayu,female
+Kontingen 9,Dewasa,A,Irwan Anggriawan,male
+Kontingen 9,Dewasa,A,Irwan Anggriawan,male
+Kontingen 9,Dewasa,A,Kezia Rahayu,female
+Kontingen 9,Dewasa,A,Prayogo Maulana,female
+Kontingen 9,Dewasa,B,Sabrina Oktaviani,female
+Kontingen 9,Dewasa,B,Syahrini Saragih,male
+Kontingen 9,Dewasa,B,Syahrini Saragih,male
+Kontingen 9,Dewasa,B,Manah Siregar,female
+Kontingen 9,Dewasa,C,Marsito Padmasari,female
+Kontingen 9,Dewasa,C,Puti Puspita,female
+Kontingen 9,Dewasa,C,Banawi Hariyah,female
+Kontingen 9,Dewasa,C,Lili Mulyani,male
+Kontingen 9,Dewasa,C,Hana Prayoga,male
+Kontingen 9,Dewasa,D,Ganda Anggraini,female
+Kontingen 9,Dewasa,D,Gamanto Adriansyah,female
+Kontingen 9,Dewasa,D,Luluh Permata,male
+Kontingen 9,Dewasa,D,Gamanto Adriansyah,female
+Kontingen 9,Dewasa,D,Luluh Permata,male
+Kontingen 9,Dewasa,D,Kairav Siregar,female
+Kontingen 9,Dewasa,E,Maria Pertiwi,female
+Kontingen 9,Dewasa,E,Amelia Mahendra,male
+Kontingen 9,Dewasa,E,Pangeran Kusumo,male
+Kontingen 9,Dewasa,E,Pangeran Kusumo,male
+Kontingen 9,Dewasa,E,Julia Rahmawati,female
+Kontingen 9,Dewasa,E,Daryani Pudjiastuti,female
+Kontingen 9,Dewasa,E,Gina Setiawan,male
+Kontingen 9,Dewasa,F,Patricia Wulandari,male
+Kontingen 9,Dewasa,F,Cengkal Wijaya,female
+Kontingen 9,Dewasa,F,Mahmud Astuti,male
+Kontingen 9,Remaja,A,Gina Samosir,female
+Kontingen 9,Remaja,A,Devi Suryatmi,male
+Kontingen 9,Remaja,A,Shakila Anggraini,female
+Kontingen 9,Remaja,A,Shakila Anggraini,female
+Kontingen 9,Remaja,A,Devi Pudjiastuti,female
+Kontingen 9,Remaja,A,Yunita Gunarto,female
+Kontingen 9,Remaja,A,Ifa Ardianto,male
+Kontingen 9,Remaja,B,Ghani Pangestu,male
+Kontingen 9,Remaja,B,Salman Susanti,male
+Kontingen 9,Remaja,B,Tiara Sirait,female
+Kontingen 9,Remaja,B,Tiara Sirait,female
+Kontingen 9,Remaja,B,Garda Yuliarti,male
+Kontingen 9,Remaja,B,Salimah Maryati,male
+Kontingen 9,Remaja,C,Tiara Prabowo,female
+Kontingen 9,Remaja,C,Pranata Sitorus,female
+Kontingen 9,Remaja,C,Ajimat Kusmawati,male
+Kontingen 9,Remaja,C,Kamaria Gunarto,female
+Kontingen 9,Remaja,C,Kamaria Gunarto,female
+Kontingen 9,Remaja,C,Jelita Melani,female
+Kontingen 9,Remaja,C,Bakti Hasanah,male
+Kontingen 9,Remaja,C,Janet Wibowo,female
+Kontingen 9,Remaja,C,Aurora Andriani,female
+Kontingen 9,Remaja,C,Amelia Waluyo,male
+Kontingen 9,Remaja,C,Pranawa Pradipta,female
+Kontingen 9,Remaja,D,Salman Marbun,male
+Kontingen 9,Remaja,D,Gina Agustina,female
+Kontingen 9,Remaja,D,Candrakanta Januar,male
+Kontingen 9,Remaja,D,Kania Damanik,female
+Kontingen 9,Remaja,E,Prabowo Permadi,male
+Kontingen 9,Remaja,E,Galih Winarno,female
+Kontingen 9,Remaja,E,Sakura Anggraini,female
+Kontingen 9,Remaja,E,Dimas Habibi,female
+Kontingen 9,Remaja,E,Zaenab Riyanti,female
+Kontingen 9,Remaja,F,Mahfud Purnawati,male
+Kontingen 9,Remaja,F,Mahfud Purnawati,male
+Kontingen 9,Remaja,F,Humaira Kusmawati,male
+Kontingen 9,Remaja,F,Galur Mandasari,female
+Kontingen 9,Remaja,F,Cornelia Suartini,male
+Kontingen 9,Remaja,F,Hafshah Habibi,female
+Kontingen 9,Remaja,F,Bakiman Kusmawati,female
+Kontingen 9,Usia dini,A,Febi Zulkarnain,female
+Kontingen 9,Usia dini,A,Danang Yuliarti,female
+Kontingen 9,Usia dini,A,Niyaga Salahudin,female
+Kontingen 9,Usia dini,A,Danang Yuliarti,female
+Kontingen 9,Usia dini,A,Niyaga Salahudin,female
+Kontingen 9,Usia dini,A,Hamima Winarsih,female
+Kontingen 9,Usia dini,A,Kanda Firmansyah,female
+Kontingen 9,Usia dini,A,Darman Purnawati,male
+Kontingen 9,Usia dini,A,Rina Pertiwi,male
+Kontingen 9,Usia dini,A,Halim Laksita,female
+Kontingen 9,Usia dini,B,Rangga Mansur,male
+Kontingen 9,Usia dini,B,Wulan Kuswandari,female
+Kontingen 9,Usia dini,B,Novi Situmorang,male
+Kontingen 9,Usia dini,C,Ella Agustina,female
+Kontingen 9,Usia dini,C,Yahya Winarsih,male
+Kontingen 9,Usia dini,C,Raihan Usamah,female
+Kontingen 9,Usia dini,D,Paris Situmorang,male
+Kontingen 9,Usia dini,D,Elisa Wastuti,male
+Kontingen 9,Usia dini,D,Aditya Ardianto,female
+Kontingen 9,Usia dini,D,Aditya Ardianto,female
+Kontingen 9,Usia dini,E,Makara Lazuardi,male
+Kontingen 9,Usia dini,E,Kayla Rahimah,female
+Kontingen 9,Usia dini,E,Hesti Riyanti,female
+Kontingen 9,Usia dini,E,Hesti Riyanti,female
+Kontingen 9,Usia dini,E,Tantri Hakim,female
+Kontingen 9,Usia dini,E,Yani Widiastuti,male
+Kontingen 9,Usia dini,E,Tirtayasa Prayoga,male
+Kontingen 9,Usia dini,F,Caraka Utami,male
+Kontingen 9,Usia dini,F,Dwi Kuswandari,female
+Kontingen 9,Usia dini,F,Sabar Winarsih,male
+Kontingen 9,Usia dini,F,Mahfud Purnawati,male
+Kontingen 9,Usia dini,F,Hamzah Pertiwi,female
