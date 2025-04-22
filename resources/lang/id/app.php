@@ -3,8 +3,8 @@
 return [
 
     'gender' => [
-        'male' => 'Laki-laki',
-        'female' => 'Perempuan',
+        'male' => 'Putra',
+        'female' => 'Putri',
     ],
 
     'resource' => [

@@ -4,7 +4,7 @@ return [
 
     'gender' => [
         'male' => 'Male',
-        'female' => 'Male',
+        'female' => 'Female',
     ],
 
     'resource' => [
