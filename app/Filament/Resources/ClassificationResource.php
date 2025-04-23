@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use App\Enums\AgeRange;
 use App\Enums\Gender;
 use App\Filament\Resources\ClassificationResource\Pages;
 use App\Models\Classification;
@@ -11,6 +12,7 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables\Actions;
 use Filament\Tables\Columns;
+use Filament\Tables\Filters;
 use Filament\Tables\Grouping\Group;
 use Filament\Tables\Table;
 
@@ -26,10 +28,26 @@ class ClassificationResource extends Resource
     {
         return $form
             ->schema([
-                Components\TextInput::make('label'),
-                Components\Textarea::make('description'),
-                Components\Radio::make('gender')->options(Gender::toOptions()),
-                Components\TextInput::make('order'),
+                Components\TextInput::make('label')
+                    ->label(trans('classification.field.label'))
+                    ->required(),
+                Components\Textarea::make('description')
+                    ->label(trans('classification.field.description'))
+                    ->required(),
+                Components\Radio::make('gender')
+                    ->label(trans('participant.field.gender'))
+                    ->options(Gender::toOptions())
+                    ->enum(Gender::class)
+                    ->required(),
+                Components\Select::make('age_range')
+                    ->label(trans('classification.field.age_range'))
+                    ->options(AgeRange::toOptions())
+                    ->enum(AgeRange::class)
+                    ->required(),
+                Components\TextInput::make('weight_range')
+                    ->label(trans('classification.field.weight_range'))
+                    ->hint('Gunakan format "XX-XX" untuk menunjukan rentang berat badan')
+                    ->required(),
             ])
             ->columns(1);
     }
@@ -55,7 +73,12 @@ class ClassificationResource extends Resource
                     ->label(trans('classification.field.weight_range')),
             ])
             ->filters([
-                //
+                Filters\SelectFilter::make('gender')
+                    ->label(trans('participant.field.gender'))
+                    ->options(Gender::toOptions()),
+                Filters\SelectFilter::make('age_range')
+                    ->label(trans('classification.field.age_range'))
+                    ->options(AgeRange::toOptions()),
             ])
             ->actions([
                 Actions\ActionGroup::make([
@@ -76,8 +99,8 @@ class ClassificationResource extends Resource
     {
         return [
             'index' => Pages\ListClassifications::route('/'),
-            'create' => Pages\CreateClassification::route('/create'),
-            'edit' => Pages\EditClassification::route('/{record}/edit'),
+            // 'create' => Pages\CreateClassification::route('/create'),
+            // 'edit' => Pages\EditClassification::route('/{record}/edit'),
         ];
     }
 }

@@ -42,7 +42,8 @@ trait WithMembershipRecord
         ];
 
         if ($forAthlete) {
-            // TODO: Show age and weight class for athletes
+            $schema[] = Columns\TextColumn::make('classification.label')
+                ->label(trans('classification.field.weight_range'));
         }
 
         return $schema;

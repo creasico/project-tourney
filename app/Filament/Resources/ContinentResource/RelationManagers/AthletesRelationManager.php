@@ -2,14 +2,19 @@
 
 namespace App\Filament\Resources\ContinentResource\RelationManagers;
 
+use App\Enums\AgeRange;
 use App\Enums\Gender;
 use App\Filament\Resources\ContinentResource\WithMembershipRecord;
+use App\Models\Builders\PersonBuilder;
+use App\Models\Person;
 use Filament\Forms\Components;
 use Filament\Forms\Form;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables\Actions;
 use Filament\Tables\Filters;
+use Filament\Tables\Grouping\Group;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 
 class AthletesRelationManager extends RelationManager
@@ -37,11 +42,29 @@ class AthletesRelationManager extends RelationManager
     {
         return $table
             ->recordTitleAttribute('name')
+            ->defaultGroup(
+                Group::make('classification.age_range')
+                    ->label(trans('classification.field.age_range'))
+                    ->getTitleFromRecordUsing(fn (Person $record) => $record->classification->age_range->label())
+            )
             ->columns($this->getMembershipTableColumns(true))
             ->filters([
                 Filters\SelectFilter::make('gender')
                     ->label(trans('participant.field.gender'))
                     ->options(Gender::toOptions()),
+                Filters\SelectFilter::make('classification.age_range')
+                    ->label(trans('classification.field.age_range'))
+                    ->options(AgeRange::toOptions())
+                    ->query(function (PersonBuilder $query, $data) {
+                        if (! $data['value']) {
+                            return $query;
+                        }
+
+                        return $query->whereHas(
+                            'classification',
+                            fn (Builder $query) => $query->where('age_range', $data['value'])
+                        );
+                    }),
             ])
             ->headerActions([
                 Actions\CreateAction::make(),
