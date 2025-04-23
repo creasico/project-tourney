@@ -2,7 +2,6 @@
 
 namespace App\Filament\Resources;
 
-use App\Enums\ClassificationTerm;
 use App\Filament\Resources\ContinentResource\Pages;
 use App\Filament\Resources\ContinentResource\RelationManagers;
 use App\Models\Builders\PersonBuilder;
@@ -51,10 +50,9 @@ class ContinentResource extends Resource
 
     public static function infolist(Infolist $infolist): Infolist
     {
-        $classes = Classification::query()
-            ->oldest('term')
-            ->oldest('order')
-            ->get();
+        // $classes = Classification::query()
+        //     ->oldest('order')
+        //     ->get();
 
         $relations = [
             'managers',
@@ -62,34 +60,6 @@ class ContinentResource extends Resource
             'athletes as males_count' => fn (PersonBuilder $builder) => $builder->onlyMales(),
             'athletes as females_count' => fn (PersonBuilder $builder) => $builder->onlyFemales(),
         ];
-
-        foreach ($classes as $class) {
-            $slug = str($class->label)->slug('_');
-            $prefix = str($class->term->name)->lower();
-
-            $relations["athletes as {$prefix}_{$slug}_count"] = function (PersonBuilder $builder) use ($class, $prefix) {
-                $builder->where("class_{$prefix}_id", $class->id);
-            };
-        }
-
-        $sections = $classes->groupBy('term')->map(function ($classes, $key) {
-            return InfolistsComponents\Section::make(ClassificationTerm::from($key)->label())
-                ->aside()
-                ->columns(2)
-                ->schema(
-                    $classes->map(function ($class) {
-                        $slug = str($class->label)->slug('_');
-                        $prefix = str($class->term->name)->lower();
-
-                        return InfolistsComponents\TextEntry::make("{$prefix}_{$slug}_count")
-                            ->label($class->label)
-                            ->color('primary')
-                            ->weight(FontWeight::Bold)
-                            ->hint($class->description)
-                            ->numeric();
-                    })->toArray()
-                );
-        });
 
         $infolist->getRecord()->loadCount($relations);
 
@@ -125,7 +95,6 @@ class ContinentResource extends Resource
                             ->weight(FontWeight::Bold)
                             ->numeric(),
                     ]),
-                ...$sections->toArray(),
             ]);
     }
 

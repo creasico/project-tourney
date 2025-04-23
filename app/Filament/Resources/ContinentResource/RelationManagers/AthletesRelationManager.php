@@ -39,16 +39,6 @@ class AthletesRelationManager extends RelationManager
             ->recordTitleAttribute('name')
             ->columns($this->getMembershipTableColumns(true))
             ->filters([
-                Filters\SelectFilter::make('age')
-                    ->label(trans('classification.term.age'))
-                    ->relationship('age', 'label')
-                    ->searchable()
-                    ->preload(),
-                Filters\SelectFilter::make('weight')
-                    ->label(trans('classification.term.weight'))
-                    ->relationship('weight', 'label')
-                    ->searchable()
-                    ->preload(),
                 Filters\SelectFilter::make('gender')
                     ->label(trans('participant.field.gender'))
                     ->options(Gender::toOptions()),

@@ -2,7 +2,6 @@
 
 namespace App\Models\Builders;
 
-use App\Enums\ClassificationTerm;
 use Illuminate\Database\Eloquent\Builder;
 
 /**
@@ -10,13 +9,19 @@ use Illuminate\Database\Eloquent\Builder;
  */
 class ClassificationBuilder extends Builder
 {
+    /**
+     * @deprecated
+     */
     public function onlyAges()
     {
-        return $this->where('term', ClassificationTerm::Age);
+        return $this;
     }
 
+    /**
+     * @deprecated
+     */
     public function onlyWeights()
     {
-        return $this->where('term', ClassificationTerm::Weight);
+        return $this;
     }
 }

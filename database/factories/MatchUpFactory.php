@@ -9,9 +9,9 @@ use DateTime;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\MatchUp>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Matchup>
  */
-class MatchUpFactory extends Factory
+class MatchupFactory extends Factory
 {
     private static ?DateTime $startedAt = null;
 

@@ -19,7 +19,6 @@ class DivisionMatchFactory extends Factory
     public function definition(): array
     {
         return [
-            'division_id' => null,
             'label' => fake()->sentence(),
             'gender' => $this->fakeGender(),
             'attr' => null,

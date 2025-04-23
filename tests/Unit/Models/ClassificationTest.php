@@ -3,8 +3,8 @@
 declare(strict_types=1);
 
 use App\Models\Classification;
+use App\Models\MatchGroup;
 use App\Models\Tournament;
-use App\Models\TournamentDivision;
 
 test('has many tournaments', function () {
     $model = Classification::factory()
@@ -20,5 +20,5 @@ test('has many tournaments', function () {
     $tournament = $model->tournaments->first();
 
     expect($tournament)->toBeInstanceOf(Tournament::class);
-    expect($tournament->division)->toBeInstanceOf(TournamentDivision::class);
+    expect($tournament->group)->toBeInstanceOf(MatchGroup::class);
 });

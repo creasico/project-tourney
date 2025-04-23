@@ -2,7 +2,7 @@
 
 namespace Database\Factories;
 
-use App\Models\MatchUp;
+use App\Models\Matchup;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -18,7 +18,7 @@ class MatchRevisionFactory extends Factory
     public function definition(): array
     {
         return [
-            'match_id' => MatchUp::factory(),
+            'match_id' => Matchup::factory(),
             'reason' => fake()->words(asText: true),
         ];
     }

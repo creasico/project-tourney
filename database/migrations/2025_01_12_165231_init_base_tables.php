@@ -52,7 +52,10 @@ return new class extends Migration
 
             $table->string('label');
             $table->string('description')->nullable();
-            $table->unsignedTinyInteger('term')->nullable();
+            $table->enum('gender', Gender::toArray());
+            $table->unsignedTinyInteger('age_range');
+            $table->string('weight_range', 5);
+            // $table->unsignedTinyInteger('term')->nullable();
             $table->unsignedSmallInteger('order')->nullable();
 
             $table->timestamps();
@@ -60,22 +63,27 @@ return new class extends Migration
 
         Schema::create('people', function (Blueprint $table) {
             $table->ulid('id')->unique();
-            $table->ulid('continent_id')->nullable();
             $table->foreignId('user_id')->nullable();
-            $table->ulid('class_age_id')->nullable();
-            $table->ulid('class_weight_id')->nullable();
+            $table->foreignUlid('continent_id')->nullable();
+            $table->foreignUlid('class_id')->nullable();
+            // $table->foreignUlid('class_age_id')->nullable();
+            // $table->foreignUlid('class_weight_id')->nullable();
 
             $table->string('name');
-            $table->enum('gender', Gender::toArray())->nullable();
             $table->unsignedTinyInteger('role')->nullable()->comment(
                 sprintf('See %s for detail', ParticipantRole::class)
             );
 
+            $table->enum('gender', Gender::toArray())->nullable();
+            $table->unsignedTinyInteger('weight')->nullable();
+            $table->date('date_of_birth')->nullable();
             $table->timestamps();
+
             $table->foreign('user_id')->references('id')->on('users')->nullOnDelete();
             $table->foreign('continent_id')->references('id')->on('continents')->nullOnDelete();
-            $table->foreign('class_age_id')->references('id')->on('classifications')->nullOnDelete();
-            $table->foreign('class_weight_id')->references('id')->on('classifications')->nullOnDelete();
+            $table->foreign('class_id')->references('id')->on('classifications')->nullOnDelete();
+            // $table->foreign('class_age_id')->references('id')->on('classifications')->nullOnDelete();
+            // $table->foreign('class_weight_id')->references('id')->on('classifications')->nullOnDelete();
         });
     }
 

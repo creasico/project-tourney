@@ -22,10 +22,10 @@ class ListClassifications extends ListRecords
     public function getTabs(): array
     {
         return [
-            'age' => Tab::make(trans('classification.term.age'))
-                ->modifyQueryUsing(fn (Builder $query) => $query->onlyAges()),
-            'weight' => Tab::make(trans('classification.term.weight'))
-                ->modifyQueryUsing(fn (Builder $query) => $query->onlyWeights()),
+            // 'age' => Tab::make(trans('classification.term.age'))
+            //     ->modifyQueryUsing(fn (Builder $query) => $query->onlyAges()),
+            // 'weight' => Tab::make(trans('classification.term.weight'))
+            //     ->modifyQueryUsing(fn (Builder $query) => $query->onlyWeights()),
         ];
     }
 

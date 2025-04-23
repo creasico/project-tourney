@@ -4,7 +4,6 @@ namespace App\Filament\Imports;
 
 use App\Enums\Gender;
 use App\Enums\ParticipantRole;
-use App\Models\Classification;
 use App\Models\Person;
 use Filament\Actions\Imports\ImportColumn;
 use Filament\Actions\Imports\Importer;
@@ -21,18 +20,6 @@ class ParticipantImporter extends Importer
             ImportColumn::make('continent')
                 ->relationship(resolveUsing: ['name'])
                 ->label(trans('continent.singular'))
-                ->rules(['required']),
-            ImportColumn::make('age')
-                ->relationship(
-                    resolveUsing: fn (string $state) => Classification::onlyAges()->where('label', $state)->first()
-                )
-                ->label(trans('classification.term.age'))
-                ->rules(['required']),
-            ImportColumn::make('weight')
-                ->relationship(
-                    resolveUsing: fn (string $state) => Classification::onlyWeights()->where('label', $state)->first()
-                )
-                ->label(trans('classification.term.weight'))
                 ->rules(['required']),
             ImportColumn::make('name')
                 ->requiredMapping()

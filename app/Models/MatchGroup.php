@@ -7,9 +7,9 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\Pivot;
 
-class TournamentDivision extends Pivot
+class MatchGroup extends Pivot
 {
-    protected $table = 'tournament_divisions';
+    protected $table = 'match_groups';
 
     public $timestamps = false;
 

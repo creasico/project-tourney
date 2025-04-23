@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Enums\AgeRange;
 use App\Enums\ParticipantRole;
 use App\Models\Classification;
 use App\Models\Continent;
@@ -24,9 +25,6 @@ class PersonFactory extends Factory
     {
         return [
             'continent_id' => Continent::factory(),
-            'user_id' => null,
-            'class_age_id' => Classification::factory()->asAge(),
-            'class_weight_id' => Classification::factory()->asWeight(),
             'gender' => $this->fakeGender(),
             'name' => fn (array $attr) => implode(' ', [
                 fake()->firstName($attr['gender']),
@@ -50,19 +48,22 @@ class PersonFactory extends Factory
         ]);
     }
 
-    public function asAthlete($age = null, $weight = null)
+    public function withClassification(?AgeRange $age = null, ?string $weight = null)
     {
-        return $this->withRole(ParticipantRole::Athlete)->state(fn () => array_filter([
-            'class_age_id' => $age,
-            'class_weight_id' => $weight,
-        ]));
+        return $this->for(
+            Classification::factory()->withRange($age, $weight),
+        );
+    }
+
+    public function asAthlete(?Classification $class = null)
+    {
+        return $this->withRole(ParticipantRole::Athlete)->state([
+            'class_id' => $class?->id,
+        ]);
     }
 
     public function asManager()
     {
-        return $this->state([
-            'class_age_id' => null,
-            'class_weight_id' => null,
-        ])->withRole(ParticipantRole::Manager);
+        return $this->withRole(ParticipantRole::Manager);
     }
 }

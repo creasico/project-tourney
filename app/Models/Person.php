@@ -50,7 +50,7 @@ class Person extends Model
 
     public function matches(): BelongsToMany
     {
-        return $this->belongsToMany(MatchUp::class, MatchParty::class, 'participant_id', 'match_id')
+        return $this->belongsToMany(Matchup::class, MatchParty::class, 'participant_id', 'match_id')
             ->withPivot(['side', 'round', 'status'])
             ->as('party');
     }

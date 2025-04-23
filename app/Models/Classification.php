@@ -2,7 +2,8 @@
 
 namespace App\Models;
 
-use App\Enums\ClassificationTerm;
+use App\Enums\AgeRange;
+use App\Enums\Gender;
 use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -19,14 +20,15 @@ class Classification extends Model
     {
         return [
             'order' => 'integer',
-            'term' => ClassificationTerm::class,
+            'gender' => Gender::class,
+            'age_range' => AgeRange::class,
         ];
     }
 
     public function tournaments(): BelongsToMany
     {
-        return $this->belongsToMany(Tournament::class, TournamentDivision::class, 'class_id')
+        return $this->belongsToMany(Tournament::class, MatchGroup::class, 'class_id')
             ->withPivot(['division', 'attr'])
-            ->as('division');
+            ->as('group');
     }
 }
