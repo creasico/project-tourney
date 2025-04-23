@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Models\Classification;
 use App\Models\Continent;
 use App\Models\Matchup;
+use App\Models\Person;
 use App\Models\Tournament;
 use Illuminate\Database\Eloquent\Factories\Sequence;
 use Illuminate\Database\Seeder;
@@ -35,15 +36,38 @@ class DummySeeder extends Seeder
     {
         $classes = Classification::all();
 
-        return Continent::factory(15)
+        $continents = Continent::factory(15)
             ->sequence(static fn (Sequence $sequence) => [
                 'name' => 'Kontingen '.($sequence->index + 1),
             ])
             ->withManagers(2)
-            ->withAthletes(20, fn (array $attrs) => [
-                'class_id' => $classes->where('gender', $attrs['gender'])->first(),
-            ])
             ->createMany();
+
+        return $continents->each(function ($continent) use ($classes) {
+            foreach ($classes->groupBy('age_range') as $byAges) {
+                if (fake()->boolean(30)) {
+                    continue;
+                }
+
+                foreach ($byAges->groupBy('label') as $byLabels) {
+                    if (fake()->boolean(30)) {
+                        continue;
+                    }
+
+                    $class = fake()->randomElement($byLabels);
+                    $count = fake()->numberBetween(2, 8);
+
+                    Person::factory($count)
+                        ->asAthlete()
+                        ->state(fn (array $attrs) => [
+                            'continent_id' => $continent,
+                            'class_id' => $class,
+                            'gender' => $class->gender,
+                        ])
+                        ->create();
+                }
+            }
+        });
     }
 
     /**
@@ -52,60 +76,70 @@ class DummySeeder extends Seeder
      */
     private function generateTournaments($continents)
     {
-        $athletes = $continents->reduce(
-            function ($athletes, $continent) {
-                $contestants = $continent->athletes()
-                    ->take(fake()->numberBetween(5, 20))
-                    ->get();
+        $continents = $continents->load('athletes');
 
-                return $athletes->merge($contestants);
-            },
-            collect()
-        );
+        $tournaments = Tournament::factory(10)->sequence(static function (Sequence $sequence) {
+            $criteria = $sequence->index < 5;
+            $fake = Carbon::parse(fake()->dateTimeThisMonth());
+            $start = $criteria
+                ? $fake->subWeeks(6 - $sequence->index)
+                : $fake->addWeeks($sequence->index - 6);
+            $created = $criteria ? $start : now()->addMinutes($sequence->index);
 
-        return Tournament::factory(10)
-            ->sequence(static function (Sequence $sequence) {
-                $criteria = $sequence->index < 5;
-                $fake = Carbon::parse(fake()->dateTimeThisMonth());
-                $start = $criteria
-                    ? $fake->subWeeks(6 - $sequence->index)
-                    : $fake->addWeeks($sequence->index - 6);
-                $created = $criteria ? $start : now()->addMinutes($sequence->index);
+            return [
+                'title' => 'Turnamen '.($sequence->index + 1),
+                'description' => 'Contoh keterangan turnamen '.($sequence->index + 1),
+                'start_date' => $start,
+                'finish_date' => $criteria
+                    ? fake()->dateTimeBetween($start, $start->clone()->addWeek())
+                    : null,
+                'created_at' => $created,
+                'updated_at' => $created,
+                'published_at' => $sequence->index < 8 ? $start : null,
+            ];
+        })->createMany();
 
-                return [
-                    'title' => 'Turnamen '.($sequence->index + 1),
-                    'description' => 'Contoh keterangan turnamen '.($sequence->index + 1),
-                    'start_date' => $start,
-                    'finish_date' => $criteria
-                        ? fake()->dateTimeBetween($start, $start->clone()->addWeek())
-                        : null,
-                    'created_at' => $created,
-                    'updated_at' => $created,
-                    'published_at' => $sequence->index < 8 ? $start : null,
-                ];
-            })
-            ->hasAttached($athletes, function (Tournament $model) {
-                $disqualified = $model->is_started && fake()->boolean(10)
-                    ? fake()->dateTimeBetween($model->start_date, $model->start_date->addDays(7))
-                    : null;
+        $tournaments->each(static function (Tournament $tournament) use ($continents) {
+            $participants = collect();
 
-                return [
+            foreach ($continents as $continent) {
+                if (fake()->boolean(20)) {
+                    continue;
+                }
+
+                foreach ($continent->athletes as $athlete) {
+                    if (fake()->boolean(30)) {
+                        continue;
+                    }
+
+                    $participants[] = $athlete;
+                }
+            }
+
+            foreach ($participants->chunk(500) as $athletes) {
+                // $disqualified = $tournament->is_started && fake()->boolean(10)
+                //     ? fake()->dateTimeBetween($tournament->start_date, $tournament->start_date->addDays(7))
+                //     : null;
+
+                $tournament->participants()->attach($athletes, [
                     // 'rank_number' => null,
-                    'draw_number' => $model->is_finished ? fake()->numberBetween(1, 20) : 0,
+                    // 'draw_number' => $tournament->is_finished ? fake()->numberBetween(1, 20) : 0,
                     // 'medal' => null,
-                    'knocked_at' => $model->is_started && $disqualified === null && fake()->boolean(40)
-                        ? fake()->dateTimeBetween($model->start_date, $model->start_date->addDays(7))
+                    // 'knocked_at' => $tournament->is_started && $disqualified === null && fake()->boolean(40)
+                    //     ? fake()->dateTimeBetween($tournament->start_date, $tournament->start_date->addDays(7))
+                    //     : null,
+                    // 'disqualification_reason' => $disqualified !== null && fake()->boolean(40)
+                    //     ? fake()->sentence()
+                    //     : null,
+                    // 'disqualified_at' => $disqualified,
+                    'verified_at' => fake()->boolean(90)
+                        ? fake()->dateTimeBetween($tournament->start_date->subDays(10), $tournament->start_date)
                         : null,
-                    'disqualification_reason' => $disqualified !== null && fake()->boolean(40)
-                        ? fake()->sentence()
-                        : null,
-                    'disqualified_at' => $disqualified,
-                    'verified_at' => $model->is_started
-                        ? fake()->dateTimeBetween($model->start_date->subDays(10), $model->start_date)
-                        : null,
-                ];
-            }, relationship: 'participants')
-            ->createMany();
+                ]);
+            }
+        });
+
+        return $tournaments;
     }
 
     /**

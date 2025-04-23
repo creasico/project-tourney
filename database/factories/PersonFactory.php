@@ -5,7 +5,6 @@ namespace Database\Factories;
 use App\Enums\AgeRange;
 use App\Enums\ParticipantRole;
 use App\Models\Classification;
-use App\Models\Continent;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -24,7 +23,6 @@ class PersonFactory extends Factory
     public function definition(): array
     {
         return [
-            'continent_id' => Continent::factory(),
             'gender' => $this->fakeGender(),
             'name' => fn (array $attr) => implode(' ', [
                 fake()->firstName($attr['gender']),
