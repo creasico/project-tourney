@@ -9,10 +9,12 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
-class MatchUp extends Model
+class Matchup extends Model
 {
-    /** @use HasFactory<\Database\Factories\MatchUpFactory> */
+    /** @use HasFactory<\Database\Factories\MatchupFactory> */
     use HasFactory, HasUlids;
+
+    use Helpers\WithClassification;
 
     protected function casts(): array
     {
@@ -33,11 +35,6 @@ class MatchUp extends Model
         return $this->belongsTo(Tournament::class);
     }
 
-    public function classification(): BelongsTo
-    {
-        return $this->belongsTo(Classification::class, 'class_id');
-    }
-
     public function participants(): BelongsToMany
     {
         return $this->belongsToMany(Person::class, MatchParty::class, 'match_id', 'participant_id')
@@ -47,6 +44,6 @@ class MatchUp extends Model
 
     public function next(): BelongsTo
     {
-        return $this->belongsTo(MatchUp::class, 'next_id');
+        return $this->belongsTo(Matchup::class, 'next_id');
     }
 }

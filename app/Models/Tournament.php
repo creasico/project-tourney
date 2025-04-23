@@ -55,19 +55,19 @@ class Tournament extends Model
 
     public function matches(): HasMany
     {
-        return $this->hasMany(MatchUp::class);
-    }
-
-    public function classes(): BelongsToMany
-    {
-        return $this->belongsToMany(Classification::class, TournamentDivision::class, relatedPivotKey: 'class_id')
-            ->withPivot(['division', 'attr'])
-            ->as('division');
+        return $this->hasMany(Matchup::class);
     }
 
     public function divisions(): HasMany
     {
-        return $this->hasMany(TournamentDivision::class);
+        return $this->hasMany(MatchGroup::class);
+    }
+
+    public function classes(): BelongsToMany
+    {
+        return $this->belongsToMany(Classification::class, MatchGroup::class, relatedPivotKey: 'class_id')
+            ->withPivot(['division', 'attr'])
+            ->as('group');
     }
 
     public function participants(): BelongsToMany

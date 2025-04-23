@@ -13,16 +13,6 @@ class Participation extends Pivot
 
     protected $table = 'participations';
 
-    protected static function boot()
-    {
-        parent::boot();
-
-        static::creating(static function (Participation $model) {
-            $model->class_age_id = $model->participant->class_age_id;
-            $model->class_weight_id = $model->participant->class_weight_id;
-        });
-    }
-
     protected function casts(): array
     {
         return [

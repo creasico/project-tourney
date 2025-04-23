@@ -6,12 +6,12 @@ use App\Enums\MatchSide;
 use App\Enums\MatchStatus;
 use App\Models\Classification;
 use App\Models\MatchParty;
-use App\Models\MatchUp;
+use App\Models\Matchup;
 use App\Models\Person;
 use App\Models\Tournament;
 
 test('belongs to tournament', function () {
-    $model = MatchUp::factory()
+    $model = Matchup::factory()
         ->for(
             Tournament::factory(),
         )
@@ -21,7 +21,7 @@ test('belongs to tournament', function () {
 });
 
 test('belongs to classification', function () {
-    $model = MatchUp::factory()
+    $model = Matchup::factory()
         ->for(
             Classification::factory(),
         )
@@ -31,7 +31,7 @@ test('belongs to classification', function () {
 });
 
 test('belongs to many participants', function () {
-    $model = MatchUp::factory()
+    $model = Matchup::factory()
         ->hasAttached(
             Person::factory(),
             [
@@ -54,12 +54,12 @@ test('belongs to many participants', function () {
 });
 
 test('belongs to next match', function () {
-    $model = MatchUp::factory()
+    $model = Matchup::factory()
         ->for(
-            MatchUp::factory(),
+            Matchup::factory(),
             'next'
         )
         ->createOne();
 
-    expect($model->next)->toBeInstanceOf(MatchUp::class);
+    expect($model->next)->toBeInstanceOf(Matchup::class);
 });

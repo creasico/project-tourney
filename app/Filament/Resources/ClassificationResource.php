@@ -11,6 +11,7 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables\Actions;
 use Filament\Tables\Columns;
+use Filament\Tables\Grouping\Group;
 use Filament\Tables\Table;
 
 class ClassificationResource extends Resource
@@ -38,15 +39,20 @@ class ClassificationResource extends Resource
         return $table
             ->reorderable('order')
             ->defaultSort('order')
+            ->defaultGroup(
+                Group::make('age_range')
+                    ->label(trans('classification.field.age_range'))
+                    ->getTitleFromRecordUsing(fn (Classification $record) => $record->age_range->label())
+            )
             ->columns([
-                Columns\TextColumn::make('order')
-                    ->label(trans('classification.field.order'))
-                    ->numeric()
-                    ->width(1)
-                    ->alignCenter(),
                 Columns\TextColumn::make('label')
                     ->label(trans('classification.field.label'))
                     ->description(fn (Classification $record) => $record->description),
+                Columns\TextColumn::make('gender')
+                    ->label(trans('participant.field.gender'))
+                    ->formatStateUsing(fn (Classification $record) => $record->gender->label()),
+                Columns\TextColumn::make('weight_range')
+                    ->label(trans('classification.field.weight_range')),
             ])
             ->filters([
                 //

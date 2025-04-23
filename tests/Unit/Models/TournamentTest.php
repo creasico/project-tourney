@@ -7,18 +7,18 @@ use App\Events\ParticipantDisqualified;
 use App\Events\ParticipantKnockedOff;
 use App\Events\ParticipantVerified;
 use App\Models\Classification;
-use App\Models\MatchUp;
+use App\Models\MatchGroup;
+use App\Models\Matchup;
 use App\Models\Participation;
 use App\Models\Person;
 use App\Models\Tournament;
-use App\Models\TournamentDivision;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Event;
 
 test('has many matches', function () {
     $model = Tournament::factory()
         ->has(
-            MatchUp::factory(2),
+            Matchup::factory(2),
             'matches',
         )
         ->createOne();
@@ -27,7 +27,7 @@ test('has many matches', function () {
 
     $match = $model->matches->first();
 
-    expect($match)->toBeInstanceOf(MatchUp::class);
+    expect($match)->toBeInstanceOf(Matchup::class);
 });
 
 test('has many classes', function () {
@@ -41,10 +41,10 @@ test('has many classes', function () {
     $class = $model->classes->first();
 
     expect($class)->toBeInstanceOf(Classification::class);
-    expect($class->division)->toBeInstanceOf(TournamentDivision::class);
+    expect($class->group)->toBeInstanceOf(MatchGroup::class);
 
-    expect($class->division->tournament->getKey())->toBe($model->getKey());
-    expect($class->division->classification->getKey())->toBe($class->getKey());
+    expect($class->group->tournament->getKey())->toBe($model->getKey());
+    expect($class->group->classification->getKey())->toBe($class->getKey());
 });
 
 test('has many participants', function () {

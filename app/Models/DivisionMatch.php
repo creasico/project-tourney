@@ -26,12 +26,12 @@ class DivisionMatch extends Model
 
     public function division(): BelongsTo
     {
-        return $this->belongsTo(TournamentDivision::class);
+        return $this->belongsTo(MatchGroup::class);
     }
 
     public function prizes(): BelongsToMany
     {
-        return $this->belongsToMany(PrizePool::class, DivisionPrize::class, 'division_id', 'prize_id')
+        return $this->belongsToMany(PrizePool::class, DivisionPrize::class, 'group_id', 'prize_id')
             ->withPivot(['amount', 'medal'])
             ->as('pool');
     }

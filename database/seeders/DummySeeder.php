@@ -4,8 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\Classification;
 use App\Models\Continent;
-use App\Models\MatchUp;
-use App\Models\Person;
+use App\Models\Matchup;
 use App\Models\Tournament;
 use Illuminate\Database\Eloquent\Factories\Sequence;
 use Illuminate\Database\Seeder;
@@ -18,6 +17,10 @@ class DummySeeder extends Seeder
      */
     public function run(): void
     {
+        if (app()->environment('production')) {
+            return;
+        }
+
         $continents = $this->generateContinents();
 
         $tournaments = $this->generateTournaments($continents);
@@ -30,26 +33,16 @@ class DummySeeder extends Seeder
      */
     private function generateContinents()
     {
-        $ageRanges = Classification::onlyAges()->get();
-        $weightRanges = Classification::onlyWeights()->get();
+        $classes = Classification::all();
 
         return Continent::factory(15)
             ->sequence(static fn (Sequence $sequence) => [
                 'name' => 'Kontingen '.($sequence->index + 1),
             ])
-            ->has(
-                Person::factory(2)->asManager(),
-                'members'
-            )
-            ->has(
-                Person::factory(20)
-                    ->sequence(static fn () => [
-                        'class_age_id' => fake()->randomElement($ageRanges)->getKey(),
-                        'class_weight_id' => fake()->randomElement($weightRanges)->getKey(),
-                    ])
-                    ->asAthlete(),
-                'members'
-            )
+            ->withManagers(2)
+            ->withAthletes(20, fn (array $attrs) => [
+                'class_id' => $classes->where('gender', $attrs['gender'])->first(),
+            ])
             ->createMany();
     }
 
@@ -117,7 +110,7 @@ class DummySeeder extends Seeder
 
     /**
      * @param  \Illuminate\Database\Eloquent\Collection<int, Tournament>  $tournaments
-     * @return \Illuminate\Database\Eloquent\Collection<int, MatchUp>
+     * @return \Illuminate\Database\Eloquent\Collection<int, Matchup>
      */
     private function generateMatches($tournaments)
     {

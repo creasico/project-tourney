@@ -20,6 +20,6 @@ class MatchRevision extends Model
 
     public function match(): BelongsTo
     {
-        return $this->belongsTo(MatchUp::class);
+        return $this->belongsTo(Matchup::class);
     }
 }

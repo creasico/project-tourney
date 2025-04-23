@@ -49,14 +49,6 @@ class ParticipantsRelationManager extends RelationManager
                     ->label(trans('participant.field.name')),
                 Columns\TextColumn::make('continent.name')
                     ->label(trans('continent.singular')),
-                Columns\TextColumn::make('age.label')
-                    ->label(trans('classification.term.age'))
-                    ->width('14%')
-                    ->alignCenter(),
-                Columns\TextColumn::make('weight.label')
-                    ->label(trans('classification.term.weight'))
-                    ->width('14%')
-                    ->alignCenter(),
                 Columns\TextColumn::make('gender')
                     ->label(trans('participant.field.gender'))
                     ->formatStateUsing(fn (Person $record) => $record->gender->label())
@@ -80,16 +72,6 @@ class ParticipantsRelationManager extends RelationManager
                 Filters\SelectFilter::make('continent.name')
                     ->label(trans('continent.singular'))
                     ->relationship('continent', 'name')
-                    ->searchable()
-                    ->preload(),
-                Filters\SelectFilter::make('age')
-                    ->label(trans('classification.term.age'))
-                    ->relationship('age', 'label')
-                    ->searchable()
-                    ->preload(),
-                Filters\SelectFilter::make('weight')
-                    ->label(trans('classification.term.weight'))
-                    ->relationship('weight', 'label')
                     ->searchable()
                     ->preload(),
                 Filters\SelectFilter::make('gender')
