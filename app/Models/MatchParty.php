@@ -16,8 +16,6 @@ class MatchParty extends Pivot
     {
         return [
             'side' => MatchSide::class,
-            'party_number' => 'integer',
-            'round_number' => 'integer',
             'status' => MatchStatus::class,
         ];
     }

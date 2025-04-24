@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Filament\Resources\ContinentResource\RelationManagers;
 
 use App\Enums\AgeRange;
