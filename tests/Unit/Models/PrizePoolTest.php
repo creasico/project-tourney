@@ -3,14 +3,14 @@
 declare(strict_types=1);
 
 use App\Enums\MedalPrize;
-use App\Models\DivisionMatch;
+use App\Models\Division;
 use App\Models\DivisionPrize;
 use App\Models\PrizePool;
 
 test('belongs to many prizes', function () {
     $model = PrizePool::factory()
         ->hasAttached(
-            DivisionMatch::factory(),
+            Division::factory(),
             [
                 'amount' => 100,
                 'medal' => MedalPrize::Gold,
@@ -23,7 +23,7 @@ test('belongs to many prizes', function () {
 
     $prize = $model->prizes->first();
 
-    expect($prize)->toBeInstanceOf(DivisionMatch::class);
+    expect($prize)->toBeInstanceOf(Division::class);
     expect($prize->pool)->toBeInstanceOf(DivisionPrize::class);
     expect($prize->pool->medal)->toBe(MedalPrize::Gold);
 });

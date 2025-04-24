@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models;
 
 use App\Enums\MatchSide;
@@ -21,7 +23,7 @@ class Matchup extends Model
         return [
             'next_side' => MatchSide::class,
             'party_number' => 'integer',
-            'round' => 'integer',
+            'round_number' => 'integer',
             'order' => 'integer',
             'is_bye' => 'boolean',
             'attr' => 'object',
@@ -35,15 +37,23 @@ class Matchup extends Model
         return $this->belongsTo(Tournament::class);
     }
 
-    public function participants(): BelongsToMany
+    public function athletes(): BelongsToMany
     {
         return $this->belongsToMany(Person::class, MatchParty::class, 'match_id', 'participant_id')
-            ->withPivot(['side', 'round', 'status'])
+            ->withPivot(['side', 'status'])
             ->as('party');
     }
 
     public function next(): BelongsTo
     {
         return $this->belongsTo(Matchup::class, 'next_id');
+    }
+
+    public function attachAthlete(Person $athlete, MatchSide $side, int $party = 0)
+    {
+        $this->athletes()->attach($athlete, [
+            'side' => $side,
+            'party_number' => $party,
+        ]);
     }
 }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Concerns\HasUlids;
@@ -21,7 +23,7 @@ class PrizePool extends Model
 
     public function prizes(): BelongsToMany
     {
-        return $this->belongsToMany(DivisionMatch::class, DivisionPrize::class, 'prize_id', 'group_id')
+        return $this->belongsToMany(Division::class, DivisionPrize::class, 'prize_id', 'division_id')
             ->withPivot(['amount', 'medal'])
             ->as('pool');
     }

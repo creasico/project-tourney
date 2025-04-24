@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models;
 
 use App\Enums\MedalPrize;
@@ -30,9 +32,9 @@ class Participation extends Pivot
         return $this->belongsTo(Person::class, 'participant_id');
     }
 
-    public function prize(): BelongsTo
+    public function match(): BelongsTo
     {
-        return $this->belongsTo(PrizePool::class);
+        return $this->belongsTo(Matchup::class, 'match_id');
     }
 
     public function isDisqualified(): Attribute

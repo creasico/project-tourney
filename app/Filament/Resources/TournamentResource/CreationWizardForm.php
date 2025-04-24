@@ -94,7 +94,7 @@ trait CreationWizardForm
                 ])
                 ->afterValidation(function (Get $get) {
                     foreach ($get('divisions') as $division) {
-                        $this->record->divisions()->create($division);
+                        $this->record->groups()->create($division);
                     }
                 }),
             Components\Wizard\Step::make(trans('tournament.wizard.participation_label'))

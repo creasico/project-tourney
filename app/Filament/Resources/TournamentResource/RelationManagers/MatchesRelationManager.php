@@ -23,7 +23,7 @@ class MatchesRelationManager extends RelationManager
     {
         return $form
             ->schema([
-                Components\TextInput::make('party')
+                Components\TextInput::make('party_number')
                     ->required()
                     ->numeric(),
             ]);
@@ -32,10 +32,12 @@ class MatchesRelationManager extends RelationManager
     public function table(Table $table): Table
     {
         return $table
-            ->recordTitleAttribute('party')
+            ->recordTitleAttribute('party_number')
             ->columns([
                 Columns\Layout\Stack::make([
                     //
+                    Columns\TextColumn::make('name')
+                        ->label(trans('participant.field.name')),
                 ]),
             ])
             ->contentGrid(fn () => [

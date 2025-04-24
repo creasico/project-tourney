@@ -15,8 +15,30 @@ enum MatchStatus: int
 
     case Lose = 2;
 
+    case Draw = 3;
+
     public function label(): string
     {
         return trans('match.status.'.str($this->name)->slug());
+    }
+
+    public function isQueue(): bool
+    {
+        return $this === self::Queue;
+    }
+
+    public function isWin(): bool
+    {
+        return $this === self::Win;
+    }
+
+    public function isLose(): bool
+    {
+        return $this === self::Lose;
+    }
+
+    public function isDraw(): bool
+    {
+        return $this === self::Draw;
     }
 }

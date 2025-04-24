@@ -3,12 +3,12 @@
 declare(strict_types=1);
 
 use App\Enums\MedalPrize;
-use App\Models\DivisionMatch;
+use App\Models\Division;
 use App\Models\DivisionPrize;
 use App\Models\PrizePool;
 
 test('belongs to many prizes', function () {
-    $model = DivisionMatch::factory()
+    $model = Division::factory()
         ->hasAttached(
             PrizePool::factory(),
             [

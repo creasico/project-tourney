@@ -30,27 +30,26 @@ test('belongs to classification', function () {
     expect($model->classification)->toBeInstanceOf(Classification::class);
 });
 
-test('belongs to many participants', function () {
+test('belongs to many athletes', function () {
     $model = Matchup::factory()
         ->hasAttached(
             Person::factory(),
             [
                 'side' => MatchSide::Red,
-                'round' => 1,
                 'status' => MatchStatus::Queue,
             ],
-            'participants'
+            'athletes'
         )
         ->createOne();
 
-    expect($model->participants)->toHaveCount(1);
+    expect($model->athletes)->toHaveCount(1);
 
-    $participant = $model->participants->first();
+    $athlete = $model->athletes->first();
 
-    expect($participant)->toBeInstanceOf(Person::class);
-    expect($participant->party)->toBeInstanceOf(MatchParty::class);
-    expect($participant->party->side)->toBe(MatchSide::Red);
-    expect($participant->party->status)->toBe(MatchStatus::Queue);
+    expect($athlete)->toBeInstanceOf(Person::class);
+    expect($athlete->party)->toBeInstanceOf(MatchParty::class);
+    expect($athlete->party->side)->toBe(MatchSide::Red);
+    expect($athlete->party->status)->toBe(MatchStatus::Queue);
 });
 
 test('belongs to next match', function () {

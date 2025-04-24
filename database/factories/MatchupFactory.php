@@ -1,10 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Database\Factories;
 
 use App\Enums\MatchSide;
-use App\Models\Classification;
-use App\Models\Tournament;
 use DateTime;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -23,12 +23,9 @@ class MatchupFactory extends Factory
     public function definition(): array
     {
         return [
-            'tournament_id' => Tournament::factory(),
-            'class_id' => Classification::factory(),
-            'next_id' => null,
             'next_side' => fake()->randomElement(MatchSide::cases()),
             'party_number' => fake()->numberBetween(0, 10),
-            'round' => fake()->numberBetween(0, 10),
+            'round_number' => fake()->numberBetween(0, 10),
             'order' => fake()->numberBetween(0, 10),
             'is_bye' => fake()->boolean(),
             'attr' => null,

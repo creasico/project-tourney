@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models;
 
 use App\Enums\MatchSide;
@@ -14,7 +16,8 @@ class MatchParty extends Pivot
     {
         return [
             'side' => MatchSide::class,
-            'round' => 'integer',
+            'party_number' => 'integer',
+            'round_number' => 'integer',
             'status' => MatchStatus::class,
         ];
     }

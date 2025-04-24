@@ -1,16 +1,16 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\DivisionMatch>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Division>
  */
-class DivisionMatchFactory extends Factory
+class DivisionFactory extends Factory
 {
-    use Helpers\WithGender;
-
     /**
      * Define the model's default state.
      *
@@ -20,7 +20,6 @@ class DivisionMatchFactory extends Factory
     {
         return [
             'label' => fake()->sentence(),
-            'gender' => $this->fakeGender(),
             'attr' => null,
         ];
     }

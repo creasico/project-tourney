@@ -41,7 +41,6 @@ test('belongs to many matches', function () {
             Matchup::factory(),
             [
                 'side' => MatchSide::Red,
-                'round' => 1,
                 'status' => MatchStatus::Queue,
             ],
             'matches'

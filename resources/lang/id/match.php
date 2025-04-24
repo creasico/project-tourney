@@ -10,6 +10,11 @@ return [
         'lose' => 'Kalah',
     ],
 
+    'bye' => [
+        'up' => 'Bye Atas',
+        'down' => 'Bye Bawah',
+    ],
+
     'side' => [
         'blue' => 'Biru',
         'red' => 'Merah',

@@ -10,6 +10,11 @@ return [
         'lose' => 'Lose',
     ],
 
+    'bye' => [
+        'up' => 'Bye Up',
+        'down' => 'Bye Down',
+    ],
+
     'side' => [
         'blue' => 'Blue',
         'red' => 'Red',

@@ -1,6 +1,6 @@
 <?php
 
-use App\Enums\Gender;
+use App\Enums\MatchBye;
 use App\Enums\MatchSide;
 use App\Enums\MatchStatus;
 use App\Enums\MedalPrize;
@@ -21,22 +21,25 @@ return new class extends Migration
             $table->foreignUlid('class_id')->constrained('classifications')->cascadeOnDelete();
 
             $table->unsignedSmallInteger('division')->default(0);
+            $table->enum('bye', MatchBye::toArray())->nullable()->comment(
+                sprintf('See %s for detail', MatchBye::class)
+            );
+
             $table->json('attr')->nullable();
         });
 
-        Schema::create('division_matches', function (Blueprint $table) {
+        Schema::create('divisions', function (Blueprint $table) {
             $table->id();
             $table->foreignId('group_id')->nullable();
 
             $table->string('label');
-            $table->enum('gender', Gender::toArray())->nullable();
             $table->json('attr')->nullable();
 
             $table->foreign('group_id')->references('id')->on('match_groups')->nullOnDelete();
         });
 
         Schema::create('division_prizes', function (Blueprint $table) {
-            $table->foreignId('group_id')->constrained('division_matches')->cascadeOnDelete();
+            $table->foreignId('division_id')->constrained('divisions')->cascadeOnDelete();
             $table->foreignUlid('prize_id')->constrained('prize_pools')->cascadeOnDelete();
 
             $table->string('amount');
@@ -47,14 +50,14 @@ return new class extends Migration
 
         Schema::create('matchups', function (Blueprint $table) {
             $table->ulid('id')->unique();
-            $table->foreignId('group_id')->nullable();
+            $table->foreignId('division_id')->nullable();
             $table->foreignUlid('tournament_id')->nullable();
             $table->foreignUlid('class_id')->nullable();
             $table->foreignUlid('next_id')->nullable();
 
             $table->enum('next_side', MatchSide::toArray())->nullable();
             $table->unsignedSmallInteger('party_number')->default(0);
-            $table->smallInteger('round')->default(0);
+            $table->smallInteger('round_number')->default(0);
             $table->unsignedSmallInteger('order')->default(0);
             $table->boolean('is_bye')->default(false);
             $table->json('attr')->nullable();
@@ -62,7 +65,7 @@ return new class extends Migration
             $table->dateTime('finished_at')->nullable();
 
             $table->timestamps();
-            $table->foreign('group_id')->references('id')->on('division_matches')->nullOnDelete();
+            $table->foreign('division_id')->references('id')->on('divisions')->nullOnDelete();
             $table->foreign('tournament_id')->references('id')->on('tournaments')->nullOnDelete();
             $table->foreign('class_id')->references('id')->on('classifications')->nullOnDelete();
         });
@@ -75,12 +78,8 @@ return new class extends Migration
             $table->foreignUlid('tournament_id')->constrained('tournaments')->cascadeOnDelete();
             $table->foreignUlid('participant_id')->constrained('people')->cascadeOnDelete();
             $table->foreignUlid('match_id')->nullable();
-            // $table->foreignUlid('class_id')->nullable();
-            // $table->foreignUlid('class_age_id')->nullable();
-            // $table->foreignUlid('class_weight_id')->nullable();
-            // $table->foreignUlid('reward_id')->nullable();
 
-            $table->smallInteger('rank_number')->nullable();
+            $table->smallInteger('rank_number')->default(0);
             $table->smallInteger('draw_number')->default(0);
             $table->smallInteger('medal')->default(0);
             $table->string('disqualification_reason')->nullable();
@@ -90,10 +89,6 @@ return new class extends Migration
             $table->dateTime('verified_at')->nullable();
 
             $table->foreign('match_id')->references('id')->on('matchups')->nullOnDelete();
-            // $table->foreign('class_id')->references('id')->on('classifications')->nullOnDelete();
-            // $table->foreign('class_age_id')->references('id')->on('classifications')->nullOnDelete();
-            // $table->foreign('class_weight_id')->references('id')->on('classifications')->nullOnDelete();
-            // $table->foreign('reward_id')->references('id')->on('prize_pools')->nullOnDelete();
         });
 
         Schema::create('match_revisions', function (Blueprint $table) {
@@ -111,8 +106,7 @@ return new class extends Migration
             $table->foreignUlid('participant_id')->constrained('people')->cascadeOnDelete();
 
             $table->enum('side', MatchSide::toArray())->nullable();
-            $table->smallInteger('round')->nullable();
-            $table->unsignedTinyInteger('status')->default(0)->comment(
+            $table->unsignedTinyInteger('status')->default(MatchStatus::Queue)->comment(
                 sprintf('See %s for detail', MatchStatus::class)
             );
         });
@@ -128,7 +122,7 @@ return new class extends Migration
         Schema::dropIfExists('participations');
         Schema::dropIfExists('matchups');
         Schema::dropIfExists('division_prizes');
-        Schema::dropIfExists('division_matches');
+        Schema::dropIfExists('divisions');
         Schema::dropIfExists('match_groups');
     }
 };

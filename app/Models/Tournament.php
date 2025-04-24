@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models;
 
 use App\Enums\TournamentLevel;
@@ -58,7 +60,7 @@ class Tournament extends Model
         return $this->hasMany(Matchup::class);
     }
 
-    public function divisions(): HasMany
+    public function groups(): HasMany
     {
         return $this->hasMany(MatchGroup::class);
     }
@@ -66,7 +68,7 @@ class Tournament extends Model
     public function classes(): BelongsToMany
     {
         return $this->belongsToMany(Classification::class, MatchGroup::class, relatedPivotKey: 'class_id')
-            ->withPivot(['division', 'attr'])
+            ->withPivot(['id', 'division', 'attr'])
             ->as('group');
     }
 

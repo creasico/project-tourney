@@ -1,7 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Database\Seeders;
 
+use App\Jobs\AthleteParticipation;
+use App\Jobs\Matchmaking;
 use App\Models\Classification;
 use App\Models\Continent;
 use App\Models\Matchup;
@@ -10,6 +14,7 @@ use App\Models\Tournament;
 use Illuminate\Database\Eloquent\Factories\Sequence;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\DB;
 
 class DummySeeder extends Seeder
 {
@@ -100,6 +105,7 @@ class DummySeeder extends Seeder
         })->createMany();
 
         $tournaments->each(static function (Tournament $tournament) use ($continents) {
+            /** @var \Illuminate\Database\Eloquent\Collection<int, \App\Models\Person> */
             $participants = collect();
 
             foreach ($continents as $continent) {
@@ -116,27 +122,17 @@ class DummySeeder extends Seeder
                 }
             }
 
-            foreach ($participants->chunk(500) as $athletes) {
-                // $disqualified = $tournament->is_started && fake()->boolean(10)
-                //     ? fake()->dateTimeBetween($tournament->start_date, $tournament->start_date->addDays(7))
-                //     : null;
+            dispatch_sync(new AthleteParticipation($tournament, $participants));
 
-                $tournament->participants()->attach($athletes, [
-                    // 'rank_number' => null,
-                    // 'draw_number' => $tournament->is_finished ? fake()->numberBetween(1, 20) : 0,
-                    // 'medal' => null,
-                    // 'knocked_at' => $tournament->is_started && $disqualified === null && fake()->boolean(40)
-                    //     ? fake()->dateTimeBetween($tournament->start_date, $tournament->start_date->addDays(7))
-                    //     : null,
-                    // 'disqualification_reason' => $disqualified !== null && fake()->boolean(40)
-                    //     ? fake()->sentence()
-                    //     : null,
-                    // 'disqualified_at' => $disqualified,
-                    'verified_at' => fake()->boolean(90)
-                        ? fake()->dateTimeBetween($tournament->start_date->subDays(10), $tournament->start_date)
-                        : null,
-                ]);
-            }
+            DB::transaction(function () use ($tournament) {
+                if ($tournament->is_draft) {
+                    return;
+                }
+
+                $tournament->participants->each(fn ($person) => $tournament->verify($person));
+            });
+
+            dispatch(new Matchmaking($tournament));
         });
 
         return $tournaments;

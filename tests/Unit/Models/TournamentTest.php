@@ -36,7 +36,7 @@ test('has many classes', function () {
         ->createOne();
 
     expect($model->classes)->toHaveCount(1);
-    expect($model->divisions)->toHaveCount(1);
+    expect($model->groups)->toHaveCount(1);
 
     $class = $model->classes->first();
 

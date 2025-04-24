@@ -17,4 +17,14 @@ enum MatchSide: string
     {
         return trans('match.side.'.$this->value);
     }
+
+    public function isBlue(): bool
+    {
+        return $this === self::Blue;
+    }
+
+    public function isRed(): bool
+    {
+        return $this === self::Red;
+    }
 }

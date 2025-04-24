@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models;
 
 use App\Enums\Gender;
@@ -51,7 +53,7 @@ class Person extends Model
     public function matches(): BelongsToMany
     {
         return $this->belongsToMany(Matchup::class, MatchParty::class, 'participant_id', 'match_id')
-            ->withPivot(['side', 'round', 'status'])
+            ->withPivot(['side', 'status'])
             ->as('party');
     }
 }
