@@ -2,8 +2,8 @@
 
 declare(strict_types=1);
 
-test('example', function () {
-    $response = $this->get('/');
+use App\Jobs\Matchmaking;
 
-    $response->assertStatus(200);
+test('class exists', function () {
+    expect(class_exists(Matchmaking::class))->toBeTrue();
 });
