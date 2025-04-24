@@ -2,7 +2,9 @@
 
 namespace App\Filament\Resources\TournamentResource\RelationManagers;
 
+use App\Enums\AgeRange;
 use App\Enums\Gender;
+use App\Models\Builders\PersonBuilder;
 use App\Models\Person;
 use Filament\Forms\Components;
 use Filament\Forms\Form;
@@ -10,6 +12,7 @@ use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables\Actions;
 use Filament\Tables\Columns;
 use Filament\Tables\Filters;
+use Filament\Tables\Grouping\Group;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
@@ -44,14 +47,24 @@ class ParticipantsRelationManager extends RelationManager
         return $table
             ->recordTitleAttribute('name')
             ->inverseRelationship('tournaments')
+            ->defaultGroup(
+                Group::make('classification.age_range')
+                    ->label(trans('classification.field.age_range'))
+                    ->getTitleFromRecordUsing(fn (Person $record) => $record->classification->age_range->label())
+            )
             ->columns([
                 Columns\TextColumn::make('name')
                     ->label(trans('participant.field.name')),
                 Columns\TextColumn::make('continent.name')
                     ->label(trans('continent.singular')),
-                Columns\TextColumn::make('gender')
-                    ->label(trans('participant.field.gender'))
-                    ->formatStateUsing(fn (Person $record) => $record->gender->label())
+                Columns\TextColumn::make('classification.label')
+                    ->label(trans('classification.singular'))
+                    ->formatStateUsing(function (Person $record) {
+                        $label = $record->classification->label;
+                        $gender = $record->gender->label();
+
+                        return "{$label} {$gender}";
+                    })
                     ->width('10%')
                     ->alignCenter(),
                 Columns\IconColumn::make('participation.is_verified')
@@ -74,9 +87,24 @@ class ParticipantsRelationManager extends RelationManager
                     ->relationship('continent', 'name')
                     ->searchable()
                     ->preload(),
+
                 Filters\SelectFilter::make('gender')
                     ->label(trans('participant.field.gender'))
                     ->options(Gender::toOptions()),
+
+                Filters\SelectFilter::make('classification.age_range')
+                    ->label(trans('classification.field.age_range'))
+                    ->options(AgeRange::toOptions())
+                    ->query(function (PersonBuilder $query, $data) {
+                        if (! $data['value']) {
+                            return $query;
+                        }
+
+                        return $query->whereHas(
+                            'classification',
+                            fn (Builder $query) => $query->where('age_range', $data['value'])
+                        );
+                    }),
             ])
             ->headerActions([
                 Actions\AttachAction::make('attach')
