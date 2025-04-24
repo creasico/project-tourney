@@ -4,10 +4,8 @@ declare(strict_types=1);
 
 namespace App\Jobs;
 
-use App\Enums\MatchSide;
 use App\Models\Classification;
 use App\Models\MatchGroup;
-use App\Models\Person;
 use App\Models\Tournament;
 use Illuminate\Bus\Batchable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -89,17 +87,5 @@ class ProceedMatchmaking implements ShouldQueue
         }
 
         return $result;
-    }
-
-    public function createMatchParty(Person $blue, Person $red)
-    {
-        /** @var \App\Models\Matchup */
-        $match = $this->tournament->matches()->create([
-            'group_id' => $this->group->id,
-            'class_id' => $this->class->id,
-        ]);
-
-        $match->attachAthlete($blue, MatchSide::Blue);
-        $match->attachAthlete($red, MatchSide::Red);
     }
 }

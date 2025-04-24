@@ -49,11 +49,10 @@ class Matchup extends Model
         return $this->belongsTo(Matchup::class, 'next_id');
     }
 
-    public function attachAthlete(Person $athlete, MatchSide $side, int $party = 0)
+    public function attachAthlete(Person $athlete, MatchSide $side)
     {
         $this->athletes()->attach($athlete, [
             'side' => $side,
-            'party_number' => $party,
         ]);
     }
 }
