@@ -3,6 +3,8 @@
 namespace Database\Factories;
 
 use App\Enums\AgeRange;
+use App\Models\Person;
+use App\Models\Tournament;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -44,5 +46,22 @@ class ClassificationFactory extends Factory
             'age_range' => $age ?? fake()->randomElement(AgeRange::cases()),
             'weight_range' => $weight ?? $this->ranges[$attrs['label']],
         ]);
+    }
+
+    public function withTournaments(?TournamentFactory $tournaments = null, array $pivot = [])
+    {
+        return $this->hasAttached(
+            $tournaments ?? Tournament::factory(),
+            $pivot,
+            'tournaments',
+        );
+    }
+
+    public function withAthletes(?PersonFactory $athletes = null)
+    {
+        return $this->has(
+            $athletes ?? Person::factory(),
+            'athletes',
+        );
     }
 }

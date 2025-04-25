@@ -2,17 +2,16 @@
 
 declare(strict_types=1);
 
+use App\Enums\AgeRange;
+use App\Enums\Gender;
 use App\Models\Classification;
 use App\Models\MatchGroup;
+use App\Models\Person;
 use App\Models\Tournament;
 
-test('has many tournaments', function () {
+test('belongs to many tournaments', function () {
     $model = Classification::factory()
-        ->hasAttached(
-            Tournament::factory(),
-            [],
-            'tournaments',
-        )
+        ->withTournaments()
         ->createOne();
 
     expect($model->tournaments)->toHaveCount(1);
@@ -21,4 +20,30 @@ test('has many tournaments', function () {
 
     expect($tournament)->toBeInstanceOf(Tournament::class);
     expect($tournament->group)->toBeInstanceOf(MatchGroup::class);
+});
+
+test('has many athletes', function () {
+    $model = Classification::factory()
+        ->withAthletes()
+        ->createOne();
+
+    expect($model->athletes)->toHaveCount(1);
+
+    $athlete = $model->athletes->first();
+
+    expect($athlete)->toBeInstanceOf(Person::class);
+});
+
+test('concat fields as display', function () {
+    $model = Classification::factory()->createOne([
+        'label' => 'A',
+        'gender' => Gender::Male,
+        'age_range' => AgeRange::Junior,
+    ]);
+
+    expect($model->display)->toBe(implode(' ', [
+        'A',
+        trans('classification.age.junior'),
+        trans('app.gender.male'),
+    ]));
 });
