@@ -3,7 +3,12 @@
 import antfu from '@antfu/eslint-config'
 
 export default antfu({
+  formatters: {
+    css: true,
+  },
   ignores: [
-    '**/build',
+    'public/**',
+    'storage/**',
   ],
+  typescript: {},
 })

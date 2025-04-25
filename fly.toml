@@ -8,42 +8,43 @@ primary_region = 'sin'
 console_command = 'php /var/www/html/artisan tinker'
 
 [build]
-  [build.args]
-    NODE_VERSION = '18'
-    PHP_VERSION = '8.2'
+
+[build.args]
+NODE_VERSION = '18'
+PHP_VERSION = '8.2'
 
 [deploy]
-  release_command = 'php /var/www/html/artisan migrate --force'
+release_command = 'php /var/www/html/artisan migrate --force'
 
 [env]
-  APP_NAME = 'Tourney'
-  APP_ENV = 'staging'
-  APP_LOCALE = 'id'
-  APP_FAKER_LOCALE = 'id_ID'
-  CACHE_STORE = 'redis'
-  DB_CONNECTION = 'pgsql'
-  LOG_CHANNEL = 'stack'
-  LOG_STACK = 'stderr,sentry'
-  LOG_LEVEL = 'info'
-  LOG_STDERR_FORMATTER = 'Monolog\Formatter\JsonFormatter'
-  QUEUE_CONNECTION = 'redis'
-  SESSION_DRIVER = 'redis'
-  SESSION_SECURE_COOKIE = 'true'
+APP_NAME = 'Tourney'
+APP_ENV = 'staging'
+APP_LOCALE = 'id'
+APP_FAKER_LOCALE = 'id_ID'
+CACHE_STORE = 'redis'
+DB_CONNECTION = 'pgsql'
+LOG_CHANNEL = 'stack'
+LOG_STACK = 'stderr,sentry'
+LOG_LEVEL = 'info'
+LOG_STDERR_FORMATTER = 'Monolog\Formatter\JsonFormatter'
+QUEUE_CONNECTION = 'redis'
+SESSION_DRIVER = 'redis'
+SESSION_SECURE_COOKIE = 'true'
 
 [http_service]
-  internal_port = 8080
-  force_https = true
-  auto_stop_machines = 'stop'
-  auto_start_machines = true
-  min_machines_running = 0
-  processes = ['app']
+internal_port = 8080
+force_https = true
+auto_stop_machines = 'stop'
+auto_start_machines = true
+min_machines_running = 0
+processes = [ 'app' ]
 
 [mounts]
-  source = 'tourney'
-  destination = '/var/www/html/storage/app'
-  processes = ['app']
+source = 'tourney'
+destination = '/var/www/html/storage/app'
+processes = [ 'app' ]
 
 [[vm]]
-  memory = '512MB'
-  cpu_kind = 'shared'
-  cpus = 1
+memory = '512MB'
+cpu_kind = 'shared'
+cpus = 1
