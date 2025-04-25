@@ -16,7 +16,6 @@ use Filament\Tables\Actions;
 use Filament\Tables\Filters;
 use Filament\Tables\Grouping\Group;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 
 class AthletesRelationManager extends RelationManager
@@ -62,10 +61,7 @@ class AthletesRelationManager extends RelationManager
                             return $query;
                         }
 
-                        return $query->whereHas(
-                            'classification',
-                            fn (Builder $query) => $query->where('age_range', $data['value'])
-                        );
+                        return $query->hasAgeRange($data['value']);
                     }),
             ])
             ->headerActions([
