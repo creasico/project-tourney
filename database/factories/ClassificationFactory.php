@@ -3,7 +3,6 @@
 namespace Database\Factories;
 
 use App\Enums\AgeRange;
-use App\Models\Person;
 use App\Models\Tournament;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -12,7 +11,8 @@ use Illuminate\Database\Eloquent\Factories\Factory;
  */
 class ClassificationFactory extends Factory
 {
-    use Helpers\WithGender;
+    /** @use Helpers\WithAthletes<\App\Models\Classification> */
+    use Helpers\WithAthletes, Helpers\WithGender;
 
     private array $ranges = [
         'A' => '26-28',
@@ -54,14 +54,6 @@ class ClassificationFactory extends Factory
             $tournaments ?? Tournament::factory(),
             $pivot,
             'tournaments',
-        );
-    }
-
-    public function withAthletes(?PersonFactory $athletes = null)
-    {
-        return $this->has(
-            $athletes ?? Person::factory(),
-            'athletes',
         );
     }
 }

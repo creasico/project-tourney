@@ -32,14 +32,10 @@ test('belongs to classification', function () {
 
 test('belongs to many athletes', function () {
     $model = Matchup::factory()
-        ->hasAttached(
-            Person::factory(),
-            [
-                'side' => MatchSide::Red,
-                'status' => MatchStatus::Queue,
-            ],
-            'athletes'
-        )
+        ->withAthletes(pivot: [
+            'side' => MatchSide::Red,
+            'status' => MatchStatus::Queue,
+        ])
         ->createOne();
 
     expect($model->athletes)->toHaveCount(1);

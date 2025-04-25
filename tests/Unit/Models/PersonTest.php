@@ -15,10 +15,7 @@ use App\Models\User;
 
 test('belongs to user', function () {
     $model = Person::factory()
-        ->for(
-            User::factory(),
-            'credential'
-        )
+        ->withUser()
         ->createOne();
 
     expect($model->credential)->toBeInstanceOf(User::class);

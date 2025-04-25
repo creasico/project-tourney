@@ -34,9 +34,10 @@ class PersonFactory extends Factory
 
     public function withUser()
     {
-        return $this->state([
-            'user_id' => User::factory(),
-        ]);
+        return $this->for(
+            User::factory(),
+            'credential'
+        );
     }
 
     public function withRole(ParticipantRole $role)

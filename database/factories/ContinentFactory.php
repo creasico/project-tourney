@@ -10,6 +10,9 @@ use Illuminate\Database\Eloquent\Factories\Factory;
  */
 class ContinentFactory extends Factory
 {
+    /** @use Helpers\WithAthletes<\App\Models\Continent> */
+    use Helpers\WithAthletes;
+
     /**
      * Define the model's default state.
      *
@@ -32,17 +35,6 @@ class ContinentFactory extends Factory
         return $this->has(
             Person::factory($count)->asManager()->state($state),
             'managers'
-        );
-    }
-
-    /**
-     * @param  \Closure(array, \App\Models\Continent)|array  $state
-     */
-    public function withAthletes(?int $count = null, \Closure|array $state = [])
-    {
-        return $this->has(
-            Person::factory($count)->asAthlete()->state($state),
-            'athletes'
         );
     }
 }

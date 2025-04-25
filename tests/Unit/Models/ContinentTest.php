@@ -3,14 +3,10 @@
 declare(strict_types=1);
 
 use App\Models\Continent;
-use App\Models\Person;
 
 test('has many athletes', function () {
     $model = Continent::factory()
-        ->has(
-            Person::factory(2)->asAthlete(),
-            'athletes'
-        )
+        ->withAthletes(2)
         ->createOne();
 
     expect($model->athletes)->toHaveCount(2);
@@ -18,10 +14,7 @@ test('has many athletes', function () {
 
 test('has many managers', function () {
     $model = Continent::factory()
-        ->has(
-            Person::factory(2)->asManager(),
-            'managers'
-        )
+        ->withManagers(2)
         ->createOne();
 
     expect($model->managers)->toHaveCount(2);

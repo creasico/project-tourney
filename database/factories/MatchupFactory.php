@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Database\Factories;
 
 use App\Enums\MatchSide;
+use App\Models\Person;
 use DateTime;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -47,5 +48,14 @@ class MatchupFactory extends Factory
         return $this->state([
             'finished_at' => null,
         ]);
+    }
+
+    public function withAthletes(?PersonFactory $athletes = null, array $pivot = [])
+    {
+        return $this->hasAttached(
+            $athletes ?? Person::factory()->asAthlete(),
+            $pivot,
+            'athletes'
+        );
     }
 }

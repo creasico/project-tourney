@@ -33,7 +33,7 @@ class TournamentFactory extends Factory
     public function withParticipants(?PersonFactory $participants = null, array $pivot = [])
     {
         return $this->hasAttached(
-            $participants ?? Person::factory(),
+            $participants ?? Person::factory()->asAthlete(),
             $pivot,
             'participants'
         );
