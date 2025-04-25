@@ -131,26 +131,29 @@ it('could knock-off participants', function () {
 
 it('could be drafted', function () {
     $model = Tournament::factory()->createOne([
-        'start_date' => null,
         'finish_date' => null,
         'published_at' => null,
     ]);
 
-    expect($model->is_draft)->toBeTrue();
-    expect($model->status)->toBe(TournamentStatus::Draft);
+    expect($model)
+        ->is_draft->toBeTrue()
+        ->status->toBe(TournamentStatus::Draft);
+
     expect($model->status->isDraft())->toBeTrue();
 });
 
 it('could be scheduled', function () {
     $model = Tournament::factory()->createOne([
-        'start_date' => Carbon::now()->addWeek(),
+        'published_at' => Carbon::now()->addDay(),
+        'start_date' => Carbon::now()->addDay(),
         'finish_date' => null,
-        'published_at' => Carbon::now()->addDays(2),
     ]);
 
-    expect($model->is_draft)->toBeFalse();
-    expect($model->is_published)->toBeFalse();
-    expect($model->status)->toBe(TournamentStatus::Scheduled);
+    expect($model)
+        ->is_draft->toBeFalse()
+        ->is_published->toBeFalse()
+        ->status->toBe(TournamentStatus::Scheduled);
+
     expect($model->status->isScheduled())->toBeTrue();
 });
 
@@ -161,19 +164,21 @@ it('could be started', function () {
         'published_at' => Carbon::now()->subWeeks(2),
     ]);
 
-    expect($model->is_published)->toBeTrue();
-    expect($model->status)->toBe(TournamentStatus::OnGoing);
+    expect($model)
+        ->is_started->toBeTrue()
+        ->is_published->toBeTrue()
+        ->is_finished->toBeFalse()
+        ->status->toBe(TournamentStatus::OnGoing);
+
     expect($model->status->isOnGoing())->toBeTrue();
 });
 
 it('could be finished', function () {
-    $model = Tournament::factory()->createOne([
-        'start_date' => Carbon::now()->subWeek(),
-        'finish_date' => Carbon::now()->subDay(),
-        'published_at' => Carbon::now()->subWeeks(2),
-    ]);
+    $model = Tournament::factory()->finished()->createOne();
 
-    expect($model->is_finished)->toBeTrue();
-    expect($model->status)->toBe(TournamentStatus::Finished);
+    expect($model)
+        ->is_finished->toBeTrue()
+        ->status->toBe(TournamentStatus::Finished);
+
     expect($model->status->isFinished())->toBeTrue();
 });

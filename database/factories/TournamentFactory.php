@@ -25,9 +25,28 @@ class TournamentFactory extends Factory
             'level' => fake()->randomElement(TournamentLevel::cases())->value,
             'attr' => null,
             'start_date' => fake()->dateTimeThisMonth(),
-            'finish_date' => fn (array $attr) => fake()->dateTimeBetween($attr['start_date']),
+            'finish_date' => fn (array $attr) => $attr['start_date']
+                ? fake()->dateTimeBetween($attr['start_date'], '1 week')
+                : null,
             'published_at' => null,
         ];
+    }
+
+    public function published(bool $started = true)
+    {
+        return $this->state([
+            'published_at' => $started ? now()->subDay() : now(),
+            'start_date' => $started ? now()->subDay() : now()->addDay(),
+        ]);
+    }
+
+    public function finished()
+    {
+        return $this->state([
+            'published_at' => now()->subWeek(),
+            'start_date' => now()->subDays(3),
+            'finish_date' => now()->subDay(),
+        ]);
     }
 
     public function withParticipants(?PersonFactory $participants = null, array $pivot = [])

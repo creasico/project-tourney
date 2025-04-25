@@ -115,14 +115,14 @@ class Tournament extends Model
     public function isStarted(): Attribute
     {
         return Attribute::get(
-            fn () => $this->start_date?->startOfDay()->lt(now()->endOfDay())
+            fn () => $this->start_date?->startOfDay()->lt(now()->endOfDay()) ?: false
         );
     }
 
     public function isFinished(): Attribute
     {
         return Attribute::get(
-            fn () => $this->finish_date?->endOfDay()->lt(now()->startOfDay())
+            fn () => $this->finish_date?->endOfDay()->lt(now()->startOfDay()) ?: false
         );
     }
 
@@ -136,7 +136,7 @@ class Tournament extends Model
     public function isPublished(): Attribute
     {
         return Attribute::get(
-            fn () => $this->published_at?->startOfDay()->lt(now()->endOfDay())
+            fn () => $this->published_at?->startOfDay()->lt(now()->endOfDay()) ?: false
         );
     }
 

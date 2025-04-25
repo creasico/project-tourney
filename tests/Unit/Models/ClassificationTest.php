@@ -18,8 +18,9 @@ it('belongs to many tournaments', function () {
 
     $tournament = $model->tournaments->first();
 
-    expect($tournament)->toBeInstanceOf(Tournament::class);
-    expect($tournament->group)->toBeInstanceOf(MatchGroup::class);
+    expect($tournament)
+        ->toBeInstanceOf(Tournament::class)
+        ->group->toBeInstanceOf(MatchGroup::class);
 });
 
 it('has many athletes', function () {

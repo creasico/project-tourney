@@ -48,8 +48,9 @@ it('belongs to many matches', function () {
 
     $match = $model->matches->first();
 
-    expect($match)->toBeInstanceOf(Matchup::class);
-    expect($match->party)->toBeInstanceOf(MatchParty::class);
+    expect($match)
+        ->toBeInstanceOf(Matchup::class)
+        ->party->toBeInstanceOf(MatchParty::class);
 });
 
 it('belongs to many tournaments', function () {
@@ -68,8 +69,9 @@ it('belongs to many tournaments', function () {
     $tournament = $model->tournaments->first();
 
     expect($tournament)->toBeInstanceOf(Tournament::class);
-    expect($tournament->participation)->toBeInstanceOf(Participation::class);
-    expect($tournament->participation->medal)->toBe(MedalPrize::Gold);
+    expect($tournament->participation)
+        ->toBeInstanceOf(Participation::class)
+        ->medal->toBe(MedalPrize::Gold);
 });
 
 it('could be an athlete', function () {

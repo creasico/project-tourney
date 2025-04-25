@@ -24,7 +24,8 @@ it('belongs to many prizes', function () {
     $prize = $model->prizes->first();
 
     expect($prize)->toBeInstanceOf(PrizePool::class);
-    expect($prize->pool)->toBeInstanceOf(DivisionPrize::class);
-    expect($prize->pool->amount)->toBe(100);
-    expect($prize->pool->medal)->toBe(MedalPrize::Gold);
+    expect($prize->pool)
+        ->toBeInstanceOf(DivisionPrize::class)
+        ->amount->toBe(100)
+        ->medal->toBe(MedalPrize::Gold);
 });

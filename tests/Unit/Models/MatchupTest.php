@@ -43,9 +43,10 @@ it('belongs to many athletes', function () {
     $athlete = $model->athletes->first();
 
     expect($athlete)->toBeInstanceOf(Person::class);
-    expect($athlete->party)->toBeInstanceOf(MatchParty::class);
-    expect($athlete->party->side)->toBe(MatchSide::Red);
-    expect($athlete->party->status)->toBe(MatchStatus::Queue);
+    expect($athlete->party)
+        ->toBeInstanceOf(MatchParty::class)
+        ->side->toBe(MatchSide::Red)
+        ->status->toBe(MatchStatus::Queue);
 });
 
 it('belongs to next match', function () {
