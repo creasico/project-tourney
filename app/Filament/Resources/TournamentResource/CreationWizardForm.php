@@ -61,7 +61,7 @@ trait CreationWizardForm
                     Components\Section::make(trans('tournament.section.classification_heading'))
                         ->aside()
                         ->schema([
-                            Components\Repeater::make('divisions')
+                            Components\Repeater::make('classes')
                                 ->relationship()
                                 ->label(trans('tournament.field.divisions'))
                                 ->columns(2)
@@ -95,7 +95,7 @@ trait CreationWizardForm
                         ]),
                 ])
                 ->afterValidation(function (Get $get) {
-                    foreach ($get('divisions') as $division) {
+                    foreach ($get('classes') as $division) {
                         $this->record->groups()->create($division);
                     }
                 }),

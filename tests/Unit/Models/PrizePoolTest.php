@@ -7,7 +7,7 @@ use App\Models\Division;
 use App\Models\DivisionPrize;
 use App\Models\PrizePool;
 
-test('belongs to many prizes', function () {
+it('belongs to many prizes', function () {
     $model = PrizePool::factory()
         ->hasAttached(
             Division::factory(),

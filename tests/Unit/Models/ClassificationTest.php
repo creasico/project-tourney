@@ -9,7 +9,7 @@ use App\Models\MatchGroup;
 use App\Models\Person;
 use App\Models\Tournament;
 
-test('belongs to many tournaments', function () {
+it('belongs to many tournaments', function () {
     $model = Classification::factory()
         ->withTournaments()
         ->createOne();
@@ -22,7 +22,7 @@ test('belongs to many tournaments', function () {
     expect($tournament->group)->toBeInstanceOf(MatchGroup::class);
 });
 
-test('has many athletes', function () {
+it('has many athletes', function () {
     $model = Classification::factory()
         ->withAthletes()
         ->createOne();
@@ -34,7 +34,7 @@ test('has many athletes', function () {
     expect($athlete)->toBeInstanceOf(Person::class);
 });
 
-test('concat fields as display', function () {
+it('concat fields as display', function () {
     $model = Classification::factory()->createOne([
         'label' => 'A',
         'gender' => Gender::Male,

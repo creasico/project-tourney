@@ -34,8 +34,7 @@ class ClassificationResource extends Resource
                     ->label(trans('classification.field.label'))
                     ->required(),
                 Components\Textarea::make('description')
-                    ->label(trans('classification.field.description'))
-                    ->required(),
+                    ->label(trans('classification.field.description')),
                 Components\Radio::make('gender')
                     ->label(trans('participant.field.gender'))
                     ->options(Gender::toOptions())

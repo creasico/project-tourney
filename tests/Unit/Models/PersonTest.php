@@ -13,7 +13,7 @@ use App\Models\Person;
 use App\Models\Tournament;
 use App\Models\User;
 
-test('belongs to user', function () {
+it('belongs to user', function () {
     $model = Person::factory()
         ->withUser()
         ->createOne();
@@ -21,7 +21,7 @@ test('belongs to user', function () {
     expect($model->credential)->toBeInstanceOf(User::class);
 });
 
-test('belongs to continent', function () {
+it('belongs to continent', function () {
     $model = Person::factory()
         ->for(
             Continent::factory(),
@@ -32,7 +32,7 @@ test('belongs to continent', function () {
     expect($model->continent)->toBeInstanceOf(Continent::class);
 });
 
-test('belongs to many matches', function () {
+it('belongs to many matches', function () {
     $model = Person::factory()
         ->hasAttached(
             Matchup::factory(),
@@ -52,7 +52,7 @@ test('belongs to many matches', function () {
     expect($match->party)->toBeInstanceOf(MatchParty::class);
 });
 
-test('belongs to many tournaments', function () {
+it('belongs to many tournaments', function () {
     $model = Person::factory()
         ->hasAttached(
             Tournament::factory(),
@@ -72,7 +72,7 @@ test('belongs to many tournaments', function () {
     expect($tournament->participation->medal)->toBe(MedalPrize::Gold);
 });
 
-test('could be an athlete', function () {
+it('could be an athlete', function () {
     $model = Person::factory()
         ->asAthlete()
         ->createOne();
@@ -84,7 +84,7 @@ test('could be an athlete', function () {
     expect($models->first()->getKey())->toBe($model->getKey());
 });
 
-test('could be a manager', function () {
+it('could be a manager', function () {
     $model = Person::factory()
         ->asManager()
         ->createOne();

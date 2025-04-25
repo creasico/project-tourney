@@ -15,7 +15,7 @@ use App\Models\Tournament;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Event;
 
-test('has many matches', function () {
+it('has many matches', function () {
     $model = Tournament::factory()
         ->has(
             Matchup::factory(2),
@@ -30,7 +30,7 @@ test('has many matches', function () {
     expect($match)->toBeInstanceOf(Matchup::class);
 });
 
-test('has many classes', function () {
+it('has many classes', function () {
     $model = Tournament::factory()
         ->withClassifications()
         ->createOne();
@@ -47,7 +47,7 @@ test('has many classes', function () {
     expect($class->group->classification->getKey())->toBe($class->getKey());
 });
 
-test('has many participants', function () {
+it('has many participants', function () {
     $model = Tournament::factory()
         ->withParticipants()
         ->createOne();
@@ -60,7 +60,7 @@ test('has many participants', function () {
     expect($participant->participation)->toBeInstanceOf(Participation::class);
 });
 
-test('could disqualify participants', function () {
+it('could disqualify participants', function () {
     Event::fake();
 
     $model = Tournament::factory()
@@ -81,7 +81,7 @@ test('could disqualify participants', function () {
     expect($participant->participation->is_disqualified)->toBeTrue();
 });
 
-test('could verify participants', function () {
+it('could verify participants', function () {
     Event::fake();
 
     $model = Tournament::factory()
@@ -108,7 +108,7 @@ test('could verify participants', function () {
     expect($participant->participation->is_verified)->toBeTrue();
 });
 
-test('could knock-off participants', function () {
+it('could knock-off participants', function () {
     Event::fake();
 
     $model = Tournament::factory()
@@ -129,7 +129,7 @@ test('could knock-off participants', function () {
     expect($participant->participation->is_knocked)->toBeTrue();
 });
 
-test('could be drafted', function () {
+it('could be drafted', function () {
     $model = Tournament::factory()->createOne([
         'start_date' => null,
         'finish_date' => null,
@@ -141,7 +141,7 @@ test('could be drafted', function () {
     expect($model->status->isDraft())->toBeTrue();
 });
 
-test('could be scheduled', function () {
+it('could be scheduled', function () {
     $model = Tournament::factory()->createOne([
         'start_date' => Carbon::now()->addWeek(),
         'finish_date' => null,
@@ -154,7 +154,7 @@ test('could be scheduled', function () {
     expect($model->status->isScheduled())->toBeTrue();
 });
 
-test('could be started', function () {
+it('could be started', function () {
     $model = Tournament::factory()->createOne([
         'start_date' => Carbon::now()->subWeek(),
         'finish_date' => null,
@@ -166,7 +166,7 @@ test('could be started', function () {
     expect($model->status->isOnGoing())->toBeTrue();
 });
 
-test('could be finished', function () {
+it('could be finished', function () {
     $model = Tournament::factory()->createOne([
         'start_date' => Carbon::now()->subWeek(),
         'finish_date' => Carbon::now()->subDay(),

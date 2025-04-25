@@ -10,7 +10,7 @@ use App\Models\Matchup;
 use App\Models\Person;
 use App\Models\Tournament;
 
-test('belongs to tournament', function () {
+it('belongs to tournament', function () {
     $model = Matchup::factory()
         ->for(
             Tournament::factory(),
@@ -20,7 +20,7 @@ test('belongs to tournament', function () {
     expect($model->tournament)->toBeInstanceOf(Tournament::class);
 });
 
-test('belongs to classification', function () {
+it('belongs to classification', function () {
     $model = Matchup::factory()
         ->for(
             Classification::factory(),
@@ -30,7 +30,7 @@ test('belongs to classification', function () {
     expect($model->classification)->toBeInstanceOf(Classification::class);
 });
 
-test('belongs to many athletes', function () {
+it('belongs to many athletes', function () {
     $model = Matchup::factory()
         ->withAthletes(pivot: [
             'side' => MatchSide::Red,
@@ -48,7 +48,7 @@ test('belongs to many athletes', function () {
     expect($athlete->party->status)->toBe(MatchStatus::Queue);
 });
 
-test('belongs to next match', function () {
+it('belongs to next match', function () {
     $model = Matchup::factory()
         ->for(
             Matchup::factory(),
