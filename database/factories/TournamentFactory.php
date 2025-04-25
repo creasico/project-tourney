@@ -55,7 +55,11 @@ class TournamentFactory extends Factory
             $participants ?? Person::factory()->asAthlete(),
             $pivot,
             'participants'
-        );
+        )->afterCreating(function ($tournament) {
+            foreach ($tournament->participants->pluck('class_id') as $ids) {
+                $tournament->classes()->attach($ids);
+            }
+        });
     }
 
     public function withClassifications(?ClassificationFactory $classifications = null, array $pivot = [])

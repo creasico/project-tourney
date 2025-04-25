@@ -6,15 +6,17 @@ use App\Enums\Gender;
 
 trait WithGender
 {
+    private static ?Gender $gender;
+
     private function fakeGender()
     {
-        return fake()->randomElement(Gender::cases());
+        return self::$gender ??= fake()->randomElement(Gender::cases());
     }
 
     public function withGender(Gender $gender)
     {
         return $this->state([
-            'gender' => $gender,
+            'gender' => self::$gender ??= $gender,
         ]);
     }
 }

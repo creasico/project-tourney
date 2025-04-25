@@ -3,6 +3,7 @@
 namespace Database\Factories\Helpers;
 
 use App\Models\Person;
+use Database\Factories\ClassificationFactory;
 
 /**
  * @template TModel of \Illuminate\Database\Eloquent\Model
@@ -16,8 +17,14 @@ trait WithAthletes
      */
     public function withAthletes(?int $count = null, \Closure|array $state = [])
     {
+        $person = Person::factory($count)->asAthlete(hasClass: ! ($this instanceof ClassificationFactory));
+
+        if (property_exists($this, 'gender')) {
+            $person = $person->withGender(self::$gender);
+        }
+
         return $this->has(
-            Person::factory($count)->asAthlete()->state($state),
+            $person->state($state),
             'athletes'
         );
     }

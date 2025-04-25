@@ -24,9 +24,9 @@ class PersonFactory extends Factory
     {
         return [
             'gender' => $this->fakeGender(),
-            'name' => fn (array $attr) => implode(' ', [
-                fake()->firstName($attr['gender']),
-                fake()->lastName($attr['gender']),
+            'name' => fn () => implode(' ', [
+                fake()->firstName(self::$gender),
+                fake()->lastName(self::$gender),
             ]),
             'role' => fake()->randomElement(ParticipantRole::cases()),
         ];
@@ -47,18 +47,17 @@ class PersonFactory extends Factory
         ]);
     }
 
-    public function withClassification(?AgeRange $age = null, ?string $weight = null)
+    public function asAthlete(?AgeRange $age = null, ?string $weight = null, bool $hasClass = true)
     {
-        return $this->for(
-            Classification::factory()->withRange($age, $weight),
-        );
-    }
+        $state = $this->withRole(ParticipantRole::Athlete);
 
-    public function asAthlete(?Classification $class = null)
-    {
-        return $this->withRole(ParticipantRole::Athlete)->state([
-            'class_id' => $class?->id,
-        ]);
+        if (! $hasClass) {
+            return $state;
+        }
+
+        return $state->for(
+            Classification::factory()->withGender(self::$gender)->withRange($age, $weight),
+        );
     }
 
     public function asManager()
