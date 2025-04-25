@@ -55,7 +55,6 @@ return new class extends Migration
             $table->enum('gender', Gender::toArray());
             $table->unsignedTinyInteger('age_range');
             $table->string('weight_range', 5);
-            // $table->unsignedTinyInteger('term')->nullable();
             $table->unsignedSmallInteger('order')->nullable();
 
             $table->timestamps();
@@ -66,8 +65,6 @@ return new class extends Migration
             $table->foreignId('user_id')->nullable();
             $table->foreignUlid('continent_id')->nullable();
             $table->foreignUlid('class_id')->nullable();
-            // $table->foreignUlid('class_age_id')->nullable();
-            // $table->foreignUlid('class_weight_id')->nullable();
 
             $table->string('name');
             $table->unsignedTinyInteger('role')->nullable()->comment(
@@ -82,8 +79,6 @@ return new class extends Migration
             $table->foreign('user_id')->references('id')->on('users')->nullOnDelete();
             $table->foreign('continent_id')->references('id')->on('continents')->nullOnDelete();
             $table->foreign('class_id')->references('id')->on('classifications')->nullOnDelete();
-            // $table->foreign('class_age_id')->references('id')->on('classifications')->nullOnDelete();
-            // $table->foreign('class_weight_id')->references('id')->on('classifications')->nullOnDelete();
         });
     }
 
