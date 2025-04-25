@@ -27,6 +27,8 @@ class ParticipantVerified
      * Get the channels the event should broadcast on.
      *
      * @return array<int, \Illuminate\Broadcasting\Channel>
+     *
+     * @codeCoverageIgnore
      */
     public function broadcastOn(): array
     {
