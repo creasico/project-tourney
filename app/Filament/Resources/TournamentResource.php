@@ -38,9 +38,11 @@ class TournamentResource extends Resource
                     ->label(trans('tournament.field.title'))
                     ->autofocus()
                     ->required(),
+
                 Components\Textarea::make('description')
                     ->label(trans('tournament.field.description'))
                     ->nullable(),
+
                 Components\Select::make('level')
                     ->label(trans('tournament.field.level'))
                     ->options(TournamentLevel::toOptions())
@@ -58,6 +60,7 @@ class TournamentResource extends Resource
                 Components\DatePicker::make('start_date')
                     ->label(trans('tournament.field.start_date'))
                     ->required(),
+
                 Components\DatePicker::make('finish_date')
                     ->label(trans('tournament.field.finish_date'))
                     ->nullable(),
@@ -82,6 +85,7 @@ class TournamentResource extends Resource
                 Columns\TextColumn::make('title')
                     ->label(trans('tournament.field.title'))
                     ->description(fn (Tournament $record) => $record->description),
+
                 Columns\ColumnGroup::make(trans('participant.plural'), [
                     Columns\TextColumn::make('registered_count')
                         ->label(trans('participant.participation.registered'))
@@ -108,6 +112,7 @@ class TournamentResource extends Resource
                         ->alignCenter()
                         ->width('10%'),
                 ])->alignment(Alignment::Center)->wrapHeader(),
+
                 Columns\ColumnGroup::make(trans('tournament.field.schedule'), [
                     Columns\TextColumn::make('start_date')
                         ->label(trans('tournament.field.start_date'))
@@ -124,6 +129,7 @@ class TournamentResource extends Resource
                             static fn (Tournament $record) => $record->finish_date->toFormattedDateString()
                         ),
                 ])->alignment(Alignment::Center)->wrapHeader(),
+
                 Columns\TextColumn::make('status')
                     ->label(trans('tournament.field.status'))
                     ->colors([

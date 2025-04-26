@@ -18,6 +18,7 @@ trait WithMembershipRecord
             Components\TextInput::make('name')
                 ->label(trans('participant.field.name'))
                 ->required(),
+
             Components\Radio::make('gender')
                 ->label(trans('participant.field.gender'))
                 ->options(Gender::toOptions())
@@ -36,6 +37,7 @@ trait WithMembershipRecord
         $schema = [
             Columns\TextColumn::make('name')
                 ->label(trans('participant.field.name')),
+
             Columns\TextColumn::make('gender')
                 ->label(trans('participant.field.gender'))
                 ->formatStateUsing(fn (Person $record) => $record->gender->label())
@@ -56,6 +58,7 @@ trait WithMembershipRecord
         return [
             Actions\ActionGroup::make([
                 Actions\EditAction::make('edit'),
+
                 Actions\DeleteAction::make('delete'),
             ])->tooltip(trans('app.resource.action_label')),
         ];

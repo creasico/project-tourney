@@ -50,6 +50,7 @@ class MatchesRelationManager extends RelationManager
             ])
             ->actions([
                 Actions\EditAction::make(),
+
                 Actions\DeleteAction::make(),
             ])
             ->bulkActions([

@@ -17,6 +17,7 @@ class ListContinents extends ListRecords
     {
         return [
             Actions\CreateAction::make(),
+
             Actions\ImportAction::make()
                 ->label(trans('participant.action.import'))
                 ->importer(ParticipantImporter::class),

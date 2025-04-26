@@ -45,6 +45,7 @@ class EditTournament extends EditRecord
         return [
             $this->getSaveFormAction()
                 ->hidden(fn (Tournament $record) => $record->is_finished),
+
             $this->getCancelFormAction(),
         ];
     }

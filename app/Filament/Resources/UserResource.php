@@ -27,6 +27,7 @@ class UserResource extends Resource
         return $form
             ->schema([
                 Components\TextInput::make('name'),
+
                 Components\TextInput::make('email'),
             ])
             ->columns(1);
@@ -39,6 +40,7 @@ class UserResource extends Resource
             ->columns([
                 Columns\TextColumn::make('name')
                     ->label(fn () => __('filament-panels::pages/auth/edit-profile.form.name.label')),
+
                 Columns\TextColumn::make('email')
                     ->label(fn () => __('filament-panels::pages/auth/edit-profile.form.email.label')),
             ])

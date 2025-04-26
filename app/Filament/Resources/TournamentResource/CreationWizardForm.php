@@ -55,6 +55,7 @@ trait CreationWizardForm
                         description: $get('description'),
                     );
                 }),
+
             Components\Wizard\Step::make(trans('tournament.wizard.regulation_label'))
                 ->description(trans('tournament.wizard.regulation_description'))
                 ->schema([
@@ -72,6 +73,7 @@ trait CreationWizardForm
                                         ->afterStateUpdated(fn (Set $set) => $set('class_id', null))
                                         ->live()
                                         ->required(),
+
                                     Components\Select::make('class_id')
                                         ->label(trans('tournament.field.class'))
                                         ->relationship(
@@ -87,6 +89,7 @@ trait CreationWizardForm
                                         )
                                         ->disabled(fn (Get $get) => in_array($get('class_term'), [null, '']))
                                         ->required(),
+
                                     Components\TextInput::make('division')
                                         ->label(trans('tournament.field.division'))
                                         ->numeric()
@@ -99,6 +102,7 @@ trait CreationWizardForm
                         $this->record->groups()->create($division);
                     }
                 }),
+
             Components\Wizard\Step::make(trans('tournament.wizard.participation_label'))
                 ->description(trans('tournament.wizard.participation_description'))
                 ->schema([

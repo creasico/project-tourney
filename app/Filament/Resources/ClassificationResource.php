@@ -33,18 +33,22 @@ class ClassificationResource extends Resource
                 Components\TextInput::make('label')
                     ->label(trans('classification.field.label'))
                     ->required(),
+
                 Components\Textarea::make('description')
                     ->label(trans('classification.field.description')),
+
                 Components\Radio::make('gender')
                     ->label(trans('participant.field.gender'))
                     ->options(Gender::toOptions())
                     ->enum(Gender::class)
                     ->required(),
+
                 Components\Select::make('age_range')
                     ->label(trans('classification.field.age_range'))
                     ->options(AgeRange::toOptions())
                     ->enum(AgeRange::class)
                     ->required(),
+
                 Components\TextInput::make('weight_range')
                     ->label(trans('classification.field.weight_range'))
                     ->hint('Gunakan format "XX-XX" untuk menunjukan rentang berat badan')
@@ -67,9 +71,11 @@ class ClassificationResource extends Resource
                 Columns\TextColumn::make('label')
                     ->label(trans('classification.field.label'))
                     ->description(fn (Classification $record) => $record->description),
+
                 Columns\TextColumn::make('gender')
                     ->label(trans('participant.field.gender'))
                     ->formatStateUsing(fn (Classification $record) => $record->gender->label()),
+
                 Columns\TextColumn::make('weight_range')
                     ->label(trans('classification.field.weight_range')),
             ])
@@ -77,6 +83,7 @@ class ClassificationResource extends Resource
                 Filters\SelectFilter::make('gender')
                     ->label(trans('participant.field.gender'))
                     ->options(Gender::toOptions()),
+
                 Filters\SelectFilter::make('age_range')
                     ->label(trans('classification.field.age_range'))
                     ->options(AgeRange::toOptions()),

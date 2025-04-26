@@ -57,8 +57,10 @@ class ParticipantsRelationManager extends RelationManager
             ->columns([
                 Columns\TextColumn::make('name')
                     ->label(trans('participant.field.name')),
+
                 Columns\TextColumn::make('continent.name')
                     ->label(trans('continent.singular')),
+
                 Columns\TextColumn::make('classification.label')
                     ->label(trans('classification.singular'))
                     ->formatStateUsing(function (Person $record) {
@@ -69,12 +71,14 @@ class ParticipantsRelationManager extends RelationManager
                     })
                     ->width('10%')
                     ->alignCenter(),
+
                 Columns\IconColumn::make('participation.is_verified')
                     ->label(trans('participant.participation.verification'))
                     ->width('10%')
                     ->boolean()
                     ->false(color: 'gray')
                     ->alignCenter(),
+
                 Columns\IconColumn::make('participation.is_disqualified')
                     ->label(trans('participant.participation.disqualification'))
                     ->width('10%')
@@ -126,6 +130,7 @@ class ParticipantsRelationManager extends RelationManager
                         ->visible(function (Person $participant) {
                             return ! $participant->participation->is_verified;
                         }),
+
                     Actions\Action::make('disqualify')
                         ->label(trans('participant.action.disqualify'))
                         ->icon('heroicon-o-x-mark')
@@ -136,6 +141,7 @@ class ParticipantsRelationManager extends RelationManager
                         ->visible(function (Person $participant) {
                             return ! $participant->participation->is_disqualified;
                         }),
+
                     Actions\DissociateAction::make('deregister')
                         ->label(trans('participant.action.deregister'))
                         ->icon('heroicon-o-trash')
@@ -153,6 +159,7 @@ class ParticipantsRelationManager extends RelationManager
                     ->action(fn (Collection $records) => $records->each(function (Person $participant) {
                         $this->getOwnerRecord()->verify($participant);
                     })),
+
                 Actions\BulkAction::make('bulk_disqualify')
                     ->label(trans('participant.action.bulk_disqualify'))
                     ->icon('heroicon-o-x-mark')
@@ -160,6 +167,7 @@ class ParticipantsRelationManager extends RelationManager
                     ->action(fn (Collection $records) => $records->each(function (Person $participant) {
                         $this->getOwnerRecord()->disqualify($participant);
                     })),
+
                 Actions\DissociateBulkAction::make('bulk_deregister')
                     ->label(trans('participant.action.bulk_deregister'))
                     ->icon('heroicon-o-trash')

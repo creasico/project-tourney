@@ -45,6 +45,7 @@ class ContinentResource extends Resource
                     ->schema([
                         $nameField(),
                     ]),
+
                 $nameField()->visibleOn('create'),
             ])
             ->columns(1);
@@ -76,12 +77,14 @@ class ContinentResource extends Resource
                             ->color('primary')
                             ->weight(FontWeight::Bold)
                             ->numeric(),
+
                         InfolistsComponents\TextEntry::make('athletes_count')
                             ->label(trans('continent.field.athletes_count'))
                             ->color('primary')
                             ->weight(FontWeight::Bold)
                             ->numeric(),
                     ]),
+
                 InfolistsComponents\Section::make(trans('continent.section.info_heading'))
                     ->aside()
                     ->columns(2)
@@ -91,6 +94,7 @@ class ContinentResource extends Resource
                             ->color('primary')
                             ->weight(FontWeight::Bold)
                             ->numeric(),
+
                         InfolistsComponents\TextEntry::make('females_count')
                             ->label(trans('continent.field.females_count'))
                             ->color('primary')
@@ -107,12 +111,14 @@ class ContinentResource extends Resource
             ->columns([
                 Columns\TextColumn::make('name')
                     ->label(trans('continent.field.name')),
+
                 Columns\TextColumn::make('managers_count')
                     ->label(trans('continent.field.managers_count'))
                     ->counts(['managers'])
                     ->numeric()
                     ->width('10%')
                     ->alignCenter(),
+
                 Columns\TextColumn::make('athletes_count')
                     ->label(trans('continent.field.athletes_count'))
                     ->counts(['athletes'])

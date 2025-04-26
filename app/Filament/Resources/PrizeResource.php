@@ -29,8 +29,10 @@ class PrizeResource extends Resource
                 Components\TextInput::make('label')
                     ->label(trans('prize.field.label'))
                     ->required(),
+
                 Components\Textarea::make('description')
                     ->label(trans('prize.field.description')),
+
                 Components\TextInput::make('order')
                     ->label(trans('prize.field.order'))
                     ->numeric()
@@ -50,6 +52,7 @@ class PrizeResource extends Resource
                     ->numeric()
                     ->width(1)
                     ->alignCenter(),
+
                 Columns\TextColumn::make('label')
                     ->label(trans('prize.field.label'))
                     ->description(fn (PrizePool $record) => $record->description),

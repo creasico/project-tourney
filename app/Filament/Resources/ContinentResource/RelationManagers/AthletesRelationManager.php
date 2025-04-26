@@ -53,6 +53,7 @@ class AthletesRelationManager extends RelationManager
                 Filters\SelectFilter::make('gender')
                     ->label(trans('participant.field.gender'))
                     ->options(Gender::toOptions()),
+
                 Filters\SelectFilter::make('classification.age_range')
                     ->label(trans('classification.field.age_range'))
                     ->options(AgeRange::toOptions())
