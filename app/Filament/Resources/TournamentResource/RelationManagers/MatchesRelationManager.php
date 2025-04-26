@@ -49,9 +49,11 @@ class MatchesRelationManager extends RelationManager
                 Actions\CreateAction::make(),
             ])
             ->actions([
-                Actions\EditAction::make(),
+                Actions\ActionGroup::make([
+                    Actions\EditAction::make(),
 
-                Actions\DeleteAction::make(),
+                    Actions\DeleteAction::make(),
+                ]),
             ])
             ->bulkActions([
                 Actions\BulkActionGroup::make([

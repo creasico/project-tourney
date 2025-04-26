@@ -6,6 +6,7 @@ namespace App\Models;
 
 use App\Enums\AgeRange;
 use App\Enums\Gender;
+use App\Models\Builders\PersonBuilder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -36,7 +37,7 @@ class Classification extends Model
             ->as('group');
     }
 
-    public function athletes(): HasMany
+    public function athletes(): HasMany|PersonBuilder
     {
         return $this->hasMany(Person::class, 'class_id');
     }

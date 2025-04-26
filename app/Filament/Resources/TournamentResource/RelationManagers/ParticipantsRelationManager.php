@@ -50,25 +50,16 @@ class ParticipantsRelationManager extends RelationManager
             ->recordTitleAttribute('name')
             ->inverseRelationship('tournaments')
             ->defaultGroup(
-                Group::make('classification.age_range')
-                    ->label(trans('classification.field.age_range'))
-                    ->getTitleFromRecordUsing(fn (Person $record) => $record->classification->age_range->label())
+                Group::make('classification.id')
+                    ->label(trans('classification.singular'))
+                    ->getTitleFromRecordUsing(fn (Person $record) => $record->classification->display)
             )
             ->columns([
                 Columns\TextColumn::make('name')
                     ->label(trans('participant.field.name')),
 
                 Columns\TextColumn::make('continent.name')
-                    ->label(trans('continent.singular')),
-
-                Columns\TextColumn::make('classification.label')
-                    ->label(trans('classification.singular'))
-                    ->formatStateUsing(function (Person $record) {
-                        $label = $record->classification->label;
-                        $gender = $record->gender->label();
-
-                        return "{$label} {$gender}";
-                    })
+                    ->label(trans('continent.singular'))
                     ->width('10%')
                     ->alignCenter(),
 
@@ -76,14 +67,6 @@ class ParticipantsRelationManager extends RelationManager
                     ->label(trans('participant.participation.verification'))
                     ->width('10%')
                     ->boolean()
-                    ->false(color: 'gray')
-                    ->alignCenter(),
-
-                Columns\IconColumn::make('participation.is_disqualified')
-                    ->label(trans('participant.participation.disqualification'))
-                    ->width('10%')
-                    ->boolean()
-                    ->true(color: 'danger')
                     ->false(color: 'gray')
                     ->alignCenter(),
             ])

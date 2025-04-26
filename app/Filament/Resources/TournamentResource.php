@@ -163,6 +163,7 @@ class TournamentResource extends Resource
     {
         return [
             RelationManagers\ParticipantsRelationManager::class,
+            RelationManagers\ClassesRelationManager::class,
             RelationManagers\MatchesRelationManager::class,
         ];
     }

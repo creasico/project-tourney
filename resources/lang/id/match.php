@@ -10,6 +10,11 @@ return [
         'lose' => 'Kalah',
     ],
 
+    'field' => [
+        'bye' => 'Bye',
+        'division' => 'Pembagian',
+    ],
+
     'bye' => [
         'up' => 'Bye Atas',
         'down' => 'Bye Bawah',
