@@ -5,6 +5,7 @@ namespace Database\Factories;
 use App\Enums\AgeRange;
 use App\Enums\ParticipantRole;
 use App\Models\Classification;
+use App\Models\Continent;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -37,6 +38,14 @@ class PersonFactory extends Factory
         return $this->for(
             User::factory(),
             'credential'
+        );
+    }
+
+    public function withContinent()
+    {
+        return $this->for(
+            Continent::factory(),
+            'continent'
         );
     }
 

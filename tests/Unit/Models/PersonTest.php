@@ -23,10 +23,7 @@ it('belongs to user', function () {
 
 it('belongs to continent', function () {
     $model = Person::factory()
-        ->for(
-            Continent::factory(),
-            'continent'
-        )
+        ->withContinent()
         ->createOne();
 
     expect($model->continent)->toBeInstanceOf(Continent::class);
