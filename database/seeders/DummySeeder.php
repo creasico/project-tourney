@@ -8,13 +8,12 @@ use App\Jobs\AthletesParticipation;
 use App\Jobs\Matchmaking;
 use App\Models\Classification;
 use App\Models\Continent;
-use App\Models\Matchup;
 use App\Models\Person;
 use App\Models\Tournament;
 use Illuminate\Database\Eloquent\Factories\Sequence;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Carbon;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Bus;
 
 class DummySeeder extends Seeder
 {
@@ -27,17 +26,17 @@ class DummySeeder extends Seeder
             return;
         }
 
-        $continents = $this->generateContinents();
+        $continents = $this->generateContinentsAndAthletes();
 
         $tournaments = $this->generateTournaments($continents);
 
-        $this->generateMatches($tournaments);
+        $this->generateMatches($tournaments, $continents);
     }
 
     /**
      * @return \Illuminate\Database\Eloquent\Collection<int, Continent>
      */
-    private function generateContinents()
+    private function generateContinentsAndAthletes()
     {
         $classes = Classification::all();
 
@@ -49,29 +48,42 @@ class DummySeeder extends Seeder
             ->createMany();
 
         return $continents->each(function ($continent) use ($classes) {
+            $athletes = [];
+            $now = now();
+
             foreach ($classes->groupBy('age_range') as $byAges) {
-                if (fake()->boolean(30)) {
+                if (fake()->boolean(25)) {
                     continue;
                 }
 
-                foreach ($byAges->groupBy('label') as $byLabels) {
-                    if (fake()->boolean(30)) {
+                foreach ($byAges as $class) {
+                    $count = fake()->numberBetween(0, 3);
+
+                    if ($count === 0) {
                         continue;
                     }
 
-                    $class = fake()->randomElement($byLabels);
-                    $count = fake()->numberBetween(2, 8);
-
-                    Person::factory($count)
-                        ->asAthlete()
+                    /** @var \Illuminate\Support\Collection<int, Person> */
+                    $participants = Person::factory($count)
+                        ->asAthlete(createClass: false)
                         ->state(fn (array $attrs) => [
-                            'continent_id' => $continent,
-                            'class_id' => $class,
+                            'continent_id' => $continent->id,
+                            'class_id' => $class->id,
                             'gender' => $class->gender,
                         ])
-                        ->create();
+                        ->make();
+
+                    foreach ($participants as $athlete) {
+                        $athlete->id = $athlete->newUniqueId();
+                        $athlete->created_at = $now;
+                        $athlete->updated_at = $now;
+
+                        $athletes[] = $athlete->toArray();
+                    }
                 }
             }
+
+            Person::insert($athletes);
         });
     }
 
@@ -81,77 +93,67 @@ class DummySeeder extends Seeder
      */
     private function generateTournaments($continents)
     {
-        $continents = $continents->load('athletes');
-
-        $tournaments = Tournament::factory(10)->sequence(static function (Sequence $sequence) {
-            $criteria = $sequence->index < 5;
+        return Tournament::factory(10)->sequence(static function (Sequence $sequence) {
+            $finished = $sequence->index < 5;
             $fake = Carbon::parse(fake()->dateTimeThisMonth());
-            $start = $criteria
+            $started = $finished
                 ? $fake->subWeeks(6 - $sequence->index)
                 : $fake->addWeeks($sequence->index - 6);
-            $created = $criteria ? $start : now()->addMinutes($sequence->index);
+            $created = $finished ? $started : now()->addMinutes($sequence->index);
 
             return [
                 'title' => 'Turnamen '.($sequence->index + 1),
                 'description' => 'Contoh keterangan turnamen '.($sequence->index + 1),
-                'start_date' => $start,
-                'finish_date' => $criteria
-                    ? fake()->dateTimeBetween($start, $start->clone()->addWeek())
+                'start_date' => $started,
+                'finish_date' => $finished
+                    ? fake()->dateTimeBetween($started, $started->clone()->addWeek())
                     : null,
                 'created_at' => $created,
                 'updated_at' => $created,
-                'published_at' => $sequence->index < 8 ? $start : null,
+                'published_at' => $sequence->index < 8 ? $started : null,
             ];
         })->createMany();
-
-        $tournaments->each(static function (Tournament $tournament) use ($continents) {
-            /** @var \Illuminate\Database\Eloquent\Collection<int, \App\Models\Person> */
-            $participants = collect();
-
-            foreach ($continents as $continent) {
-                if (fake()->boolean(20)) {
-                    continue;
-                }
-
-                foreach ($continent->athletes as $athlete) {
-                    if (fake()->boolean(30)) {
-                        continue;
-                    }
-
-                    $participants[] = $athlete;
-                }
-            }
-
-            (new AthletesParticipation(
-                tournament: $tournament,
-                athletes: $athletes,
-                shoudVerify: ! $tournament->is_draft
-            ))->handle();
-
-            DB::transaction(function () use ($tournament) {
-                if ($tournament->is_draft) {
-                    return;
-                }
-
-                $tournament->participants->each(fn ($person) => $tournament->verify($person));
-            });
-
-            dispatch(new Matchmaking($tournament));
-        });
-
-        return $tournaments;
     }
 
     /**
      * @param  \Illuminate\Database\Eloquent\Collection<int, Tournament>  $tournaments
-     * @return \Illuminate\Database\Eloquent\Collection<int, Matchup>
+     * @param  \Illuminate\Database\Eloquent\Collection<int, Continent>  $continents
      */
-    private function generateMatches($tournaments)
+    private function generateMatches($tournaments, $continents)
     {
-        $tournaments->each(function (Tournament $tournament) {
-            //
-        });
+        $continents = $continents->fresh('athletes');
 
-        return collect();
+        Bus::batch(
+            $tournaments->map(static function (Tournament $tournament) use ($continents) {
+                /** @var \Illuminate\Support\Collection<int, \App\Models\Person> */
+                $athletes = collect();
+
+                foreach ($continents as $continent) {
+                    if (fake()->boolean(20)) {
+                        continue;
+                    }
+
+                    foreach ($continent->athletes as $athlete) {
+                        if (fake()->boolean(30)) {
+                            continue;
+                        }
+
+                        $athletes[] = $athlete;
+                    }
+                }
+
+                (new AthletesParticipation(
+                    tournament: $tournament,
+                    athletes: $athletes,
+                    shoudVerify: ! $tournament->is_draft
+                ))->handle();
+
+                if ($tournament->is_draft) {
+                    return null;
+                }
+
+                return new Matchmaking($tournament);
+            })->filter()
+        )->name('Seeding tournament matches')->dispatch();
     }
 }

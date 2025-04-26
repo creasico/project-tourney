@@ -17,7 +17,7 @@ trait WithAthletes
      */
     public function withAthletes(?int $count = null, \Closure|array $state = [])
     {
-        $person = Person::factory($count)->asAthlete(hasClass: ! ($this instanceof ClassificationFactory));
+        $person = Person::factory($count)->asAthlete(createClass: ! ($this instanceof ClassificationFactory));
 
         if (property_exists($this, 'gender')) {
             $person = $person->withGender(self::$gender);
