@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Database\Seeders;
 
-use App\Jobs\AthleteParticipation;
+use App\Jobs\AthletesParticipation;
 use App\Jobs\Matchmaking;
 use App\Models\Classification;
 use App\Models\Continent;
@@ -122,7 +122,11 @@ class DummySeeder extends Seeder
                 }
             }
 
-            dispatch_sync(new AthleteParticipation($tournament, $participants));
+            (new AthletesParticipation(
+                tournament: $tournament,
+                athletes: $athletes,
+                shoudVerify: ! $tournament->is_draft
+            ))->handle();
 
             DB::transaction(function () use ($tournament) {
                 if ($tournament->is_draft) {
