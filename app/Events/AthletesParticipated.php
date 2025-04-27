@@ -2,6 +2,8 @@
 
 namespace App\Events;
 
+use App\Models\Classification;
+use App\Models\MatchGroup;
 use App\Models\Tournament;
 use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Foundation\Events\Dispatchable;
@@ -11,14 +13,22 @@ class AthletesParticipated
 {
     use Dispatchable, SerializesModels;
 
+    public readonly Classification $class;
+
+    public readonly MatchGroup $group;
+
     /**
      * Create a new event instance.
      */
     public function __construct(
-        readonly public Tournament $tournament,
-        readonly public string $classificationId,
+        public readonly Tournament $tournament,
+        Classification|string $class,
     ) {
-        //
+        $this->class = $tournament->classes
+            ->where('id', is_string($class) ? $class : $class->id)
+            ->first();
+
+        $this->group = $this->class->group;
     }
 
     /**

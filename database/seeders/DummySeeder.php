@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Database\Seeders;
 
 use App\Jobs\AthletesParticipation;
-use App\Jobs\Matchmaking;
 use App\Models\Classification;
 use App\Models\Continent;
 use App\Models\Person;
@@ -13,7 +12,6 @@ use App\Models\Tournament;
 use Illuminate\Database\Eloquent\Factories\Sequence;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Carbon;
-use Illuminate\Support\Facades\Bus;
 
 class DummySeeder extends Seeder
 {
@@ -65,10 +63,9 @@ class DummySeeder extends Seeder
 
                     /** @var \Illuminate\Support\Collection<int, Person> */
                     $participants = Person::factory($count)
-                        ->asAthlete(createClass: false)
+                        ->asAthlete(withClassification: $class)
                         ->state(fn (array $attrs) => [
                             'continent_id' => $continent->id,
-                            'class_id' => $class->id,
                             'gender' => $class->gender,
                         ])
                         ->make();
@@ -123,37 +120,29 @@ class DummySeeder extends Seeder
     {
         $continents = $continents->fresh('athletes');
 
-        Bus::batch(
-            $tournaments->map(static function (Tournament $tournament) use ($continents) {
-                /** @var \Illuminate\Support\Collection<int, \App\Models\Person> */
-                $athletes = collect();
+        $tournaments->each(static function (Tournament $tournament) use ($continents) {
+            /** @var \Illuminate\Support\Collection<int, \App\Models\Person> */
+            $athletes = collect();
 
-                foreach ($continents as $continent) {
-                    if (fake()->boolean(20)) {
+            foreach ($continents as $continent) {
+                if (fake()->boolean(20)) {
+                    continue;
+                }
+
+                foreach ($continent->athletes as $athlete) {
+                    if (fake()->boolean(30)) {
                         continue;
                     }
 
-                    foreach ($continent->athletes as $athlete) {
-                        if (fake()->boolean(30)) {
-                            continue;
-                        }
-
-                        $athletes[] = $athlete;
-                    }
+                    $athletes[] = $athlete;
                 }
+            }
 
-                (new AthletesParticipation(
-                    tournament: $tournament,
-                    athletes: $athletes,
-                    shoudVerify: ! $tournament->is_draft
-                ))->handle();
-
-                if ($tournament->is_draft) {
-                    return null;
-                }
-
-                return new Matchmaking($tournament);
-            })->filter()
-        )->name('Seeding tournament matches')->dispatch();
+            (new AthletesParticipation(
+                tournament: $tournament,
+                athletes: $athletes,
+                shoudVerify: ! $tournament->is_draft
+            ))->handle();
+        });
     }
 }

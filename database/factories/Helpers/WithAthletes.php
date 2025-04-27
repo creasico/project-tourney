@@ -2,6 +2,7 @@
 
 namespace Database\Factories\Helpers;
 
+use App\Models\Classification;
 use App\Models\Person;
 use Database\Factories\ClassificationFactory;
 
@@ -15,9 +16,14 @@ trait WithAthletes
     /**
      * @param  \Closure(array, TModel)|array  $state
      */
-    public function withAthletes(?int $count = null, \Closure|array $state = [])
-    {
-        $person = Person::factory($count)->asAthlete(createClass: ! ($this instanceof ClassificationFactory));
+    public function withAthletes(
+        ?int $count = null,
+        \Closure|array $state = [],
+        ClassificationFactory|Classification|null $classifiedAs = null
+    ): static {
+        $person = Person::factory($count)->asAthlete(
+            withClassification: $this instanceof ClassificationFactory ? false : $classifiedAs
+        );
 
         if (property_exists($this, 'gender')) {
             $person = $person->withGender(self::$gender);

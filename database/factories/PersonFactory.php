@@ -56,16 +56,21 @@ class PersonFactory extends Factory
         ]);
     }
 
-    public function asAthlete(?AgeRange $age = null, ?string $weight = null, bool $createClass = true)
-    {
+    public function asAthlete(
+        ClassificationFactory|Classification|false|null $withClassification = null,
+        ?AgeRange $age = null,
+        ?string $weight = null,
+    ): static {
         $state = $this->withRole(ParticipantRole::Athlete);
 
-        if (! $createClass) {
+        if ($withClassification === false) {
             return $state;
         }
 
         return $state->for(
-            Classification::factory()->withGender(self::$gender)->withRange($age, $weight),
+            $withClassification ?? Classification::factory()
+                ->withGender(self::$gender)
+                ->withRange($age, $weight),
         );
     }
 

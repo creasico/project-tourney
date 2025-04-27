@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace App\Events;
 
 use App\Models\Tournament;
@@ -10,13 +8,19 @@ use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class MatchmakingSucceeded
+class MatchupInitialized
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
+    /**
+     * Create a new event instance.
+     */
     public function __construct(
-        readonly public Tournament $tournament,
-    ) {}
+        public readonly Tournament $tournament,
+        public readonly string $classificationId,
+    ) {
+        //
+    }
 
     /**
      * Get the channels the event should broadcast on.

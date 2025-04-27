@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Enums\MatchBye;
 use App\Enums\TournamentLevel;
 use App\Models\Classification;
 use App\Models\Person;
@@ -49,8 +50,10 @@ class TournamentFactory extends Factory
         ]);
     }
 
-    public function withParticipants(?PersonFactory $participants = null, array $pivot = [])
-    {
+    public function withParticipants(
+        PersonFactory|Person|null $participants = null,
+        array $pivot = []
+    ): static {
         return $this->hasAttached(
             $participants ?? Person::factory()->asAthlete(),
             $pivot,
@@ -62,17 +65,18 @@ class TournamentFactory extends Factory
         });
     }
 
-    public function withClassifications(?ClassificationFactory $classifications = null, array $pivot = [])
-    {
+    public function withClassifications(
+        ClassificationFactory|Classification|null $classifications = null,
+        int $division = 0,
+        ?MatchBye $bye = null,
+    ): static {
         return $this->hasAttached(
             $classifications ?? Classification::factory(),
-            $pivot,
+            array_filter([
+                'division' => $division,
+                'bye' => $bye,
+            ]),
             'classes'
         );
-    }
-
-    public function withLevel(TournamentLevel $level)
-    {
-        return $this->state(['level' => $level]);
     }
 }
