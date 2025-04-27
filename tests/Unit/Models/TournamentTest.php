@@ -49,7 +49,7 @@ it('has many classes', function () {
 
 it('has many participants', function () {
     $model = Tournament::factory()
-        ->withParticipants()
+        ->withAthletes()
         ->createOne();
 
     expect($model->participants)->toHaveCount(1);
@@ -64,7 +64,7 @@ it('could disqualify participants', function () {
     Event::fake();
 
     $model = Tournament::factory()
-        ->withParticipants()
+        ->withAthletes()
         ->createOne();
 
     $participant = $model->participants->first();
@@ -85,7 +85,7 @@ it('could verify participants', function () {
     Event::fake();
 
     $model = Tournament::factory()
-        ->withParticipants()
+        ->withAthletes()
         ->createOne();
 
     expect($model->unverifiedParticipants)->toHaveCount(1);
@@ -112,7 +112,7 @@ it('could knock-off participants', function () {
     Event::fake();
 
     $model = Tournament::factory()
-        ->withParticipants()
+        ->withAthletes()
         ->createOne();
 
     $participant = $model->participants->first();

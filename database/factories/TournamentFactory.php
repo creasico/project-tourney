@@ -6,6 +6,7 @@ use App\Enums\MatchBye;
 use App\Enums\TournamentLevel;
 use App\Models\Classification;
 use App\Models\Person;
+use App\Models\Tournament;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -50,19 +51,27 @@ class TournamentFactory extends Factory
         ]);
     }
 
-    public function withParticipants(
+    public function withAthletes(
+        ?int $count = null,
         PersonFactory|Person|null $participants = null,
-        array $pivot = []
+        ClassificationFactory|Classification|false|null $withClassification = null,
+        array $pivot = [],
     ): static {
         return $this->hasAttached(
-            $participants ?? Person::factory()->asAthlete(),
+            $participants ?? Person::factory($count)
+                ->asAthlete($withClassification)
+                ->withContinent()
+                ->state(function (array $attr, Tournament $tournament) {
+                    if ($class = $tournament->classes->first()) {
+                        $attr['class_id'] = $class->id;
+                        $attr['gender'] = $class->gender;
+                    }
+
+                    return $attr;
+                }),
             $pivot,
             'participants'
-        )->afterCreating(function ($tournament) {
-            foreach ($tournament->participants->pluck('class_id') as $ids) {
-                $tournament->classes()->attach($ids);
-            }
-        });
+        );
     }
 
     public function withClassifications(

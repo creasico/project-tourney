@@ -67,10 +67,16 @@ class PersonFactory extends Factory
             return $state;
         }
 
+        if ($withClassification instanceof Classification) {
+            $state = $state->withGender($withClassification->gender);
+        }
+
         return $state->for(
             $withClassification ?? Classification::factory()
-                ->withGender(self::$gender)
-                ->withRange($age, $weight),
+                ->withRange($age, $weight)
+                ->state(fn (array $attr, $rel) => array_filter([
+                    'gender' => $rel?->gender,
+                ])),
         );
     }
 
