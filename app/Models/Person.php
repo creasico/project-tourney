@@ -43,7 +43,7 @@ class Person extends Model
     {
         return $this->belongsToMany(Tournament::class, Participation::class, foreignPivotKey: 'participant_id')
             ->withPivot([
-                'rank_number', 'draw_number', 'medal',
+                'match_id', 'rank_number', 'draw_number', 'medal',
                 'disqualification_reason', 'disqualified_at',
                 'verified_at', 'knocked_at',
             ])
