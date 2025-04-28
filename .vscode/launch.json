@@ -11,9 +11,57 @@
       "port": 9003
     },
     {
-      "name": "Listen for Xdebug",
+      "name": "Launch built-in server and Debug",
       "type": "php",
-      "request": "launch"
+      "request": "launch",
+      "noDebug": false,
+      "runtimeArgs": [
+        "-S",
+        "localhost:8000",
+        "-t",
+        ".",
+        "../vendor/laravel/framework/src/Illuminate/Foundation/resources/server.php"
+      ],
+      "cwd": "${workspaceRoot}/public",
+      "serverReadyAction": {
+        "action": "openExternally"
+      },
+      "envFile": "../.env"
+    },
+    {
+      "name": "Launch built-in server and Profile",
+      "type": "php",
+      "request": "launch",
+      "noDebug": true,
+      "runtimeArgs": [
+        "-S",
+        "localhost:8000",
+        "-t",
+        ".",
+        "../vendor/laravel/framework/src/Illuminate/Foundation/resources/server.php"
+      ],
+      "cwd": "${workspaceRoot}/public",
+      "serverReadyAction": {
+        "action": "openExternally"
+      },
+      "envFile": "../.env",
+      "profile": true,
+      "openProfile": true
+    },
+    {
+      "name": "Launch currently open script",
+      "type": "php",
+      "request": "launch",
+      "program": "${file}",
+      "cwd": "${fileDirname}",
+      "port": 0,
+      "runtimeArgs": [
+        "-dxdebug.start_with_request=yes"
+      ],
+      "env": {
+        "XDEBUG_MODE": "debug,develop",
+        "XDEBUG_CONFIG": "client_port=${port}"
+      }
     }
   ]
 }
