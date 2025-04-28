@@ -3,30 +3,86 @@
 use App\Events\AthletesParticipated;
 use App\Events\MatchupInitialized;
 use App\Listeners\InitializeMatchups;
-use App\Models\Classification;
-use App\Models\Person;
+use App\Models\Continent;
 use App\Models\Tournament;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Event;
+use PHPUnit\Framework\ExpectationFailedException;
 
-beforeEach(function () {
-    $tournament = Tournament::factory()->withClassifications(
-        $class = Classification::factory()->createOne()
-    )->withParticipants(
-        Person::factory(5)
-            ->asAthlete(withClassification: $class)
-            ->withContinent()
-    )->createOne();
+it('should calculate matchups with :dataset', function (Tournament $tournament, int $divisions) {
+    $event = new AthletesParticipated($tournament, $tournament->classes->first());
 
-    $this->event = new AthletesParticipated(
-        $tournament,
-        $class
-    );
-});
-
-it('should triggers an event once', function () {
     Event::fake(MatchupInitialized::class);
 
-    (new InitializeMatchups)->handle($this->event);
+    (new InitializeMatchups)->handle($event);
 
     Event::assertDispatchedTimes(MatchupInitialized::class, 1);
+
+    $tournament = $tournament->fresh(['classes.athletes', 'participants.matches']);
+    $class = $tournament->classes->first();
+    $group = $class->group->load(['divisions.matches.athletes']);
+
+    // dump($group->toArray());
+
+    expect($group->divisions)->toHaveCount($divisions);
+})->with([
+    '5 athletes no divisions' => [
+        fn () => Tournament::factory()
+            ->withClassifications()
+            ->withAthletes(count: 5)
+            ->createOne(),
+        1,
+    ],
+    '5 athletes 3 divisions' => [
+        fn () => Tournament::factory()
+            ->withClassifications(division: 3)
+            ->withAthletes(count: 5)
+            ->createOne(),
+        2,
+    ],
+    '7 athletes 3 divisions' => [
+        fn () => Tournament::factory()
+            ->withClassifications(division: 3)
+            ->withAthletes(count: 7)
+            ->createOne(),
+        3,
+    ],
+]);
+
+describe('::prepareAthletes()', function () {
+    /** @param Collection<int, Continent> $continents */
+    it('should randomize :dataset', function (Collection $continents) {
+        /** @var Collection<int, \App\Models\Person> */
+        $athletes = $continents->reduce(
+            fn (Collection $result, $continent) => $result->push(...$continent->athletes),
+            collect()
+        );
+
+        $result = (new InitializeMatchups)->prepareAthletes($athletes);
+
+        // Ensure nothing is left behind
+        expect($result)->toHaveCount($athletes->count());
+
+        foreach ($result as $i => $athlete) {
+            if ($i === 0) {
+                continue;
+            }
+
+            try {
+                expect($result[$i - 1]['continent_id'])->not->toBe($athlete['continent_id']);
+            } catch (ExpectationFailedException $e) {
+                logger()->notice('Found athlete that meet their companion in match', [
+                    'continent' => $athlete['continent_id'],
+                    'number_of_dataset' => $continents->count(),
+                    'iteration' => $i,
+                ]);
+            }
+        }
+    })->with(collect(range(2, 20))->mapWithKeys(fn ($val) => [
+        "{$val} continents" => [
+            fn () => Continent::factory($val)
+                ->withAthletes(fn () => fake()->numberBetween(2, 9))
+                ->createMany(),
+        ],
+    ])->toArray());
 });
