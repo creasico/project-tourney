@@ -2,12 +2,10 @@
 
 namespace App\Listeners;
 
-use App\Enums\MatchSide;
 use App\Events\AthletesParticipated;
 use App\Events\MatchupInitialized;
-use App\Models\Classification;
-use App\Models\Division;
-use App\Models\Tournament;
+use App\Support\Sided;
+use App\Support\Sliced;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Support\Collection;
@@ -26,7 +24,7 @@ final class InitializeMatchups implements ShouldQueue
             $tournament = $event->tournament->fresh();
             $athletes = $this->prepareAthletes($event->class->athletes);
 
-            $athletesCount = count($athletes);
+            $athletesCount = $event->class->athletes->count();
             $division = $event->group->division > 2 ? $event->group->division : $athletesCount;
 
             foreach (array_chunk($athletes, $division) as $i => $chunks) {
@@ -41,40 +39,25 @@ final class InitializeMatchups implements ShouldQueue
                     'label' => $label,
                 ]);
 
-                $this->createMatchups($chunks, $tournament, $event->class, $division);
+                $chunks = array_map(
+                    fn ($row) => $event->class->athletes->where('id', $row['id'])->first(),
+                    $chunks,
+                );
+
+                foreach ($this->determineSide($chunks) as $parties) {
+                    /** @var \App\Models\Matchup */
+                    $match = $tournament->matches()->create([
+                        'division_id' => $division->id,
+                        'class_id' => $event->class->id,
+                        'is_bye' => count($parties) === 1,
+                    ]);
+
+                    $match->addAthletes($parties, $tournament);
+                }
             }
 
             event(new MatchupInitialized($tournament, $event->class->id));
         });
-    }
-
-    /**
-     * @param  Collection<int, \App\Models\Person>  $athletes
-     */
-    private function createMatchups(
-        Collection $athletes,
-        Tournament $tournament,
-        Classification $class,
-        Division $division,
-    ): void {
-        $sides = MatchSide::cases();
-
-        foreach ($athletes->chunk(2) as $parties) {
-            /** @var \App\Models\Matchup */
-            $match = $tournament->matches()->create([
-                'division_id' => $division->id,
-                'class_id' => $class->id,
-                'is_bye' => $parties->count() === 1,
-            ]);
-
-            foreach ($parties->values() as $a => $athlete) {
-                $match->attachAthlete($athlete, $sides[$a]);
-
-                $tournament->participants()->updateExistingPivot($athlete, [
-                    'match_id' => $match->id,
-                ]);
-            }
-        }
     }
 
     /**
@@ -127,6 +110,81 @@ final class InitializeMatchups implements ShouldQueue
         }
 
         return $result;
+    }
+
+    /**
+     * @param  list<\App\Models\Person>  $athletes
+     * @return list<Sided>
+     */
+    public function determineSide(array $athletes): array
+    {
+        $half = count($athletes);
+        $slices = [];
+
+        while ($half > 0) {
+            $half = floor($half / 2);
+
+            if (count($slices) === 0) {
+                $slices[] = $this->slice($athletes, $half);
+
+                continue;
+            }
+
+            $parts = [];
+
+            foreach ($slices as $slice) {
+                if (count($slice->upper) === 1 && count($slice->lower) === 1) {
+                    $parts[] = $slice;
+
+                    continue;
+                }
+
+                // On last chunk iteration that has 2 upper and 1 lower
+                // Swap their participant to the correct allocation
+                if (count($slice->upper) === 2 && count($slice->lower) === 1) {
+                    array_unshift($slice->lower, array_pop($slice->upper));
+                }
+
+                foreach ($slice as $side) {
+                    if (count($side) > 1) {
+                        $parts[] = $this->slice($side, $half);
+
+                        continue;
+                    }
+
+                    $parts[] = new Sliced($side);
+                }
+            }
+
+            $slices = [];
+            array_push($slices, ...$parts);
+        }
+
+        $result = [];
+
+        foreach ($slices as $slice) {
+            $result[] = new Sided(
+                $slice->upper[0],
+                $slice->lower[0] ?? null
+            );
+        }
+
+        return $result;
+    }
+
+    /**
+     * @return Sliced
+     */
+    private function slice(array $items, int $slice)
+    {
+        if (floor(count($items) / 2) > $slice) {
+            $slice++;
+        }
+
+        return new Sliced(
+            upper: array_slice($items, 0, $slice),
+            lower: array_slice($items, $slice),
+        );
     }
 
     /**

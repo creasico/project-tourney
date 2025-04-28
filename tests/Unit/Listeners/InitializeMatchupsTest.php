@@ -4,6 +4,7 @@ use App\Events\AthletesParticipated;
 use App\Events\MatchupInitialized;
 use App\Listeners\InitializeMatchups;
 use App\Models\Continent;
+use App\Models\Person;
 use App\Models\Tournament;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Event;
@@ -85,4 +86,57 @@ describe('::prepareAthletes()', function () {
                 ->createMany(),
         ],
     ])->toArray());
+});
+
+describe('::determineSide()', function () {
+    $structures = [
+        3 => [1, 2],
+        4 => [2, 2],
+        5 => [2, 1, 2],
+    ];
+
+    foreach (range(3, 50) as $c) {
+        if (isset($structures[$c])) {
+            continue;
+        }
+
+        $upper = floor($c / 2);
+        $lower = $c - $upper;
+
+        $structures[$c] = array_reduce([$upper, $lower], function ($result, $size) use ($structures) {
+            $prev = $structures[$size] ?? null;
+
+            if ($prev) {
+                array_push($result, ...$prev);
+            }
+
+            return $result;
+        }, []);
+    }
+
+    /**
+     * @param  Collection<int, Person>  $athletes
+     * @param  int[]  $structure
+     */
+    it('should calculate :dataset', function (Collection $athletes, array $structure) {
+        $result = (new InitializeMatchups)->determineSide($athletes->all());
+
+        $actual = [];
+        foreach ($result as $k => $val) {
+            $actual[] = count($val);
+        }
+
+        expect($actual)->toBe($structure);
+    })->with(collect($structures)->mapWithKeys(function ($val, $key) {
+        $text = implode(' ', $val);
+
+        return [
+            "{$key} athletes [{$text}]" => [
+                fn () => Person::factory($key)
+                    ->asAthlete()
+                    ->createMany(),
+                $val,
+            ],
+        ];
+    })->toArray());
 });
