@@ -4,6 +4,7 @@ namespace App\Listeners;
 
 use App\Events\AthletesParticipated;
 use App\Events\MatchupInitialized;
+use App\Exceptions\UnprocessableMatchupException;
 use App\Support\Sided;
 use App\Support\Sliced;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -70,6 +71,10 @@ final class InitializeMatchups implements ShouldQueue
             ->each->pluck('id')
             ->values()
             ->toArray();
+
+        if (count($groupedAthletes) === 1) {
+            throw UnprocessableMatchupException::singleContinent();
+        }
 
         $result = $this->suffle($groupedAthletes);
         $count = count($result);
@@ -163,6 +168,10 @@ final class InitializeMatchups implements ShouldQueue
         $result = [];
 
         foreach ($slices as $slice) {
+            if (empty($slice->upper) && count($slice->lower) === 1) {
+                $slice->upper[] = array_pop($slice->lower);
+            }
+
             $result[] = new Sided(
                 $slice->upper[0],
                 $slice->lower[0] ?? null

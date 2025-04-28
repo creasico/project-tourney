@@ -5,6 +5,7 @@ namespace Database\Factories;
 use App\Enums\MatchBye;
 use App\Enums\TournamentLevel;
 use App\Models\Classification;
+use App\Models\Continent;
 use App\Models\Person;
 use App\Models\Tournament;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -64,12 +65,13 @@ class TournamentFactory extends Factory
         return $this->hasAttached(
             $participants ?? Person::factory($count)
                 ->asAthlete($withClassification)
-                ->withContinent()
                 ->state(function (array $attr, Tournament $tournament) {
                     if ($class = $tournament->classes->first()) {
                         $attr['class_id'] = $class->id;
                         $attr['gender'] = $class->gender;
                     }
+
+                    $attr['continent_id'] = Continent::factory();
 
                     return $attr;
                 }),

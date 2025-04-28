@@ -2,6 +2,7 @@
 
 use App\Events\AthletesParticipated;
 use App\Events\MatchupInitialized;
+use App\Exceptions\UnprocessableMatchupException;
 use App\Listeners\InitializeMatchups;
 use App\Models\Continent;
 use App\Models\Person;
@@ -51,6 +52,14 @@ it('should calculate matchups with :dataset', function (Tournament $tournament, 
 ]);
 
 describe('::prepareAthletes()', function () {
+    it('should throw exception', function () {
+        $athletes = Person::factory(2)
+            ->withContinent()
+            ->createMany();
+
+        (new InitializeMatchups)->prepareAthletes($athletes);
+    })->throws(UnprocessableMatchupException::class);
+
     /** @param Collection<int, Continent> $continents */
     it('should randomize :dataset', function (Collection $continents) {
         /** @var Collection<int, \App\Models\Person> */
