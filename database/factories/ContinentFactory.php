@@ -30,8 +30,14 @@ class ContinentFactory extends Factory
     /**
      * @param  \Closure(array, \App\Models\Continent)|array  $state
      */
-    public function withManagers(?int $count = null, \Closure|array $state = [])
-    {
+    public function withManagers(
+        \Closure|int|null $count = null,
+        \Closure|array $state = []
+    ): static {
+        if ($count instanceof \Closure) {
+            $count = $count();
+        }
+
         return $this->has(
             Person::factory($count)->asManager()->state($state),
             'managers'

@@ -17,10 +17,14 @@ trait WithAthletes
      * @param  \Closure(array, TModel)|array  $state
      */
     public function withAthletes(
-        ?int $count = null,
+        \Closure|int|null $count = null,
         \Closure|array $state = [],
         ClassificationFactory|Classification|null $classifiedAs = null
     ): static {
+        if ($count instanceof \Closure) {
+            $count = $count();
+        }
+
         $person = Person::factory($count)->asAthlete(
             withClassification: $this instanceof ClassificationFactory ? false : $classifiedAs
         );

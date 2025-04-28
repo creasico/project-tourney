@@ -52,11 +52,15 @@ class TournamentFactory extends Factory
     }
 
     public function withAthletes(
-        ?int $count = null,
+        \Closure|int|null $count = null,
         PersonFactory|Person|null $participants = null,
         ClassificationFactory|Classification|false|null $withClassification = null,
         array $pivot = [],
     ): static {
+        if ($count instanceof \Closure) {
+            $count = $count();
+        }
+
         return $this->hasAttached(
             $participants ?? Person::factory($count)
                 ->asAthlete($withClassification)
