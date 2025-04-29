@@ -31,11 +31,13 @@ return new class extends Migration
         Schema::create('divisions', function (Blueprint $table) {
             $table->id();
             $table->foreignId('group_id')->nullable();
+            $table->foreignUlid('tournament_id')->nullable();
 
             $table->string('label');
             $table->json('attr')->nullable();
 
             $table->foreign('group_id')->references('id')->on('match_groups')->nullOnDelete();
+            $table->foreign('tournament_id')->references('id')->on('tournaments')->nullOnDelete();
         });
 
         Schema::create('division_prizes', function (Blueprint $table) {

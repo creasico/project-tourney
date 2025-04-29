@@ -65,6 +65,11 @@ class Tournament extends Model
         return $this->hasMany(MatchGroup::class);
     }
 
+    public function divisions(): HasMany
+    {
+        return $this->hasMany(Division::class);
+    }
+
     public function classes(): BelongsToMany
     {
         return $this->belongsToMany(Classification::class, MatchGroup::class, relatedPivotKey: 'class_id')

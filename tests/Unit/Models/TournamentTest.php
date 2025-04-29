@@ -7,6 +7,7 @@ use App\Events\ParticipantDisqualified;
 use App\Events\ParticipantKnockedOff;
 use App\Events\ParticipantVerified;
 use App\Models\Classification;
+use App\Models\Division;
 use App\Models\MatchGroup;
 use App\Models\Matchup;
 use App\Models\Participation;
@@ -28,6 +29,21 @@ it('has many matches', function () {
     $match = $model->matches->first();
 
     expect($match)->toBeInstanceOf(Matchup::class);
+});
+
+it('has many divisions', function () {
+    $model = Tournament::factory()
+        ->has(
+            Division::factory(2),
+            'divisions',
+        )
+        ->createOne();
+
+    expect($model->divisions)->toHaveCount(2);
+
+    $division = $model->divisions->first();
+
+    expect($division)->toBeInstanceOf(Division::class);
 });
 
 it('has many classes', function () {

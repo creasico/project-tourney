@@ -6,6 +6,17 @@ use App\Enums\MedalPrize;
 use App\Models\Division;
 use App\Models\DivisionPrize;
 use App\Models\PrizePool;
+use App\Models\Tournament;
+
+it('belongs to tournament', function () {
+    $model = Division::factory()
+        ->for(
+            Tournament::factory(),
+        )
+        ->createOne();
+
+    expect($model->tournament)->toBeInstanceOf(Tournament::class);
+});
 
 it('belongs to many prizes', function () {
     $model = Division::factory()

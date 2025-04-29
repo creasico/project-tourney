@@ -31,7 +31,7 @@ final class InitializeMatchups implements ShouldQueue
             $athletesCount = $class->athletes->count();
             $division = $class->group->division > 2 ? $class->group->division : $athletesCount;
 
-            foreach (array_chunk($athletes, $division) as $i => $chunks) {
+            foreach (array_chunk($athletes, $division) as $i => $participants) {
                 $label = $class->display;
 
                 if ($division !== $athletesCount) {
@@ -41,14 +41,15 @@ final class InitializeMatchups implements ShouldQueue
 
                 $division = $class->group->divisions()->create([
                     'label' => $label,
+                    'tournament_id' => $tournament->id,
                 ]);
 
-                $chunks = array_map(
+                $participants = $this->determineSide(array_map(
                     fn ($row) => $class->athletes->where('id', $row['id'])->first(),
-                    $chunks,
-                );
+                    $participants,
+                ));
 
-                foreach ($this->determineSide($chunks) as $p => $parties) {
+                foreach ($participants as $p => $parties) {
                     $p++;
 
                     /** @var \App\Models\Matchup */
