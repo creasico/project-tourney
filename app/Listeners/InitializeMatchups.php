@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Listeners;
 
 use App\Events\AthletesParticipated;
@@ -137,7 +139,7 @@ final class InitializeMatchups implements ShouldQueue
         $slices = [];
 
         while ($half > 0) {
-            $half = floor($half / 2);
+            $half = (int) floor($half / 2);
 
             if (count($slices) === 0) {
                 $slices[] = $this->slice($athletes, $half);
