@@ -17,10 +17,8 @@ class MatchupInitialized
      */
     public function __construct(
         public readonly Tournament $tournament,
-        public readonly string $classificationId,
-    ) {
-        //
-    }
+        public readonly string $classId,
+    ) {}
 
     /**
      * Get the channels the event should broadcast on.
