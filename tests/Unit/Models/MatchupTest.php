@@ -70,3 +70,14 @@ it('belongs to next match', function () {
 
     expect($model->next)->toBeInstanceOf(Matchup::class);
 });
+
+it('has one prev match', function () {
+    $model = Matchup::factory()
+        ->has(
+            Matchup::factory(),
+            'prev'
+        )
+        ->createOne();
+
+    expect($model->prev)->toBeInstanceOf(Matchup::class);
+});

@@ -14,6 +14,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Matchup extends Model
 {
@@ -77,6 +78,11 @@ class Matchup extends Model
     public function next(): BelongsTo
     {
         return $this->belongsTo(Matchup::class, 'next_id');
+    }
+
+    public function prev(): HasOne
+    {
+        return $this->hasOne(Matchup::class, 'next_id');
     }
 
     public function addAthletes(Sided $sided, Tournament $tournament)
