@@ -44,9 +44,13 @@ class AthletesParticipation implements ShouldQueue
                     'division' => $athletes->count(),
                     'bye' => MatchBye::Up,
                 ]);
-
-                event(new AthletesParticipated($this->tournament, $classId));
             }
         });
+
+        $tournament = $this->tournament->fresh(['classes']);
+
+        foreach ($tournament->classes as $class) {
+            event(new AthletesParticipated($tournament, $class->id));
+        }
     }
 }
