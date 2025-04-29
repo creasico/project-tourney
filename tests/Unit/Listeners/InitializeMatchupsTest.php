@@ -127,15 +127,15 @@ describe('::determineSide()', function () {
      * @param  Collection<int, Person>  $athletes
      * @param  int[]  $structure
      */
-    it('should calculate :dataset', function (Collection $athletes, array $structure) {
+    it('should calculate :dataset', function (Collection $athletes, array $expected) {
         $result = (new InitializeMatchups)->determineSide($athletes->all());
 
         $actual = [];
-        foreach ($result as $k => $val) {
-            $actual[] = count($val);
+        foreach ($result as $val) {
+            $actual[] = $val->count();
         }
 
-        expect($actual)->toBe($structure);
+        expect($actual)->toBe($expected);
     })->with(collect($structures)->mapWithKeys(function ($val, $key) {
         $text = implode(' ', $val);
 

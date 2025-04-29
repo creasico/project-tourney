@@ -50,7 +50,7 @@ final class InitializeMatchups implements ShouldQueue
                     $match = $tournament->matches()->create([
                         'division_id' => $division->id,
                         'class_id' => $event->class->id,
-                        'is_bye' => count($parties) === 1,
+                        'is_bye' => $parties->isBye(),
                     ]);
 
                     $match->addAthletes($parties, $tournament);

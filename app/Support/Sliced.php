@@ -3,10 +3,9 @@
 namespace App\Support;
 
 use ArrayIterator;
-use Countable;
 use IteratorAggregate;
 
-final class Sliced implements Countable, IteratorAggregate
+final class Sliced implements IteratorAggregate
 {
     public function __construct(
         public array $upper,
@@ -19,15 +18,5 @@ final class Sliced implements Countable, IteratorAggregate
             $this->upper,
             $this->lower,
         ]);
-    }
-
-    public function count(): int
-    {
-        return count(array_merge(...$this));
-    }
-
-    public function isEmpty(): bool
-    {
-        return $this->count() === 0;
     }
 }

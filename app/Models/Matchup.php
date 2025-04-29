@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Models;
 
 use App\Enums\MatchSide;
+use App\Enums\MatchStatus;
 use App\Support\Sided;
 use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -54,6 +55,7 @@ class Matchup extends Model
     {
         $this->athletes()->attach($sided->blue, [
             'side' => MatchSide::Blue,
+            'status' => MatchStatus::Queue,
         ]);
 
         $tournament->participants()->updateExistingPivot($sided->blue, [
@@ -63,18 +65,12 @@ class Matchup extends Model
         if ($sided->red) {
             $this->athletes()->attach($sided->red, [
                 'side' => MatchSide::Red,
+                'status' => MatchStatus::Queue,
             ]);
 
             $tournament->participants()->updateExistingPivot($sided->red, [
                 'match_id' => $this->id,
             ]);
         }
-    }
-
-    public function attachAthlete(Person $athlete, MatchSide $side)
-    {
-        $this->athletes()->attach($athlete, [
-            'side' => $side,
-        ]);
     }
 }
