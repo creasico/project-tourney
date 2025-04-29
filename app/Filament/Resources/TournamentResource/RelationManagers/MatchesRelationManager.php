@@ -58,6 +58,9 @@ class MatchesRelationManager extends RelationManager
                     'red.continent',
                     'participations',
                     'division',
+                    'winner',
+                    'next',
+                    'prev',
                 ])
             )
             ->columns([

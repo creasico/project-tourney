@@ -144,18 +144,4 @@ class Matchup extends Model
     {
         return Attribute::get(fn (): ?Participation => $this->participant('red_side'));
     }
-
-    public function isStarted(): Attribute
-    {
-        return Attribute::get(
-            fn (): bool => $this->started_at?->startOfDay()->lt(now()->endOfDay()) ?: false
-        );
-    }
-
-    public function isFinished(): Attribute
-    {
-        return Attribute::get(
-            fn (): bool => $this->finished_at?->endOfDay()->lt(now()->startOfDay()) ?: false
-        );
-    }
 }
