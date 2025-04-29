@@ -39,5 +39,6 @@ return [
         'classification' => 'Kelas',
         'role' => 'Peran',
         'gender' => 'Gender',
+        'draw_number' => 'Nomor',
     ],
 ];

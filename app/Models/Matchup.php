@@ -14,6 +14,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Matchup extends Model
@@ -48,29 +49,59 @@ class Matchup extends Model
         return $this->belongsTo(Division::class);
     }
 
-    public function athletes(): BelongsToMany
+    public function participations(): HasMany
+    {
+        return $this->hasMany(Participation::class, 'match_id');
+    }
+
+    public function athletes(): BelongsToMany|Builders\PersonBuilder
     {
         return $this->belongsToMany(Person::class, MatchParty::class, 'match_id', 'participant_id')
             ->withPivot(['side', 'status'])
             ->as('party');
     }
 
-    public function blue()
+    public function addAthletes(Sided $sided, Tournament $tournament)
+    {
+        $this->addAthlete($sided->blue, $tournament, MatchSide::Blue);
+
+        if ($sided->red) {
+            $this->addAthlete($sided->red, $tournament, MatchSide::Red);
+        }
+    }
+
+    public function addAthlete(
+        Person $athlete,
+        Tournament $tournament,
+        MatchSide $side,
+        PartyStatus $status = PartyStatus::Queue
+    ): void {
+        $this->athletes()->attach($athlete, [
+            'side' => $side,
+            'status' => $status,
+        ]);
+
+        $tournament->participants()->updateExistingPivot($athlete, [
+            'match_id' => $this->id,
+        ]);
+    }
+
+    public function blue(): BelongsToMany|Builders\PersonBuilder
     {
         return $this->athletes()->wherePivot('side', MatchSide::Blue);
     }
 
-    public function red()
+    public function red(): BelongsToMany|Builders\PersonBuilder
     {
         return $this->athletes()->wherePivot('side', MatchSide::Red);
     }
 
-    public function winner()
+    public function winner(): BelongsToMany|Builders\PersonBuilder
     {
         return $this->athletes()->wherePivot('status', PartyStatus::Win);
     }
 
-    public function loser()
+    public function loser(): BelongsToMany|Builders\PersonBuilder
     {
         return $this->athletes()->wherePivot('status', PartyStatus::Lose);
     }
@@ -85,40 +116,46 @@ class Matchup extends Model
         return $this->hasOne(Matchup::class, 'next_id');
     }
 
-    public function addAthletes(Sided $sided, Tournament $tournament)
+    private function participant(string $side): ?Participation
     {
-        $this->athletes()->attach($sided->blue, [
-            'side' => MatchSide::Blue,
-            'status' => PartyStatus::Queue,
-        ]);
-
-        $tournament->participants()->updateExistingPivot($sided->blue, [
-            'match_id' => $this->id,
-        ]);
-
-        if ($sided->red) {
-            $this->athletes()->attach($sided->red, [
-                'side' => MatchSide::Red,
-                'status' => PartyStatus::Queue,
-            ]);
-
-            $tournament->participants()->updateExistingPivot($sided->red, [
-                'match_id' => $this->id,
-            ]);
+        if ($participant = $this->{$side}) {
+            return $this->participations->where('participant_id', $participant->id)->first();
         }
+
+        return null;
+    }
+
+    public function blueSide(): Attribute
+    {
+        return Attribute::get(fn (): ?Person => $this->blue->first());
+    }
+
+    public function blueParticipant(): Attribute
+    {
+        return Attribute::get(fn (): ?Participation => $this->participant('blue_side'));
+    }
+
+    public function redSide(): Attribute
+    {
+        return Attribute::get(fn (): ?Person => $this->red->first());
+    }
+
+    public function redParticipant(): Attribute
+    {
+        return Attribute::get(fn (): ?Participation => $this->participant('red_side'));
     }
 
     public function isStarted(): Attribute
     {
         return Attribute::get(
-            fn () => $this->started_at?->startOfDay()->lt(now()->endOfDay()) ?: false
+            fn (): bool => $this->started_at?->startOfDay()->lt(now()->endOfDay()) ?: false
         );
     }
 
     public function isFinished(): Attribute
     {
         return Attribute::get(
-            fn () => $this->finished_at?->endOfDay()->lt(now()->startOfDay()) ?: false
+            fn (): bool => $this->finished_at?->endOfDay()->lt(now()->startOfDay()) ?: false
         );
     }
 }

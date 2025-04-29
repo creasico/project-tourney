@@ -16,7 +16,7 @@ trait WithTimelineStatus
 {
     public function status(): Attribute
     {
-        return Attribute::get(function () {
+        return Attribute::get(function (): TimelineStatus {
             if ($this->is_draft) {
                 return TimelineStatus::Draft;
             }
@@ -36,21 +36,21 @@ trait WithTimelineStatus
     public function isStarted(): Attribute
     {
         return Attribute::get(
-            fn () => $this->{$this->getStartedTimeColumn()}?->lt(now()) ?: false
+            fn (): bool => $this->{$this->getStartedTimeColumn()}?->lt(now()) ?: false
         );
     }
 
     public function isFinished(): Attribute
     {
         return Attribute::get(
-            fn () => $this->{$this->getFinishedAtColumn()}?->lt(now()) ?: false
+            fn (): bool => $this->{$this->getFinishedAtColumn()}?->lt(now()) ?: false
         );
     }
 
     public function isDraft(): Attribute
     {
         return Attribute::get(
-            fn () => $this->{$this->getDraftedTimeColumn()} === null
+            fn (): bool => $this->{$this->getDraftedTimeColumn()} === null
         );
     }
 

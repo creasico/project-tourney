@@ -55,6 +55,11 @@ class ParticipantsRelationManager extends RelationManager
                     ->getTitleFromRecordUsing(fn (Person $record) => $record->classification->display)
             )
             ->columns([
+                Columns\TextColumn::make('draw_number')
+                    ->label(trans('participant.field.draw_number'))
+                    ->width('5%')
+                    ->alignCenter(),
+
                 Columns\TextColumn::make('name')
                     ->label(trans('participant.field.name')),
 

@@ -39,5 +39,6 @@ return [
         'classification' => 'Classification',
         'role' => 'Role',
         'gender' => 'Gender',
+        'draw_number' => 'Draw Number',
     ],
 ];

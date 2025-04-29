@@ -56,6 +56,7 @@ class MatchesRelationManager extends RelationManager
                 fn (Builder $query) => $query->with([
                     'blue.continent',
                     'red.continent',
+                    'participations',
                     'division',
                 ])
             )
@@ -71,28 +72,36 @@ class MatchesRelationManager extends RelationManager
                     ->alignCenter(),
 
                 Columns\ColumnGroup::make(trans('participant.plural'), [
-                    Columns\TextColumn::make('blue.name')
+                    Columns\TextColumn::make('blue_side.name')
                         ->label(trans('match.side.blue'))
                         ->limit(50)
-                        ->width('25%')
+                        ->width('20%')
                         ->alignRight()
-                        ->description(function (Matchup $record) {
-                            /** @var \App\Models\Person */
-                            $athlete = $record->blue->first();
+                        ->description(
+                            fn (Matchup $record) => $record->blue_side?->continent->name
+                        ),
 
-                            return $athlete->continent->name;
-                        }),
+                    Columns\TextColumn::make('blue_participant.draw_number')
+                        ->label('#')
+                        ->width('5%')
+                        ->tooltip(trans('participant.field.draw_number'))
+                        ->alignCenter()
+                        ->numeric(),
 
-                    Columns\TextColumn::make('red.name')
+                    Columns\TextColumn::make('red_participant.draw_number')
+                        ->label('#')
+                        ->width('5%')
+                        ->tooltip(trans('participant.field.draw_number'))
+                        ->alignCenter()
+                        ->numeric(),
+
+                    Columns\TextColumn::make('red_side.name')
                         ->label(trans('match.side.red'))
                         ->limit(50)
-                        ->width('25%')
-                        ->description(function (Matchup $record) {
-                            /** @var \App\Models\Person */
-                            $athlete = $record->red->first();
-
-                            return $athlete?->continent->name;
-                        }),
+                        ->width('20%')
+                        ->description(
+                            fn (Matchup $record) => $record->red_side?->continent->name
+                        ),
                 ])->alignCenter()->wrapHeader(),
 
                 Columns\TextColumn::make('winner.name')
@@ -102,7 +111,7 @@ class MatchesRelationManager extends RelationManager
                     ->alignCenter()
                     ->description(function (Matchup $record) {
                         /** @var \App\Models\Person */
-                        $athlete = $record->red->first();
+                        $athlete = $record->winner->first();
 
                         return $athlete?->continent->name;
                     }),
