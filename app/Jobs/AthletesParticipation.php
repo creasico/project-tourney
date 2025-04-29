@@ -22,10 +22,9 @@ class AthletesParticipation implements ShouldQueue
     public function __construct(
         protected Tournament $tournament,
         protected Collection $athletes,
+        protected MatchBye $bye = MatchBye::Up,
         protected bool $shoudVerify = false,
-    ) {
-        // .
-    }
+    ) {}
 
     /**
      * Execute the job.
@@ -42,15 +41,11 @@ class AthletesParticipation implements ShouldQueue
 
                 $this->tournament->classes()->attach($classId, [
                     'division' => $athletes->count(),
-                    'bye' => MatchBye::Up,
+                    'bye' => $this->bye,
                 ]);
+
+                event(new AthletesParticipated($this->tournament, $classId));
             }
         });
-
-        $tournament = $this->tournament->fresh(['classes']);
-
-        foreach ($tournament->classes as $class) {
-            event(new AthletesParticipated($tournament, $class->id));
-        }
     }
 }
