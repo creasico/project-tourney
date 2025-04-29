@@ -41,13 +41,6 @@ return [
         'certificate' => 'Certificate',
     ],
 
-    'status' => [
-        'draft' => 'Draft',
-        'scheduled' => 'Scheduled',
-        'ongoing' => 'On Going',
-        'finished' => 'Finished',
-    ],
-
     'level' => [
         'nation' => 'Nation',
         'province' => 'Province',

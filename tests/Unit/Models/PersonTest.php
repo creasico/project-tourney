@@ -3,8 +3,8 @@
 declare(strict_types=1);
 
 use App\Enums\MatchSide;
-use App\Enums\MatchStatus;
 use App\Enums\MedalPrize;
+use App\Enums\PartyStatus;
 use App\Models\Continent;
 use App\Models\MatchParty;
 use App\Models\Matchup;
@@ -35,7 +35,7 @@ it('belongs to many matches', function () {
             Matchup::factory(),
             [
                 'side' => MatchSide::Red,
-                'status' => MatchStatus::Queue,
+                'status' => PartyStatus::Queue,
             ],
             'matches'
         )

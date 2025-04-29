@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Models;
 
 use App\Enums\MatchSide;
-use App\Enums\MatchStatus;
+use App\Enums\PartyStatus;
 use Illuminate\Database\Eloquent\Relations\Pivot;
 
 class MatchParty extends Pivot
@@ -16,7 +16,7 @@ class MatchParty extends Pivot
     {
         return [
             'side' => MatchSide::class,
-            'status' => MatchStatus::class,
+            'status' => PartyStatus::class,
         ];
     }
 }

@@ -7,7 +7,7 @@ namespace App\Enums;
 use App\Support\ArrayableEnum;
 use App\Support\OptionableEnum;
 
-enum TournamentStatus: int
+enum TimelineStatus: int
 {
     use ArrayableEnum, OptionableEnum;
 
@@ -21,7 +21,7 @@ enum TournamentStatus: int
 
     public function label(): string
     {
-        return trans('tournament.status.'.str($this->name)->slug());
+        return trans('app.timeline_status.'.str($this->name)->slug());
     }
 
     public function isDraft(): bool

@@ -7,7 +7,7 @@ namespace App\Enums;
 use App\Support\ArrayableEnum;
 use App\Support\OptionableEnum;
 
-enum MatchStatus: int
+enum PartyStatus: int
 {
     use ArrayableEnum, OptionableEnum;
 
@@ -21,7 +21,7 @@ enum MatchStatus: int
 
     public function label(): string
     {
-        return trans('match.status.'.str($this->name)->slug());
+        return trans('match.party_status.'.str($this->name)->slug());
     }
 
     public function isQueue(): bool

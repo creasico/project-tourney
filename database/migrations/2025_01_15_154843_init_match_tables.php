@@ -2,8 +2,8 @@
 
 use App\Enums\MatchBye;
 use App\Enums\MatchSide;
-use App\Enums\MatchStatus;
 use App\Enums\MedalPrize;
+use App\Enums\PartyStatus;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -108,8 +108,8 @@ return new class extends Migration
             $table->foreignUlid('participant_id')->constrained('people')->cascadeOnDelete();
 
             $table->enum('side', MatchSide::toArray())->nullable();
-            $table->unsignedTinyInteger('status')->default(MatchStatus::Queue)->comment(
-                sprintf('See %s for detail', MatchStatus::class)
+            $table->unsignedTinyInteger('status')->default(PartyStatus::Queue)->comment(
+                sprintf('See %s for detail', PartyStatus::class)
             );
         });
     }

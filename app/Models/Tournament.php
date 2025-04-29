@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Models;
 
 use App\Enums\TournamentLevel;
-use App\Enums\TournamentStatus;
 use App\Events\ParticipantDisqualified;
 use App\Events\ParticipantKnockedOff;
 use App\Events\ParticipantVerified;
@@ -17,13 +16,18 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
-/**
- * @property-read \App\Enums\TournamentStatus $status
- */
 class Tournament extends Model
 {
     /** @use HasFactory<\Database\Factories\TournamentFactory> */
     use HasFactory, HasUlids;
+
+    use Helpers\WithTimelineStatus;
+
+    protected $timelineColumns = [
+        'draft' => 'published_at',
+        'start' => 'start_date',
+        'finish' => 'finish_date',
+    ];
 
     protected function casts(): array
     {
@@ -104,46 +108,6 @@ class Tournament extends Model
     public function unverifiedParticipants()
     {
         return $this->participants()->wherePivotNull('verified_at');
-    }
-
-    public function status(): Attribute
-    {
-        return Attribute::get(function () {
-            if (! $this->published_at) {
-                return TournamentStatus::Draft;
-            }
-
-            if ($this->is_finished) {
-                return TournamentStatus::Finished;
-            }
-
-            if ($this->is_started) {
-                return TournamentStatus::OnGoing;
-            }
-
-            return TournamentStatus::Scheduled;
-        });
-    }
-
-    public function isStarted(): Attribute
-    {
-        return Attribute::get(
-            fn () => $this->start_date?->startOfDay()->lt(now()->endOfDay()) ?: false
-        );
-    }
-
-    public function isFinished(): Attribute
-    {
-        return Attribute::get(
-            fn () => $this->finish_date?->endOfDay()->lt(now()->startOfDay()) ?: false
-        );
-    }
-
-    public function isDraft(): Attribute
-    {
-        return Attribute::get(
-            fn () => $this->published_at === null
-        );
     }
 
     public function isPublished(): Attribute

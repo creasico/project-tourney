@@ -41,13 +41,6 @@ return [
         'certificate' => 'Piagam',
     ],
 
-    'status' => [
-        'draft' => 'Draft',
-        'scheduled' => 'Dijadwalkan',
-        'ongoing' => 'Berjalan',
-        'finished' => 'Selesai',
-    ],
-
     'level' => [
         'nation' => 'Nasional',
         'province' => 'Provinsi',

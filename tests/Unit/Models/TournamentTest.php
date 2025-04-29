@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-use App\Enums\TournamentStatus;
+use App\Enums\TimelineStatus;
 use App\Events\ParticipantDisqualified;
 use App\Events\ParticipantKnockedOff;
 use App\Events\ParticipantVerified;
@@ -153,7 +153,7 @@ it('could be drafted', function () {
 
     expect($model)
         ->is_draft->toBeTrue()
-        ->status->toBe(TournamentStatus::Draft);
+        ->status->toBe(TimelineStatus::Draft);
 
     expect($model->status->isDraft())->toBeTrue();
 });
@@ -168,7 +168,7 @@ it('could be scheduled', function () {
     expect($model)
         ->is_draft->toBeFalse()
         ->is_published->toBeFalse()
-        ->status->toBe(TournamentStatus::Scheduled);
+        ->status->toBe(TimelineStatus::Scheduled);
 
     expect($model->status->isScheduled())->toBeTrue();
 });
@@ -184,7 +184,7 @@ it('could be started', function () {
         ->is_started->toBeTrue()
         ->is_published->toBeTrue()
         ->is_finished->toBeFalse()
-        ->status->toBe(TournamentStatus::OnGoing);
+        ->status->toBe(TimelineStatus::OnGoing);
 
     expect($model->status->isOnGoing())->toBeTrue();
 });
@@ -194,7 +194,7 @@ it('could be finished', function () {
 
     expect($model)
         ->is_finished->toBeTrue()
-        ->status->toBe(TournamentStatus::Finished);
+        ->status->toBe(TimelineStatus::Finished);
 
     expect($model->status->isFinished())->toBeTrue();
 });

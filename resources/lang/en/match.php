@@ -4,15 +4,20 @@ return [
     'singular' => 'Match',
     'plural' => 'Matches',
 
-    'status' => [
+    'party_status' => [
         'queue' => 'Queue',
         'win' => 'Win',
         'lose' => 'Lose',
+        'draw' => 'Draw',
     ],
 
     'field' => [
         'bye' => 'Bye',
         'division' => 'Division',
+        'party_number' => 'No. Party',
+        'round_number' => 'No. Round',
+        'winner' => 'Winner',
+        'loser' => 'loser',
     ],
 
     'bye' => [

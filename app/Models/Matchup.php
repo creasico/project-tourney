@@ -5,9 +5,10 @@ declare(strict_types=1);
 namespace App\Models;
 
 use App\Enums\MatchSide;
-use App\Enums\MatchStatus;
+use App\Enums\PartyStatus;
 use App\Support\Sided;
 use Illuminate\Database\Eloquent\Casts\AsArrayObject;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -20,6 +21,7 @@ class Matchup extends Model
     use HasFactory, HasUlids;
 
     use Helpers\WithClassification;
+    use Helpers\WithTimelineStatus;
 
     protected function casts(): array
     {
@@ -40,11 +42,36 @@ class Matchup extends Model
         return $this->belongsTo(Tournament::class);
     }
 
+    public function division(): BelongsTo
+    {
+        return $this->belongsTo(Division::class);
+    }
+
     public function athletes(): BelongsToMany
     {
         return $this->belongsToMany(Person::class, MatchParty::class, 'match_id', 'participant_id')
             ->withPivot(['side', 'status'])
             ->as('party');
+    }
+
+    public function blue()
+    {
+        return $this->athletes()->wherePivot('side', MatchSide::Blue);
+    }
+
+    public function red()
+    {
+        return $this->athletes()->wherePivot('side', MatchSide::Red);
+    }
+
+    public function winner()
+    {
+        return $this->athletes()->wherePivot('status', PartyStatus::Win);
+    }
+
+    public function loser()
+    {
+        return $this->athletes()->wherePivot('status', PartyStatus::Lose);
     }
 
     public function next(): BelongsTo
@@ -56,7 +83,7 @@ class Matchup extends Model
     {
         $this->athletes()->attach($sided->blue, [
             'side' => MatchSide::Blue,
-            'status' => MatchStatus::Queue,
+            'status' => PartyStatus::Queue,
         ]);
 
         $tournament->participants()->updateExistingPivot($sided->blue, [
@@ -66,12 +93,26 @@ class Matchup extends Model
         if ($sided->red) {
             $this->athletes()->attach($sided->red, [
                 'side' => MatchSide::Red,
-                'status' => MatchStatus::Queue,
+                'status' => PartyStatus::Queue,
             ]);
 
             $tournament->participants()->updateExistingPivot($sided->red, [
                 'match_id' => $this->id,
             ]);
         }
+    }
+
+    public function isStarted(): Attribute
+    {
+        return Attribute::get(
+            fn () => $this->started_at?->startOfDay()->lt(now()->endOfDay()) ?: false
+        );
+    }
+
+    public function isFinished(): Attribute
+    {
+        return Attribute::get(
+            fn () => $this->finished_at?->endOfDay()->lt(now()->startOfDay()) ?: false
+        );
     }
 }

@@ -3,8 +3,9 @@
 declare(strict_types=1);
 
 use App\Enums\MatchSide;
-use App\Enums\MatchStatus;
+use App\Enums\PartyStatus;
 use App\Models\Classification;
+use App\Models\Division;
 use App\Models\MatchParty;
 use App\Models\Matchup;
 use App\Models\Person;
@@ -18,6 +19,16 @@ it('belongs to tournament', function () {
         ->createOne();
 
     expect($model->tournament)->toBeInstanceOf(Tournament::class);
+});
+
+it('belongs to division', function () {
+    $model = Matchup::factory()
+        ->for(
+            Division::factory(),
+        )
+        ->createOne();
+
+    expect($model->division)->toBeInstanceOf(Division::class);
 });
 
 it('belongs to classification', function () {
@@ -34,7 +45,7 @@ it('belongs to many athletes', function () {
     $model = Matchup::factory()
         ->withAthletes(pivot: [
             'side' => MatchSide::Red,
-            'status' => MatchStatus::Queue,
+            'status' => PartyStatus::Queue,
         ])
         ->createOne();
 
@@ -46,7 +57,7 @@ it('belongs to many athletes', function () {
     expect($athlete->party)
         ->toBeInstanceOf(MatchParty::class)
         ->side->toBe(MatchSide::Red)
-        ->status->toBe(MatchStatus::Queue);
+        ->status->toBe(PartyStatus::Queue);
 });
 
 it('belongs to next match', function () {
