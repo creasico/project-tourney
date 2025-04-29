@@ -20,7 +20,7 @@ class MatchupInitialized
     public function __construct(
         public readonly Tournament $tournament,
         public readonly string $classId,
-        public readonly string $divisionId,
+        public readonly int $divisionId,
     ) {}
 
     /**
