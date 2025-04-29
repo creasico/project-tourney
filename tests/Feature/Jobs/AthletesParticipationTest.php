@@ -24,7 +24,7 @@ it('can add athletes to a tournament', function () {
     Event::assertDispatchedTimes(AthletesParticipated::class, 1);
     Event::assertDispatched(function (AthletesParticipated $event) use ($tournament, $class) {
         expect($tournament)->id->toBe($event->tournament->id);
-        expect($class)->id->toBe($event->class->id);
+        expect($class)->id->toBe($event->classId);
 
         return true;
     });

@@ -23,41 +23,50 @@ final class InitializeMatchups implements ShouldQueue
     {
         DB::transaction(function () use ($event) {
             $tournament = $event->tournament->fresh();
-            $athletes = $this->prepareAthletes($event->class->athletes);
+            $class = $tournament->withClassifiedAthletes()
+                ->where('class_id', $event->classId)
+                ->first();
 
-            $athletesCount = $event->class->athletes->count();
-            $division = $event->group->division > 2 ? $event->group->division : $athletesCount;
+            $athletes = $this->prepareAthletes($class->athletes);
+            $athletesCount = $class->athletes->count();
+            $division = $class->group->division > 2 ? $class->group->division : $athletesCount;
 
             foreach (array_chunk($athletes, $division) as $i => $chunks) {
-                $label = $event->class->display;
+                $label = $class->display;
 
                 if ($division !== $athletesCount) {
                     $i++;
                     $label .= " {$i}";
                 }
 
-                $division = $event->group->divisions()->create([
+                $division = $class->group->divisions()->create([
                     'label' => $label,
                 ]);
 
                 $chunks = array_map(
-                    fn ($row) => $event->class->athletes->where('id', $row['id'])->first(),
+                    fn ($row) => $class->athletes->where('id', $row['id'])->first(),
                     $chunks,
                 );
 
-                foreach ($this->determineSide($chunks) as $parties) {
+                foreach ($this->determineSide($chunks) as $p => $parties) {
+                    $p++;
+
                     /** @var \App\Models\Matchup */
                     $match = $tournament->matches()->create([
                         'division_id' => $division->id,
-                        'class_id' => $event->class->id,
+                        'class_id' => $class->id,
                         'is_bye' => $parties->isBye(),
+                        'party_number' => $p,
+                        'attr' => [
+                            'index' => $p,
+                        ],
                     ]);
 
                     $match->addAthletes($parties, $tournament);
                 }
-            }
 
-            event(new MatchupInitialized($tournament, $event->class->id));
+                event(new MatchupInitialized($tournament, $class->id, $division->id));
+            }
         });
     }
 

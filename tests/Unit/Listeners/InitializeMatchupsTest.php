@@ -11,45 +11,49 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Event;
 use PHPUnit\Framework\ExpectationFailedException;
 
-it('should calculate matchups with :dataset', function (Tournament $tournament, int $divisions) {
-    $event = new AthletesParticipated($tournament, $tournament->classes->first());
-
+it('should calculate matchups with :dataset', function (AthletesParticipated $event, int $expected) {
     Event::fake(MatchupInitialized::class);
 
     (new InitializeMatchups)->handle($event);
 
-    Event::assertDispatchedTimes(MatchupInitialized::class, 1);
+    Event::assertDispatchedTimes(MatchupInitialized::class, $expected);
 
-    $tournament = $tournament->fresh(['classes.athletes', 'participants.matches']);
-    $class = $tournament->classes->first();
-    $group = $class->group->load(['divisions.matches.athletes']);
+    Event::assertDispatched(function (MatchupInitialized $event) use ($expected) {
+        $tournament = $event->tournament->fresh(['withClassifiedAthletes']);
 
-    // dump($group->toArray());
+        expect($event->tournament)->id->toBe($tournament->id);
 
-    expect($group->divisions)->toHaveCount($divisions);
-})->with([
-    '5 athletes no divisions' => [
-        fn () => Tournament::factory()
-            ->withClassifications()
-            ->withAthletes(count: 5)
-            ->createOne(),
-        1,
-    ],
-    '5 athletes 3 divisions' => [
-        fn () => Tournament::factory()
-            ->withClassifications(division: 3)
-            ->withAthletes(count: 5)
-            ->createOne(),
-        2,
-    ],
-    '7 athletes 3 divisions' => [
-        fn () => Tournament::factory()
-            ->withClassifications(division: 3)
-            ->withAthletes(count: 7)
-            ->createOne(),
-        3,
-    ],
-]);
+        $class = $tournament->withClassifiedAthletes->first();
+
+        expect($event)->classId->toBe($class->id);
+
+        $group = $class->group->load(['divisions.matches.athletes']);
+
+        expect($group->divisions)->toHaveCount($expected);
+
+        return true;
+    });
+})->with(collect([
+    [3, 0, 1],
+    [5, 3, 2],
+    [7, 3, 3],
+])->mapWithKeys(function ($value) {
+    [$athlete, $division, $expected] = $value;
+
+    return [
+        "{$athlete} athletes {$division} divisions" => [
+            function () use ($athlete, $division) {
+                $tournament = Tournament::factory()
+                    ->withClassifications(division: $division)
+                    ->withAthletes(count: $athlete)
+                    ->createOne();
+
+                return new AthletesParticipated($tournament, $tournament->classes->first()->id);
+            },
+            $expected,
+        ],
+    ];
+})->toArray());
 
 describe('::prepareAthletes()', function () {
     it('should throw exception', function () {
