@@ -19,8 +19,6 @@ class Classification extends Model
     /** @use HasFactory<\Database\Factories\ClassificationFactory> */
     use HasFactory, HasUlids;
 
-    protected static string $builder = Builders\ClassificationBuilder::class;
-
     protected function casts(): array
     {
         return [
