@@ -7,6 +7,7 @@ namespace App\Models;
 use App\Enums\MatchSide;
 use App\Enums\MatchStatus;
 use App\Support\Sided;
+use Illuminate\Database\Eloquent\Casts\AsArrayObject;
 use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -28,7 +29,7 @@ class Matchup extends Model
             'round_number' => 'integer',
             'order' => 'integer',
             'is_bye' => 'boolean',
-            'attr' => 'object',
+            'attr' => AsArrayObject::class,
             'started_at' => 'immutable_datetime',
             'finished_at' => 'immutable_datetime',
         ];

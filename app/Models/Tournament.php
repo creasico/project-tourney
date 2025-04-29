@@ -72,6 +72,14 @@ class Tournament extends Model
             ->as('group');
     }
 
+    public function withClassifiedAthletes()
+    {
+        /** @param HasMany|Builders\PersonBuilder $query */
+        return $this->classes()->with([
+            'athletes' => fn ($query) => $query->haveParticipate($this),
+        ]);
+    }
+
     public function participants(): BelongsToMany
     {
         return $this->belongsToMany(Person::class, Participation::class, relatedPivotKey: 'participant_id')

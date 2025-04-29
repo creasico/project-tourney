@@ -7,6 +7,7 @@ namespace App\Models\Builders;
 use App\Enums\AgeRange;
 use App\Enums\Gender;
 use App\Enums\ParticipantRole;
+use App\Models\Tournament;
 use Illuminate\Database\Eloquent\Builder;
 
 /**
@@ -43,6 +44,18 @@ class PersonBuilder extends Builder
         return $this->whereHas(
             'classification',
             fn (Builder $query) => $query->where('age_range', $range)
+        );
+    }
+
+    public function haveParticipate(Tournament|string $tournament)
+    {
+        if ($tournament instanceof Tournament) {
+            $tournament = $tournament->getKey();
+        }
+
+        return $this->whereHas(
+            'tournaments',
+            fn (Builder $query) => $query->where('id', $tournament)
         );
     }
 }
