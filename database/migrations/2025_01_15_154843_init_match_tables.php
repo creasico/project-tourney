@@ -93,16 +93,6 @@ return new class extends Migration
             $table->foreign('match_id')->references('id')->on('matchups')->nullOnDelete();
         });
 
-        Schema::create('match_revisions', function (Blueprint $table) {
-            $table->id();
-            $table->foreignUlid('match_id')->nullable();
-
-            $table->string('reason');
-
-            $table->timestamp('created_at')->useCurrent();
-            $table->foreign('match_id')->references('id')->on('matchups')->nullOnDelete();
-        });
-
         Schema::create('match_parties', function (Blueprint $table) {
             $table->foreignUlid('match_id')->constrained('matchups')->cascadeOnDelete();
             $table->foreignUlid('participant_id')->constrained('people')->cascadeOnDelete();
@@ -120,7 +110,6 @@ return new class extends Migration
     public function down(): void
     {
         Schema::dropIfExists('match_parties');
-        Schema::dropIfExists('match_revisions');
         Schema::dropIfExists('participations');
         Schema::dropIfExists('matchups');
         Schema::dropIfExists('division_prizes');
