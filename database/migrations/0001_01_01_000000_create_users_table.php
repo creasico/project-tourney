@@ -27,14 +27,21 @@ return new class extends Migration
             $table->timestamp('created_at')->nullable();
         });
 
-        Schema::create('sessions', function (Blueprint $table) {
-            $table->string('id')->primary();
-            $table->foreignId('user_id')->nullable()->index();
-            $table->string('ip_address', 45)->nullable();
-            $table->text('user_agent')->nullable();
-            $table->longText('payload');
-            $table->integer('last_activity')->index();
-        });
+        if ($session = $this->databaseSession()) {
+            Schema::connection($session['connection'])->create(
+                $session['table'],
+                function (Blueprint $table) {
+                    $table->string('id')->primary();
+                    $table->foreignId('user_id')->nullable()->index();
+                    $table->string('ip_address', 45)->nullable();
+                    $table->text('user_agent')->nullable();
+                    $table->longText('payload');
+                    $table->integer('last_activity')->index();
+
+                    $table->foreign('user_id')->references('id')->on('users')->nullOnDelete();
+                }
+            );
+        }
     }
 
     /**
@@ -44,6 +51,16 @@ return new class extends Migration
     {
         Schema::dropIfExists('users');
         Schema::dropIfExists('password_reset_tokens');
-        Schema::dropIfExists('sessions');
+
+        if ($session = $this->databaseSession()) {
+            Schema::connection($session['connection'])->dropIfExists($session['table']);
+        }
+    }
+
+    private function databaseSession(): ?array
+    {
+        $config = config('session');
+
+        return $config['driver'] === 'database' ? $config : null;
     }
 };

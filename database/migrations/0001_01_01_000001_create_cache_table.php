@@ -11,17 +11,29 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('cache', function (Blueprint $table) {
-            $table->string('key')->primary();
-            $table->mediumText('value');
-            $table->integer('expiration');
-        });
+        if (config('cache.default') !== 'database') {
+            return;
+        }
 
-        Schema::create('cache_locks', function (Blueprint $table) {
-            $table->string('key')->primary();
-            $table->string('owner');
-            $table->integer('expiration');
-        });
+        $config = config('cache.stores.database');
+
+        Schema::connection($config['connection'])->create(
+            $config['table'],
+            function (Blueprint $table) {
+                $table->string('key')->primary();
+                $table->mediumText('value');
+                $table->integer('expiration');
+            }
+        );
+
+        Schema::connection($config['lock_connection'])->create(
+            $config['lock_table'],
+            function (Blueprint $table) {
+                $table->string('key')->primary();
+                $table->string('owner');
+                $table->integer('expiration');
+            }
+        );
     }
 
     /**
@@ -29,7 +41,13 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('cache');
-        Schema::dropIfExists('cache_locks');
+        if (config('cache.default') !== 'database') {
+            return;
+        }
+
+        $config = config('cache.stores.database');
+
+        Schema::connection($config['connection'])->dropIfExists($config['table']);
+        Schema::connection($config['lock_connection'])->dropIfExists($config['lock_table']);
     }
 };
