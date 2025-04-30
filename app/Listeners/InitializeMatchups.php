@@ -13,6 +13,8 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
+use Sentry;
+use Sentry\State\Scope;
 use Throwable;
 
 final class InitializeMatchups implements ShouldQueue
@@ -24,12 +26,16 @@ final class InitializeMatchups implements ShouldQueue
      */
     public function handle(AthletesParticipated $event): void
     {
-        DB::transaction(function () use ($event) {
-            $tournament = $event->tournament->fresh();
-            $class = $tournament->withClassifiedAthletes()
-                ->where('class_id', $event->classId)
-                ->first();
+        $tournament = $event->tournament->fresh();
+        $class = $tournament->withClassifiedAthletes()
+            ->where('class_id', $event->classId)
+            ->first();
 
+        if ($class === null) {
+            throw new UnprocessableMatchupException("Class {$event->classId} not found");
+        }
+
+        DB::transaction(function () use ($tournament, $class) {
             $athletes = $this->prepareAthletes($class->athletes);
             $athletesCount = $class->athletes->count();
             $division = $class->group->division > 2 ? $class->group->division : $athletesCount;
@@ -76,10 +82,20 @@ final class InitializeMatchups implements ShouldQueue
 
     public function failed(AthletesParticipated $event, Throwable $error): void
     {
-        logger()->error($error->getMessage(), [
-            'exception' => $error,
-            'event' => $event,
-        ]);
+        Sentry\withScope(function (Scope $scope) use ($error, $event) {
+            $context = [
+                'tournament_id' => $event->tournament->id,
+                'class_id' => $event->classId,
+            ];
+
+            if ($error instanceof UnprocessableMatchupException) {
+                $context['athletes'] = $error->athletes;
+            }
+
+            $scope->setContext($event::class, $context);
+
+            Sentry\captureException($error);
+        });
     }
 
     /**
@@ -94,7 +110,7 @@ final class InitializeMatchups implements ShouldQueue
             ->toArray();
 
         if (count($groupedAthletes) === 1) {
-            throw UnprocessableMatchupException::singleContinent();
+            throw new UnprocessableMatchupException('Could not process single continent', $groupedAthletes);
         }
 
         $result = $this->suffle($groupedAthletes);
@@ -115,16 +131,27 @@ final class InitializeMatchups implements ShouldQueue
             // athlets from another continent by checking on each iteration
             // doesn't come from the same continent.
             for ($r = $count - 1; $r >= 0; $r--) {
+                if (in_array($r, [$i, $i - 1])) {
+                    continue;
+                }
+
                 $range = array_filter([
                     $result[$r]['continent_id'], // current
-                    $result[$r - 1]['continent_id'], // previous
+                    $result[$r - 1]['continent_id'] ?? null, // previous
                     $result[$r + 1]['continent_id'] ?? null, // next, if any
                 ]);
 
-                if (
-                    in_array($r, [$i, $i - 1]) ||
-                    in_array($row['continent_id'], $range)
-                ) {
+                if (count($range) === 1) {
+                    logger()->notice('Invalid range', [
+                        'count' => $count,
+                        'iterations' => [$i, $r],
+                        'range' => $range,
+                        'row' => $row,
+                        'result' => $result,
+                    ]);
+                }
+
+                if (in_array($row['continent_id'], $range)) {
                     continue;
                 }
 

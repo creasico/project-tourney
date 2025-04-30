@@ -8,8 +8,11 @@ use InvalidArgumentException;
 
 final class UnprocessableMatchupException extends InvalidArgumentException
 {
-    public static function singleContinent()
-    {
-        return new self('Could not process matchup that contains only single continent');
+    public function __construct(
+        string $message,
+        public readonly array $athletes = [],
+        ?\Throwable $previous = null
+    ) {
+        parent::__construct($message, 0, $previous);
     }
 }

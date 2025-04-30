@@ -11,6 +11,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
+use Sentry;
 use Throwable;
 
 class AthletesParticipation implements ShouldQueue
@@ -52,8 +53,6 @@ class AthletesParticipation implements ShouldQueue
 
     public function failed(Throwable $error): void
     {
-        logger()->error($error->getMessage(), [
-            'exception' => $error,
-        ]);
+        Sentry\captureException($error);
     }
 }
