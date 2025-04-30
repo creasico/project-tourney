@@ -7,6 +7,7 @@ services:
         USER_ID: ${WWW_USER:-$(id -u)}
         GROUP_ID: ${WWW_GROUP:-$(id -g)}
     image: creasico/tourney-app:latest
+    container_name: tourney_app
     ports:
       - ${APP_PORT:-80}:8080
       - ${VITE_PORT:-5173}:${VITE_PORT:-5173}
