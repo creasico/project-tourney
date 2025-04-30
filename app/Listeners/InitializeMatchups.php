@@ -13,6 +13,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
+use Throwable;
 
 final class InitializeMatchups implements ShouldQueue
 {
@@ -71,6 +72,14 @@ final class InitializeMatchups implements ShouldQueue
                 event(new MatchupInitialized($tournament, $class->id, $division->id));
             }
         });
+    }
+
+    public function failed(AthletesParticipated $event, Throwable $error): void
+    {
+        logger()->error($error->getMessage(), [
+            'exception' => $error,
+            'event' => $event,
+        ]);
     }
 
     /**
