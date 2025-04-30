@@ -80,6 +80,9 @@ final class InitializeMatchups implements ShouldQueue
         });
     }
 
+    /**
+     * @codeCoverageIgnore
+     */
     public function failed(AthletesParticipated $event, Throwable $error): void
     {
         Sentry\withScope(function (Scope $scope) use ($error, $event) {
@@ -88,11 +91,13 @@ final class InitializeMatchups implements ShouldQueue
                 'class_id' => $event->classId,
             ];
 
-            if ($error instanceof UnprocessableMatchupException) {
-                $context['athletes'] = $error->athletes;
+            if (method_exists($error, 'context')) {
+                $context = array_merge($context, $error->context());
             }
 
-            $scope->setContext($event::class, $context);
+            $scope->setContext($event::class, $context)
+                ->setTag('class_id', $event->classId)
+                ->setTag('tournament_id', $event->tournament->id);
 
             Sentry\captureException($error);
         });

@@ -51,6 +51,9 @@ class AthletesParticipation implements ShouldQueue
         });
     }
 
+    /**
+     * @codeCoverageIgnore
+     */
     public function failed(Throwable $error): void
     {
         Sentry\captureException($error);

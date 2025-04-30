@@ -15,4 +15,18 @@ final class UnprocessableMatchupException extends InvalidArgumentException
     ) {
         parent::__construct($message, 0, $previous);
     }
+
+    /**
+     * Get the exception's context information.
+     *
+     * @return array<string, mixed>
+     *
+     * @codeCoverageIgnore
+     */
+    public function context(): array
+    {
+        return [
+            'athletes' => $this->athletes,
+        ];
+    }
 }
