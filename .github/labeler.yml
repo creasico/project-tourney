@@ -14,9 +14,9 @@ docs:
 deployment:
   - changed-files:
       - any-glob-to-any-file:
+          - '.deploy/**'
+          - .github/workflows/deploy-*.yml
           - .github/workflows/deploy.yml
-          - scripts/deploy.php
-          - 'scripts/deploy/**'
 
 api:
   - changed-files:
