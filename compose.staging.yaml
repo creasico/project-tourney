@@ -1,0 +1,82 @@
+services:
+  app:
+    image: ghcr.io/creasico/project-tourney
+    container_name: tourney_app
+    env_file:
+      - .env
+    environment:
+      APP_ENV: staging
+      APP_WORKERS_ENABLED: true
+    # ports:
+    #   - ${APP_PORT:-80}:8080
+    healthcheck:
+      test: [CMD, curl, -ksLfS, http://localhost:8080/up]
+      start_period: 15s
+      interval: 30s
+      timeout: 5s
+      retries: 3
+    depends_on:
+      - pgsql
+      - valkey
+      - minio
+      - mailpit
+  pgsql:
+    image: postgres:17-alpine
+    container_name: tourney_db
+    # ports:
+    #   - ${FORWARD_PGSQL_PORT:-5432}:5432
+    environment:
+      PGPASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_DATABASE}
+      POSTGRES_USER: ${DB_USERNAME}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    volumes:
+      - local-pgsql:/var/lib/postgresql/data
+    healthcheck:
+      test: [CMD, pg_isready, -q, -d, '${DB_DATABASE}', -U, '${DB_USERNAME}']
+      retries: 3
+      timeout: 5s
+  valkey:
+    image: valkey/valkey:8.0-alpine
+    container_name: tourney_valkey
+    # ports:
+    #   - ${FORWARD_REDIS_PORT:-6379}:6379
+    volumes:
+      - local-valkey:/data
+    healthcheck:
+      test: [CMD, valkey-cli, ping]
+      timeout: 5s
+      retries: 3
+  minio:
+    image: minio/minio:latest
+    container_name: tourney_minio
+    # ports:
+    #   - ${FORWARD_MINIO_CONSOLE_PORT:-8900}:8900
+    environment:
+      MINIO_ROOT_USER: ${AWS_ACCESS_KEY_ID}
+      MINIO_ROOT_PASSWORD: ${AWS_SECRET_ACCESS_KEY}
+    volumes:
+      - local-minio:/data
+    command: minio server /data --console-address ":8900"
+    healthcheck:
+      test: [CMD, mc, ready, local]
+      timeout: 5s
+      retries: 3
+  mailpit:
+    image: axllent/mailpit:latest
+    container_name: tourney_mail
+    # ports:
+    #   - ${FORWARD_MAILPIT_DASHBOARD_PORT:-8025}:8025
+
+networks:
+  default:
+    name: tourney-app
+    enable_ipv6: false
+
+volumes:
+  local-pgsql:
+    driver: local
+  local-valkey:
+    driver: local
+  local-minio:
+    driver: local

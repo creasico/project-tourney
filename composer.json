@@ -7,6 +7,7 @@
     "fakerphp/faker": "^1.23",
     "filament/filament": "^3.2",
     "laravel/framework": "^12.9",
+    "laravel/horizon": "^5.31",
     "laravel/tinker": "^2.9",
     "livewire/livewire": "^3.4",
     "sentry/sentry-laravel": "^4.10"
@@ -15,6 +16,7 @@
     "barryvdh/laravel-debugbar": "^3.14",
     "barryvdh/laravel-ide-helper": "^3.5",
     "laravel/pint": "^1.19",
+    "laravel/sail": "^1.42",
     "mockery/mockery": "^1.6",
     "pestphp/pest": "^3.7",
     "pestphp/pest-plugin-laravel": "^3.0",
@@ -62,6 +64,18 @@
     ],
     "test": [
       "@php artisan test --env=testing --ansi"
+    ],
+    "sail": [
+      "docker compose --env-file .env.sail"
+    ],
+    "sail:up": [
+      "docker compose --env-file .env.sail up -d"
+    ],
+    "sail:down": [
+      "docker compose --env-file .env.sail down"
+    ],
+    "sail:exec": [
+      "docker compose --env-file=.env.sail exec app"
     ]
   },
   "extra": {
