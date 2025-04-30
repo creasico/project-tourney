@@ -20,12 +20,14 @@ frankenphp
 .devcontainer
 .pnpm-store
 .fly
+_ide_helper.php
+_ide_helper_models.php
 *.config.js
 *.config.ts
 composer.yaml
 composer.*.yaml
-docker-composer.yaml
-docker-composer.*.yaml
+composer.yaml
+composer.*.yaml
 node_modules
 phpunit.xml
 phpunit.*.xml
