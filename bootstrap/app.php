@@ -16,6 +16,6 @@ return Application::configure(basePath: dirname(__DIR__))
     })
     ->withExceptions(function (Exceptions $exceptions) {
         $exceptions->dontReport([
-            UnprocessableMatchupException::class
+            UnprocessableMatchupException::class,
         ]);
     })->create();
