@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Database\Factories;
 
 use App\Enums\MatchSide;
+use App\Models\Division;
 use App\Models\Person;
 use DateTime;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -50,12 +51,28 @@ class MatchupFactory extends Factory
         ]);
     }
 
-    public function withAthletes(?PersonFactory $athletes = null, array $pivot = [])
-    {
+    public function withAthletes(
+        ?PersonFactory $athletes = null,
+        array $pivot = []
+    ): static {
         return $this->hasAttached(
             $athletes ?? Person::factory()->asAthlete(),
             $pivot,
             'athletes'
+        );
+    }
+
+    public function withDivision(
+        DivisionFactory|Division|null $divisions = null,
+        \Closure|int|null $count = null,
+    ): static {
+        if ($count instanceof \Closure) {
+            $count = $count();
+        }
+
+        return $this->for(
+            $divisions ?? Division::factory($count),
+            'division',
         );
     }
 }

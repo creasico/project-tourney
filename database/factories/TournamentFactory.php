@@ -6,6 +6,7 @@ use App\Enums\MatchBye;
 use App\Enums\TournamentLevel;
 use App\Models\Classification;
 use App\Models\Continent;
+use App\Models\Matchup;
 use App\Models\Person;
 use App\Models\Tournament;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -56,6 +57,7 @@ class TournamentFactory extends Factory
         \Closure|int|null $count = null,
         PersonFactory|Person|null $participants = null,
         ClassificationFactory|Classification|false|null $withClassification = null,
+        \Closure|ContinentFactory|Continent|null $withContinent = null,
         array $pivot = [],
     ): static {
         if ($count instanceof \Closure) {
@@ -65,13 +67,17 @@ class TournamentFactory extends Factory
         return $this->hasAttached(
             $participants ?? Person::factory($count)
                 ->asAthlete($withClassification)
-                ->state(function (array $attr, Tournament $tournament) {
+                ->state(function (array $attr, Tournament $tournament) use ($withContinent) {
                     if ($class = $tournament->classes->first()) {
                         $attr['class_id'] = $class->id;
                         $attr['gender'] = $class->gender;
                     }
 
-                    $attr['continent_id'] = Continent::factory();
+                    if ($withContinent instanceof \Closure) {
+                        $withContinent = $withContinent();
+                    }
+
+                    $attr['continent_id'] = $withContinent ?? Continent::factory();
 
                     return $attr;
                 }),
@@ -84,14 +90,33 @@ class TournamentFactory extends Factory
         ClassificationFactory|Classification|null $classifications = null,
         int $division = 0,
         ?MatchBye $bye = null,
+        \Closure|int|null $count = null,
     ): static {
+        if ($count instanceof \Closure) {
+            $count = $count();
+        }
+
         return $this->hasAttached(
-            $classifications ?? Classification::factory(),
+            $classifications ?? Classification::factory($count),
             array_filter([
                 'division' => $division,
                 'bye' => $bye,
             ]),
             'classes'
+        );
+    }
+
+    public function withMatches(
+        MatchupFactory|Matchup|null $matches = null,
+        \Closure|int|null $count = null,
+    ): static {
+        if ($count instanceof \Closure) {
+            $count = $count();
+        }
+
+        return $this->has(
+            $matches ?? Matchup::factory($count)->withDivision(),
+            'matches',
         );
     }
 }

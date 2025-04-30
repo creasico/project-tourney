@@ -13,13 +13,14 @@ declare(strict_types=1);
 |
 */
 
-pest()->use(Illuminate\Foundation\Testing\RefreshDatabase::class)
+pest()
+    ->extend(Tests\TestCase::class)
+    ->use(Illuminate\Foundation\Testing\RefreshDatabase::class)
     ->in('Feature', 'Unit');
 
-pest()->extend(Tests\TestCase::class)
-    ->in('Feature/Jobs', 'Unit');
-
-pest()->extend(Tests\Feature\Pages\TestCase::class)
+pest()
+    ->use(Tests\Feature\Authenticated::class)
+    ->beforeEach(fn () => $this->authenticate())
     ->in('Feature/Pages');
 
 /*
