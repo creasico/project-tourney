@@ -111,14 +111,13 @@ final class InitializeMatchups implements ShouldQueue
     {
         $groupedAthletes = $athletes->groupBy('continent_id')
             ->each->pluck('id')
-            ->values()
             ->toArray();
 
         if (count($groupedAthletes) === 1) {
             throw new UnprocessableMatchupException('Could not process single continent', $groupedAthletes);
         }
 
-        $result = $this->suffle($groupedAthletes);
+        $result = $this->suffle(array_values($groupedAthletes));
         $count = count($result);
 
         // At this stage we might still find some athletes facing their comrade
