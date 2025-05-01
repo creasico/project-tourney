@@ -44,7 +44,7 @@ describe('actions', function () {
 });
 
 describe('filters', function () {
-    it('can filter by gender', function () {
+    it('can be filtered by :dataset', function ($key, $filter, $callback) {
         $record = Continent::factory()
             ->withAthletes(count: 5, withClassification: true)
             ->createOne();
@@ -54,21 +54,22 @@ describe('filters', function () {
             'pageClass' => EditContinent::class,
         ])->assertOk();
 
-        $page->filterTable('gender', Gender::Female->value)
-            ->assertCanSeeTableRecords($record->athletes()->onlyFemales()->get());
-    });
+        $page->filterTable($key, $filter)
+            ->assertCanSeeTableRecords($callback($record));
+    })->with(collect([
+        'gender' => [
+            Gender::Female->value,
+            fn (Continent $record) => $record->athletes()->onlyFemales()->get(),
+        ],
+        'classification.age_range' => [
+            AgeRange::Early->value,
+            fn (Continent $record) => $record->athletes()->hasAgeRange(AgeRange::Early)->get(),
+        ],
+    ])->mapWithKeys(function ($value, $key) {
+        [$filter, $callback] = $value;
 
-    it('can filter by age_range', function () {
-        $record = Continent::factory()
-            ->withAthletes(count: 5, withClassification: true)
-            ->createOne();
-
-        $page = livewire(AthletesRelationManager::class, [
-            'ownerRecord' => $record,
-            'pageClass' => EditContinent::class,
-        ])->assertOk();
-
-        $page->filterTable('classification.age_range', AgeRange::Early->value)
-            ->assertCanSeeTableRecords($record->athletes()->hasAgeRange(AgeRange::Early)->get());
-    });
+        return [
+            $key => [$key, $filter, $callback],
+        ];
+    })->all());
 });

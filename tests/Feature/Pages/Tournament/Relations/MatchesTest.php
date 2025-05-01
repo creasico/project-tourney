@@ -22,7 +22,7 @@ it('can have many matches', function () {
 });
 
 describe('filters', function () {
-    it('can filter by gender', function () {
+    it('can be filtered by :dataset', function ($key, $filter, $callback) {
         $record = Tournament::factory()
             ->withClassifications()
             ->withMatches(count: 5)
@@ -33,26 +33,22 @@ describe('filters', function () {
             'pageClass' => EditTournament::class,
         ])->assertOk();
 
-        $page->filterTable('classification.gender', Gender::Female->value)
-            ->assertCanSeeTableRecords(
-                $record->participants()->onlyFemales()->get()
-            );
-    });
+        $page->filterTable($key, $filter)
+            ->assertCanSeeTableRecords($callback($record));
+    })->with(collect([
+        'classification.gender' => [
+            Gender::Female->value,
+            fn (Tournament $record) => $record->participants()->onlyFemales()->get(),
+        ],
+        'classification.age_range' => [
+            AgeRange::Early->value,
+            fn (Tournament $record) => $record->participants()->hasAgeRange(AgeRange::Early)->get(),
+        ],
+    ])->mapWithKeys(function ($value, $key) {
+        [$filter, $callback] = $value;
 
-    it('can filter by age range', function () {
-        $record = Tournament::factory()
-            ->withClassifications()
-            ->withMatches(count: 5)
-            ->createOne();
-
-        $page = livewire(MatchesRelationManager::class, [
-            'ownerRecord' => $record,
-            'pageClass' => EditTournament::class,
-        ])->assertOk();
-
-        $page->filterTable('classification.age_range', AgeRange::Early->value)
-            ->assertCanSeeTableRecords(
-                $record->participants()->hasAgeRange(AgeRange::Early)->get()
-            );
-    });
+        return [
+            $key => [$key, $filter, $callback],
+        ];
+    })->all());
 });

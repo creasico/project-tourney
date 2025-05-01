@@ -29,7 +29,7 @@ it('cannot delete a draft record', function () {
 });
 
 it('can delete a pulblished record', function () {
-    $record = Tournament::factory()->published(false)->createOne();
+    $record = Tournament::factory()->published(started: false)->createOne();
 
     $page = livewire(EditTournament::class, [
         'record' => $record->getRouteKey(),

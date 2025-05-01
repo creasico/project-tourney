@@ -7,7 +7,6 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\ContinentResource\Pages;
 use App\Filament\Resources\ContinentResource\RelationManagers;
 use App\Models\Builders\PersonBuilder;
-use App\Models\Classification;
 use App\Models\Continent;
 use App\View\Navigations\GroupManage;
 use Filament\Forms\Components;
@@ -53,10 +52,6 @@ class ContinentResource extends Resource
 
     public static function infolist(Infolist $infolist): Infolist
     {
-        // $classes = Classification::query()
-        //     ->oldest('order')
-        //     ->get();
-
         $relations = [
             'managers',
             'athletes',

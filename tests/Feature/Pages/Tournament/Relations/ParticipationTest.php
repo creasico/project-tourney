@@ -26,7 +26,37 @@ it('can have many participants', function () {
 });
 
 describe('filters', function () {
-    it('can filter by continent name', function () {
+    it('can be filtered by :dataset', function ($key, $filter, $callback) {
+        $record = Tournament::factory()
+            ->withClassifications()
+            ->withMatches(count: 5)
+            ->createOne();
+
+        $page = livewire(ParticipantsRelationManager::class, [
+            'ownerRecord' => $record,
+            'pageClass' => EditTournament::class,
+        ])->assertOk();
+
+        $page->filterTable($key, $filter)
+            ->assertCanSeeTableRecords($callback($record));
+    })->with(collect([
+        'gender' => [
+            Gender::Female->value,
+            fn (Tournament $record) => $record->participants()->onlyFemales()->get(),
+        ],
+        'classification.age_range' => [
+            AgeRange::Early->value,
+            fn (Tournament $record) => $record->participants()->hasAgeRange(AgeRange::Early)->get(),
+        ],
+    ])->mapWithKeys(function ($value, $key) {
+        [$filter, $callback] = $value;
+
+        return [
+            $key => [$key, $filter, $callback],
+        ];
+    })->all());
+
+    it('can be filtered by "continent name"', function () {
         $continents = Continent::factory(2)->createMany();
         $record = Tournament::factory()
             ->withAthletes(
@@ -43,38 +73,6 @@ describe('filters', function () {
         $page->filterTable('continent.name', $continentId = $continents->first()->getKey())
             ->assertCanSeeTableRecords(
                 $record->participants()->where('continent_id', $continentId)->get()
-            );
-    });
-
-    it('can filter by gender', function () {
-        $record = Tournament::factory()
-            ->withAthletes(count: 5)
-            ->createOne();
-
-        $page = livewire(ParticipantsRelationManager::class, [
-            'ownerRecord' => $record,
-            'pageClass' => EditTournament::class,
-        ])->assertOk();
-
-        $page->filterTable('gender', Gender::Female->value)
-            ->assertCanSeeTableRecords(
-                $record->participants()->onlyFemales()->get()
-            );
-    });
-
-    it('can filter by age_range', function () {
-        $record = Tournament::factory()
-            ->withAthletes(count: 5)
-            ->createOne();
-
-        $page = livewire(ParticipantsRelationManager::class, [
-            'ownerRecord' => $record,
-            'pageClass' => EditTournament::class,
-        ])->assertOk();
-
-        $page->filterTable('classification.age_range', AgeRange::Early->value)
-            ->assertCanSeeTableRecords(
-                $record->participants()->hasAgeRange(AgeRange::Early)->get()
             );
     });
 });
