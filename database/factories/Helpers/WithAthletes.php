@@ -21,15 +21,11 @@ trait WithAthletes
         \Closure|array $state = [],
         ClassificationFactory|Classification|true|null $withClassification = null
     ): static {
-        if ($count instanceof \Closure) {
-            $count = $count();
-        }
-
         if (is_bool($withClassification)) {
             $withClassification = Classification::factory();
         }
 
-        $person = Person::factory($count)->asAthlete(
+        $person = Person::factory(count: value($count))->asAthlete(
             withClassification: $this instanceof ClassificationFactory ? false : $withClassification
         );
 

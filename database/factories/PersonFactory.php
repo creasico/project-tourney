@@ -60,6 +60,7 @@ class PersonFactory extends Factory
         ClassificationFactory|Classification|false|null $withClassification = null,
         ?AgeRange $age = null,
         ?string $weight = null,
+        \Closure|int|null $count = null,
     ): static {
         $state = $this->withRole(ParticipantRole::Athlete);
 
@@ -72,7 +73,7 @@ class PersonFactory extends Factory
         }
 
         return $state->for(
-            $withClassification ?? Classification::factory()
+            $withClassification ?? Classification::factory(count: value($count))
                 ->withRange($age, $weight)
                 ->state(fn (array $attr, $rel) => array_filter([
                     'gender' => $rel?->gender,

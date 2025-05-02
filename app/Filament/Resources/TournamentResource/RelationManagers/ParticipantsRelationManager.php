@@ -130,7 +130,7 @@ class ParticipantsRelationManager extends RelationManager
                             return ! $participant->participation->is_disqualified;
                         }),
 
-                    Actions\DissociateAction::make('deregister')
+                    Actions\DetachAction::make('deregister')
                         ->label(trans('participant.action.deregister'))
                         ->icon('heroicon-o-trash')
                         ->requiresConfirmation()

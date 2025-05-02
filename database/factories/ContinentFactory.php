@@ -34,12 +34,10 @@ class ContinentFactory extends Factory
         \Closure|int|null $count = null,
         \Closure|array $state = []
     ): static {
-        if ($count instanceof \Closure) {
-            $count = $count();
-        }
-
         return $this->has(
-            Person::factory($count)->asManager()->state($state),
+            Person::factory(count: value($count))
+                ->asManager()
+                ->state($state),
             'managers'
         );
     }

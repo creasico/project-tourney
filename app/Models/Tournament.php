@@ -77,7 +77,7 @@ class Tournament extends Model
     public function classes(): BelongsToMany
     {
         return $this->belongsToMany(Classification::class, MatchGroup::class, relatedPivotKey: 'class_id')
-            ->withPivot(['id', 'division', 'attr'])
+            ->withPivot(['id', 'division', 'bye', 'attr'])
             ->as('group');
     }
 

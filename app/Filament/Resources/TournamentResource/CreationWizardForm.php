@@ -74,21 +74,21 @@ trait CreationWizardForm
                                         ->live()
                                         ->required(),
 
-                                    Components\Select::make('class_id')
-                                        ->label(trans('tournament.field.class'))
-                                        ->relationship(
-                                            name: 'classification',
-                                            titleAttribute: 'label',
-                                            modifyQueryUsing: static function (Builder $query, Get $get) {
-                                                $term = $get('class_term');
+                                    // Components\Select::make('class_id')
+                                    //     ->label(trans('tournament.field.class'))
+                                    //     ->relationship(
+                                    //         name: 'classification',
+                                    //         titleAttribute: 'label',
+                                    //         modifyQueryUsing: static function (Builder $query, Get $get) {
+                                    //             $term = $get('class_term');
 
-                                                return $query
-                                                    ->when(is_numeric($term), fn (Builder $query) => $query->where('term', $term))
-                                                    ->oldest('order');
-                                            }
-                                        )
-                                        ->disabled(fn (Get $get) => in_array($get('class_term'), [null, '']))
-                                        ->required(),
+                                    //             return $query
+                                    //                 ->when(is_numeric($term), fn (Builder $query) => $query->where('term', $term))
+                                    //                 ->oldest('order');
+                                    //         }
+                                    //     )
+                                    //     ->disabled(fn (Get $get) => in_array($get('class_term'), [null, '']))
+                                    //     ->required(),
 
                                     Components\TextInput::make('division')
                                         ->label(trans('tournament.field.division'))

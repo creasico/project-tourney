@@ -71,8 +71,8 @@ class TournamentResource extends Resource
     {
         return $form
             ->schema([
-                self::getFormInfoSection()->hiddenOn('create'),
-                self::getFormScheduleSection()->hiddenOn('create'),
+                self::getFormInfoSection(),
+                self::getFormScheduleSection(),
             ])
             ->columns(1);
     }
@@ -95,6 +95,7 @@ class TournamentResource extends Resource
                         ->numeric()
                         ->alignCenter()
                         ->width('10%'),
+
                     Columns\TextColumn::make('verified_count')
                         ->label(trans('participant.participation.verified'))
                         ->counts([
@@ -103,6 +104,7 @@ class TournamentResource extends Resource
                         ->numeric()
                         ->alignCenter()
                         ->width('10%'),
+
                     Columns\TextColumn::make('disqualified_count')
                         ->label(trans('participant.participation.disqualified'))
                         ->counts([
@@ -121,6 +123,7 @@ class TournamentResource extends Resource
                         ->formatStateUsing(
                             static fn (Tournament $record) => $record->start_date->toFormattedDateString()
                         ),
+
                     Columns\TextColumn::make('finish_date')
                         ->label(trans('tournament.field.finish_date'))
                         ->alignRight()
@@ -172,7 +175,7 @@ class TournamentResource extends Resource
     {
         return [
             'index' => Pages\ListTournaments::route('/'),
-            'create' => Pages\CreateTournament::route('/create'),
+            // 'create' => Pages\CreateTournament::route('/create'),
             'edit' => Pages\EditTournament::route('/{record}/edit'),
         ];
     }

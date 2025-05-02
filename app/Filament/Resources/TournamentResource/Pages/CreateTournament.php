@@ -14,11 +14,11 @@ use Filament\Resources\Pages\CreateRecord\Concerns\HasWizard;
  */
 class CreateTournament extends CreateRecord
 {
-    use CreationWizardForm {
-        CreationWizardForm::form insteadof HasWizard;
-        CreationWizardForm::getSteps insteadof HasWizard;
-    }
-    use HasWizard;
+    // use CreationWizardForm {
+    //     CreationWizardForm::form insteadof HasWizard;
+    //     CreationWizardForm::getSteps insteadof HasWizard;
+    // }
+    // use HasWizard;
 
     protected static string $resource = TournamentResource::class;
 }

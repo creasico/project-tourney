@@ -66,12 +66,8 @@ class MatchupFactory extends Factory
         DivisionFactory|Division|null $divisions = null,
         \Closure|int|null $count = null,
     ): static {
-        if ($count instanceof \Closure) {
-            $count = $count();
-        }
-
         return $this->for(
-            $divisions ?? Division::factory($count),
+            $divisions ?? Division::factory(count: value($count)),
             'division',
         );
     }

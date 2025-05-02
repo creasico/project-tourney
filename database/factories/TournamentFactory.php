@@ -60,12 +60,8 @@ class TournamentFactory extends Factory
         \Closure|ContinentFactory|Continent|null $withContinent = null,
         array $pivot = [],
     ): static {
-        if ($count instanceof \Closure) {
-            $count = $count();
-        }
-
         return $this->hasAttached(
-            $participants ?? Person::factory($count)
+            $participants ?? Person::factory(count: value($count))
                 ->asAthlete($withClassification)
                 ->state(function (array $attr, Tournament $tournament) use ($withContinent) {
                     if ($class = $tournament->classes->first()) {
@@ -92,12 +88,8 @@ class TournamentFactory extends Factory
         ?MatchBye $bye = null,
         \Closure|int|null $count = null,
     ): static {
-        if ($count instanceof \Closure) {
-            $count = $count();
-        }
-
         return $this->hasAttached(
-            $classifications ?? Classification::factory($count),
+            $classifications ?? Classification::factory(count: value($count)),
             array_filter([
                 'division' => $division,
                 'bye' => $bye,
@@ -110,12 +102,8 @@ class TournamentFactory extends Factory
         MatchupFactory|Matchup|null $matches = null,
         \Closure|int|null $count = null,
     ): static {
-        if ($count instanceof \Closure) {
-            $count = $count();
-        }
-
         return $this->has(
-            $matches ?? Matchup::factory($count)->withDivision(),
+            $matches ?? Matchup::factory(count: value($count))->withDivision(),
             'matches',
         );
     }
