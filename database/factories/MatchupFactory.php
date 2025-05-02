@@ -36,7 +36,7 @@ class MatchupFactory extends Factory
         ];
     }
 
-    public function unstarted()
+    public function unstarted(): static
     {
         return $this->state([
             'started_at' => null,
@@ -44,7 +44,7 @@ class MatchupFactory extends Factory
         ]);
     }
 
-    public function unfinished()
+    public function unfinished(): static
     {
         return $this->state([
             'finished_at' => null,
@@ -52,19 +52,20 @@ class MatchupFactory extends Factory
     }
 
     public function withAthletes(
+        \Closure|int|null $count = null,
         ?PersonFactory $athletes = null,
         array $pivot = []
     ): static {
         return $this->hasAttached(
-            $athletes ?? Person::factory()->asAthlete(),
+            $athletes ?? Person::factory(count: value($count))->asAthlete(),
             $pivot,
             'athletes'
         );
     }
 
     public function withDivision(
-        DivisionFactory|Division|null $divisions = null,
         \Closure|int|null $count = null,
+        DivisionFactory|Division|null $divisions = null,
     ): static {
         return $this->for(
             $divisions ?? Division::factory(count: value($count)),

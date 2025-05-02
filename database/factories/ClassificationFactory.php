@@ -40,7 +40,7 @@ class ClassificationFactory extends Factory
         ];
     }
 
-    public function withRange(?AgeRange $age = null, ?string $weight = null)
+    public function withRange(?AgeRange $age = null, ?string $weight = null): static
     {
         return $this->state(fn (array $attrs) => [
             'age_range' => $age ?? fake()->randomElement(AgeRange::cases()),
@@ -48,8 +48,10 @@ class ClassificationFactory extends Factory
         ]);
     }
 
-    public function withTournaments(?TournamentFactory $tournaments = null, array $pivot = [])
-    {
+    public function withTournaments(
+        ?TournamentFactory $tournaments = null,
+        array $pivot = []
+    ): static {
         return $this->hasAttached(
             $tournaments ?? Tournament::factory(),
             $pivot,

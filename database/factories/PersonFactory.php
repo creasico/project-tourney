@@ -33,7 +33,7 @@ class PersonFactory extends Factory
         ];
     }
 
-    public function withUser()
+    public function withUser(): static
     {
         return $this->for(
             User::factory(),
@@ -41,7 +41,7 @@ class PersonFactory extends Factory
         );
     }
 
-    public function withContinent()
+    public function withContinent(): static
     {
         return $this->for(
             Continent::factory(),
@@ -49,7 +49,7 @@ class PersonFactory extends Factory
         );
     }
 
-    public function withRole(ParticipantRole $role)
+    public function withRole(ParticipantRole $role): static
     {
         return $this->state([
             'role' => $role,
@@ -57,10 +57,10 @@ class PersonFactory extends Factory
     }
 
     public function asAthlete(
+        \Closure|int|null $count = null,
         ClassificationFactory|Classification|false|null $withClassification = null,
         ?AgeRange $age = null,
         ?string $weight = null,
-        \Closure|int|null $count = null,
     ): static {
         $state = $this->withRole(ParticipantRole::Athlete);
 
@@ -81,7 +81,7 @@ class PersonFactory extends Factory
         );
     }
 
-    public function asManager()
+    public function asManager(): static
     {
         return $this->withRole(ParticipantRole::Manager);
     }

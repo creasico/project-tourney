@@ -36,7 +36,7 @@ class TournamentFactory extends Factory
         ];
     }
 
-    public function published(bool $started = true)
+    public function published(bool $started = true): static
     {
         return $this->state([
             'published_at' => $started ? now()->subDay() : now(),
@@ -44,7 +44,7 @@ class TournamentFactory extends Factory
         ]);
     }
 
-    public function finished()
+    public function finished(): static
     {
         return $this->state([
             'published_at' => now()->subWeek(),
@@ -62,18 +62,14 @@ class TournamentFactory extends Factory
     ): static {
         return $this->hasAttached(
             $participants ?? Person::factory(count: value($count))
-                ->asAthlete($withClassification)
+                ->asAthlete(withClassification: $withClassification)
                 ->state(function (array $attr, Tournament $tournament) use ($withContinent) {
                     if ($class = $tournament->classes->first()) {
                         $attr['class_id'] = $class->id;
                         $attr['gender'] = $class->gender;
                     }
 
-                    if ($withContinent instanceof \Closure) {
-                        $withContinent = $withContinent();
-                    }
-
-                    $attr['continent_id'] = $withContinent ?? Continent::factory();
+                    $attr['continent_id'] = value($withContinent) ?? Continent::factory();
 
                     return $attr;
                 }),
@@ -83,10 +79,10 @@ class TournamentFactory extends Factory
     }
 
     public function withClassifications(
+        \Closure|int|null $count = null,
         ClassificationFactory|Classification|null $classifications = null,
         int $division = 0,
         ?MatchBye $bye = null,
-        \Closure|int|null $count = null,
     ): static {
         return $this->hasAttached(
             $classifications ?? Classification::factory(count: value($count)),
@@ -99,8 +95,8 @@ class TournamentFactory extends Factory
     }
 
     public function withMatches(
-        MatchupFactory|Matchup|null $matches = null,
         \Closure|int|null $count = null,
+        MatchupFactory|Matchup|null $matches = null,
     ): static {
         return $this->has(
             $matches ?? Matchup::factory(count: value($count))->withDivision(),
