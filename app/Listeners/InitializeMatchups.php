@@ -122,45 +122,48 @@ final class InitializeMatchups implements ShouldQueue
 
         // At this stage we might still find some athletes facing their comrade
         // in the matchup, now we need to ensure that they will be resuffled.
-        foreach ($result as $i => $row) {
-            if ($i === 0) {
-                continue;
-            }
-
-            if ($row['continent_id'] !== $result[$i - 1]['continent_id']) {
+        foreach ($result as $r => $row) {
+            if ($r === 0 || $row['continent_id'] !== $result[$r - 1]['continent_id']) {
                 continue;
             }
 
             // Let's traverse the result backward and find an opponent for the
             // athlets from another continent by checking on each iteration
             // doesn't come from the same continent.
-            for ($r = $count - 1; $r >= 0; $r--) {
-                if (in_array($r, [$i, $i - 1])) {
+            for ($i = $count - 1; $i >= 0; $i--) {
+                // Skip iteration on the same index.
+                if (in_array($i, [$r, $r - 1], true)) {
                     continue;
                 }
 
-                $range = array_filter([
-                    $result[$r]['continent_id'], // current
-                    $result[$r - 1]['continent_id'] ?? null, // previous
-                    $result[$r + 1]['continent_id'] ?? null, // next, if any
-                ]);
+                $range = array_reduce(
+                    range($i - 1, $i + 1),
+                    function (array $range, int $i) use ($result): array {
+                        if (array_key_exists($i, $result)) {
+                            $range[] = $result[$i]['continent_id'];
+                        }
+
+                        return $range;
+                    },
+                    [],
+                );
 
                 if (count($range) === 1) {
                     logger()->notice('Invalid range', [
                         'count' => $count,
-                        'iterations' => [$i, $r],
+                        'iterations' => [$r, $i],
                         'range' => $range,
                         'row' => $row,
                         'result' => $result,
                     ]);
                 }
 
-                if (in_array($row['continent_id'], $range)) {
+                if (in_array($row['continent_id'], $range, true)) {
                     continue;
                 }
 
-                $result[$i] = $result[$r];
-                $result[$r] = $row;
+                $result[$r] = $result[$i];
+                $result[$i] = $row;
 
                 break;
             }
@@ -170,56 +173,42 @@ final class InitializeMatchups implements ShouldQueue
     }
 
     /**
-     * @param  list<\App\Models\Person>  $athletes
-     * @return list<Sided>
+     * @param  list<\App\Models\Person>  $items
+     * @return array<Sided>
      */
-    public function determineSide(array $athletes): array
+    public function determineSide(array $items): array
     {
-        $half = count($athletes);
-        $slices = [];
+        // First, let's split the items in floored half value.
+        $half = (int) floor(count($items) / 2);
+        $slices[] = $this->slice($items, $half);
 
         while ($half > 0) {
             $half = (int) floor($half / 2);
 
-            if (count($slices) === 0) {
-                $slices[] = $this->slice($athletes, $half);
-
-                continue;
-            }
-
-            $parts = [];
-
-            foreach ($slices as $slice) {
+            $slices = array_reduce($slices, function (array $slices, Sliced $slice) use ($half): array {
                 if (count($slice->upper) === 1 && count($slice->lower) === 1) {
-                    $parts[] = $slice;
+                    $slices[] = $slice;
 
-                    continue;
+                    return $slices;
                 }
 
                 // On last chunk iteration that has 2 upper and 1 lower
-                // Swap their participant to the correct allocation
+                // Swap their participant to the correct allocation.
                 if (count($slice->upper) === 2 && count($slice->lower) === 1) {
                     array_unshift($slice->lower, array_pop($slice->upper));
                 }
 
                 foreach ($slice as $side) {
-                    if (count($side) > 1) {
-                        $parts[] = $this->slice($side, $half);
-
-                        continue;
-                    }
-
-                    $parts[] = new Sliced($side);
+                    $slices[] = count($side) > 1
+                        ? $this->slice($side, $half)
+                        : new Sliced($side);
                 }
-            }
 
-            $slices = [];
-            array_push($slices, ...$parts);
+                return $slices;
+            }, []);
         }
 
-        $result = [];
-
-        foreach ($slices as $slice) {
+        return array_reduce($slices, function ($result, Sliced $slice) {
             if (empty($slice->upper) && count($slice->lower) === 1) {
                 $slice->upper[] = array_pop($slice->lower);
             }
@@ -228,24 +217,9 @@ final class InitializeMatchups implements ShouldQueue
                 $slice->upper[0],
                 $slice->lower[0] ?? null
             );
-        }
 
-        return $result;
-    }
-
-    /**
-     * @return Sliced
-     */
-    private function slice(array $items, int $slice)
-    {
-        if (floor(count($items) / 2) > $slice) {
-            $slice++;
-        }
-
-        return new Sliced(
-            upper: array_slice($items, 0, $slice),
-            lower: array_slice($items, $slice),
-        );
+            return $result;
+        }, []);
     }
 
     /**
@@ -276,11 +250,12 @@ final class InitializeMatchups implements ShouldQueue
 
             // Takes the others to match the current athletes.
             $others = array_slice($others, 0, count($athletes), true);
-            krsort($others);
             $opponents = [];
 
-            foreach (array_keys($others) as $k) {
-                $opponents[] = array_splice($items, $k, 1)[0];
+            krsort($others);
+
+            foreach (array_keys($others) as $offset) {
+                $opponents[] = array_splice($items, $offset, 1)[0];
             }
 
             $groups[] = $opponents;
@@ -320,5 +295,20 @@ final class InitializeMatchups implements ShouldQueue
         }
 
         return $items;
+    }
+
+    /**
+     * Split the items into upper and lower section.
+     */
+    private function slice(array $items, int $slice): Sliced
+    {
+        if (floor(count($items) / 2) > $slice) {
+            $slice++;
+        }
+
+        return new Sliced(
+            upper: array_slice($items, 0, $slice),
+            lower: array_slice($items, $slice),
+        );
     }
 }
