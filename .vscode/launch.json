@@ -11,6 +11,15 @@
       "port": 9003
     },
     {
+      "name": "Listen for Xdebug (sail)",
+      "type": "php",
+      "request": "launch",
+      "port": 9003,
+      "pathMappings": {
+        "/var/www/html": "${workspaceFolder}"
+      }
+    },
+    {
       "name": "Launch built-in server and Debug",
       "type": "php",
       "request": "launch",

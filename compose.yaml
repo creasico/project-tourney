@@ -62,6 +62,7 @@ services:
     image: minio/minio:latest
     container_name: tourney_minio
     ports:
+      - ${FORWARD_MINIO_PORT:-9000}:9000
       - ${FORWARD_MINIO_CONSOLE_PORT:-8900}:8900
     env_file: .env.sail
     environment:
