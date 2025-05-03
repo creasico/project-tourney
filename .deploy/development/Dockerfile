@@ -23,7 +23,8 @@ RUN install-php-extensions excimer gd intl imagick sockets xdebug
 
 COPY --chmod=755 .deploy/common/entrypoint.d/ /etc/entrypoint.d/
 COPY --chmod=755 .deploy/common/s6-overlay/ /etc/s6-overlay/s6-rc.d/
-COPY .deploy/common/nginx/access-logs.conf /etc/nginx/server-opts.d/
+COPY .deploy/common/nginx/*.conf /etc/nginx/server-opts.d/
+COPY .deploy/development/nginx/*.conf /etc/nginx/server-opts.d/
 
 # Change default php.ini location
 RUN mv /usr/local/etc/php/conf.d/serversideup-docker-php.ini /usr/local/etc/php/php.ini && \
