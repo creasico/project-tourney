@@ -27,6 +27,11 @@ final class InitializeMatchups implements ShouldQueue
     public function handle(AthletesParticipated $event): void
     {
         $tournament = $event->tournament->fresh();
+
+        if ($tournament->is_draft) {
+            return;
+        }
+
         $class = $tournament->withClassifiedAthletes()
             ->where('class_id', $event->classId)
             ->first();
