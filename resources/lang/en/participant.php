@@ -17,6 +17,7 @@ return [
         'bulk_disqualify' => 'Disqualify in bulk',
         'deregister' => 'Deregister',
         'bulk_deregister' => 'Deregister in bulk',
+        'upload_participant' => 'Upload participants',
     ],
 
     'role' => [

@@ -137,7 +137,7 @@ class TournamentResource extends Resource
                     ->label(trans('tournament.field.status'))
                     ->colors([
                         'primary' => static fn (Tournament $record) => $record->status->isFinished(),
-                        'success' => static fn (Tournament $record) => $record->status->isOnGoing(),
+                        'success' => static fn (Tournament $record) => $record->status->isStarted(),
                         'warning' => static fn (Tournament $record) => $record->status->isScheduled(),
                         'info' => static fn (Tournament $record) => $record->status->isDraft(),
                     ])
@@ -175,7 +175,7 @@ class TournamentResource extends Resource
     {
         return [
             'index' => Pages\ListTournaments::route('/'),
-            // 'create' => Pages\CreateTournament::route('/create'),
+            'create' => Pages\CreateTournament::route('/create'),
             'edit' => Pages\EditTournament::route('/{record}/edit'),
         ];
     }

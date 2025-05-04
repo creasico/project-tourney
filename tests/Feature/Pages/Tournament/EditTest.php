@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 use App\Filament\Resources\TournamentResource\Pages\EditTournament;
 use App\Models\Tournament;
-use Filament\Pages\Actions\DeleteAction;
+use Filament\Actions\DeleteAction;
 
 use function Pest\Livewire\livewire;
 

@@ -11,6 +11,10 @@ return [
         'draw' => 'Draw',
     ],
 
+    'actions' => [
+        'generate' => 'Generate Match',
+    ],
+
     'field' => [
         'bye' => 'Bye',
         'division' => 'Division',

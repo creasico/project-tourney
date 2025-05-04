@@ -28,6 +28,18 @@ class MatchesRelationManager extends RelationManager
         return trans('match.plural');
     }
 
+    /**
+     * @param  \App\Models\Tournament  $ownerRecord
+     */
+    public static function canViewForRecord(Model $ownerRecord, string $pageClass): bool
+    {
+        if ($ownerRecord->participants->isEmpty()) {
+            return false;
+        }
+
+        return parent::canViewForRecord($ownerRecord, $pageClass);
+    }
+
     public function form(Form $form): Form
     {
         return $form
@@ -63,111 +75,141 @@ class MatchesRelationManager extends RelationManager
                     'prev',
                 ])
             )
-            ->columns([
-                Columns\TextColumn::make('party_number')
-                    ->label(trans('match.field.party_number'))
-                    ->width('10%')
-                    ->alignCenter(),
-
-                Columns\TextColumn::make('round_number')
-                    ->label(trans('match.field.round_number'))
-                    ->width('10%')
-                    ->alignCenter(),
-
-                Columns\ColumnGroup::make(trans('participant.plural'), [
-                    Columns\TextColumn::make('blue_side.name')
-                        ->label(trans('match.side.blue'))
-                        ->limit(50)
-                        ->width('20%')
-                        ->alignRight()
-                        ->description(
-                            fn (Matchup $record) => $record->blue_side?->continent->name
-                        ),
-
-                    Columns\TextColumn::make('blue_participant.draw_number')
-                        ->label('#')
-                        ->width('5%')
-                        ->tooltip(trans('participant.field.draw_number'))
-                        ->alignCenter()
-                        ->numeric(),
-
-                    Columns\TextColumn::make('red_participant.draw_number')
-                        ->label('#')
-                        ->width('5%')
-                        ->tooltip(trans('participant.field.draw_number'))
-                        ->alignCenter()
-                        ->numeric(),
-
-                    Columns\TextColumn::make('red_side.name')
-                        ->label(trans('match.side.red'))
-                        ->limit(50)
-                        ->width('20%')
-                        ->description(
-                            fn (Matchup $record) => $record->red_side?->continent->name
-                        ),
-                ])->alignCenter()->wrapHeader(),
-
-                Columns\TextColumn::make('winner.name')
-                    ->label(trans('match.field.winner'))
-                    ->limit(50)
-                    ->width('25%')
-                    ->alignCenter()
-                    ->description(function (Matchup $record) {
-                        /** @var \App\Models\Person */
-                        $athlete = $record->winner->first();
-
-                        return $athlete?->continent->name;
-                    }),
-
-                Columns\TextColumn::make('status')
-                    ->label(trans('app.field.status'))
-                    ->colors([
-                        'primary' => static fn (Matchup $record) => $record->status->isFinished(),
-                        'success' => static fn (Matchup $record) => $record->status->isOnGoing(),
-                        'warning' => static fn (Matchup $record) => $record->status->isScheduled(),
-                        'info' => static fn (Matchup $record) => $record->status->isDraft(),
-                    ])
-                    ->formatStateUsing(static fn (Matchup $record) => $record->status->label())
-                    ->width('10%')
-                    ->badge()
-                    ->alignCenter(),
-            ])
-            ->headerActions([
-                Actions\CreateAction::make(),
-            ])
-            ->filters([
-                Filters\SelectFilter::make('classification.gender')
-                    ->label(trans('participant.field.gender'))
-                    ->options(Gender::toOptions())
-                    ->query(function (Builder $query, $data) {
-                        if (! $data['value']) {
-                            return $query;
-                        }
-
-                        return $query->whereHas(
-                            'classification',
-                            fn (Builder $query) => $query->where('gender', $data['value'])
-                        );
-                    }),
-
-                Filters\SelectFilter::make('classification.age_range')
-                    ->label(trans('classification.field.age_range'))
-                    ->options(AgeRange::toOptions())
-                    ->query(function (Builder $query, $data) {
-                        if (! $data['value']) {
-                            return $query;
-                        }
-
-                        return $query->whereHas(
-                            'classification',
-                            fn (Builder $query) => $query->where('age_range', $data['value'])
-                        );
-                    }),
-            ])
+            ->columns($this->configureColumns())
+            ->filters($this->configureFilters())
+            ->headerActions($this->configureHeaderActions())
             ->actions([
-                Actions\ActionGroup::make([
-                    Actions\EditAction::make(),
-                ])->tooltip(trans('app.resource.action_label')),
-            ]);
+                Actions\ActionGroup::make($this->configureRowActions())
+                    ->tooltip(trans('app.resource.action_label')),
+            ])
+            ->bulkActions($this->configureBulkActions());
+    }
+
+    private function configureColumns(): array
+    {
+        return [
+            Columns\TextColumn::make('party_number')
+                ->label(trans('match.field.party_number'))
+                ->width('10%')
+                ->alignCenter(),
+
+            Columns\TextColumn::make('round_number')
+                ->label(trans('match.field.round_number'))
+                ->width('10%')
+                ->alignCenter(),
+
+            Columns\ColumnGroup::make(trans('participant.plural'), [
+                Columns\TextColumn::make('blue_side.name')
+                    ->label(trans('match.side.blue'))
+                    ->limit(50)
+                    ->width('20%')
+                    ->alignRight()
+                    ->description(
+                        fn (Matchup $record) => $record->blue_side?->continent->name
+                    ),
+
+                Columns\TextColumn::make('blue_participant.draw_number')
+                    ->label('#')
+                    ->width('5%')
+                    ->tooltip(trans('participant.field.draw_number'))
+                    ->alignCenter()
+                    ->numeric(),
+
+                Columns\TextColumn::make('red_participant.draw_number')
+                    ->label('#')
+                    ->width('5%')
+                    ->tooltip(trans('participant.field.draw_number'))
+                    ->alignCenter()
+                    ->numeric(),
+
+                Columns\TextColumn::make('red_side.name')
+                    ->label(trans('match.side.red'))
+                    ->limit(50)
+                    ->width('20%')
+                    ->description(
+                        fn (Matchup $record) => $record->red_side?->continent->name
+                    ),
+            ])->alignCenter()->wrapHeader(),
+
+            Columns\TextColumn::make('winner.name')
+                ->label(trans('match.field.winner'))
+                ->limit(50)
+                ->width('25%')
+                ->alignCenter()
+                ->description(function (Matchup $record) {
+                    /** @var \App\Models\Person */
+                    $athlete = $record->winner->first();
+
+                    return $athlete?->continent->name;
+                }),
+
+            Columns\TextColumn::make('status')
+                ->label(trans('app.field.status'))
+                ->colors([
+                    'primary' => static fn (Matchup $record) => $record->status->isFinished(),
+                    'success' => static fn (Matchup $record) => $record->status->isStarted(),
+                    'warning' => static fn (Matchup $record) => $record->status->isScheduled(),
+                    'info' => static fn (Matchup $record) => $record->status->isDraft(),
+                ])
+                ->formatStateUsing(static fn (Matchup $record) => $record->status->label())
+                ->width('10%')
+                ->badge()
+                ->alignCenter(),
+        ];
+    }
+
+    private function configureFilters(): array
+    {
+        return [
+            Filters\SelectFilter::make('classification.gender')
+                ->label(trans('participant.field.gender'))
+                ->options(Gender::toOptions())
+                ->query(function (Builder $query, $data) {
+                    if (! $data['value']) {
+                        return $query;
+                    }
+
+                    return $query->whereHas(
+                        'classification',
+                        fn (Builder $query) => $query->where('gender', $data['value'])
+                    );
+                }),
+
+            Filters\SelectFilter::make('classification.age_range')
+                ->label(trans('classification.field.age_range'))
+                ->options(AgeRange::toOptions())
+                ->query(function (Builder $query, $data) {
+                    if (! $data['value']) {
+                        return $query;
+                    }
+
+                    return $query->whereHas(
+                        'classification',
+                        fn (Builder $query) => $query->where('age_range', $data['value'])
+                    );
+                }),
+        ];
+    }
+
+    private function configureHeaderActions(): array
+    {
+        return [
+            Actions\Action::make('generate')
+                ->label(trans('match.actions.generate'))
+                ->requiresConfirmation()
+                ->action(function () {}),
+        ];
+    }
+
+    private function configureRowActions(): array
+    {
+        return [
+            Actions\EditAction::make(),
+        ];
+    }
+
+    private function configureBulkActions(): array
+    {
+        return [];
     }
 }

@@ -11,6 +11,10 @@ return [
         'draw' => 'Imbang',
     ],
 
+    'actions' => [
+        'generate' => 'Generate Pertandingan',
+    ],
+
     'field' => [
         'bye' => 'Bye',
         'division' => 'Pembagian',

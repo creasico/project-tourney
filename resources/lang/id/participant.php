@@ -10,13 +10,14 @@ return [
     ],
 
     'action' => [
-        'import' => 'Impor participan',
+        'import' => 'Impor peserta',
         'verify' => 'Verifikasi',
         'bulk_verify' => 'Verifikasi masal',
         'disqualify' => 'Diskualifikasi',
         'bulk_disqualify' => 'Diskualifikasi masal',
         'deregister' => 'Batalkan registrasi',
         'bulk_deregister' => 'Batalkan registrasi masal',
+        'upload_participant' => 'Upload peserta',
     ],
 
     'role' => [

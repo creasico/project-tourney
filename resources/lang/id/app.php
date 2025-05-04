@@ -18,7 +18,7 @@ return [
     'timeline_status' => [
         'draft' => 'Draft',
         'scheduled' => 'Dijadwalkan',
-        'ongoing' => 'Berjalan',
+        'started' => 'Dimulai',
         'finished' => 'Selesai',
     ],
 

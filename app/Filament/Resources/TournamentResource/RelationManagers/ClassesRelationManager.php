@@ -23,6 +23,18 @@ class ClassesRelationManager extends RelationManager
         return trans('classification.plural');
     }
 
+    /**
+     * @param  \App\Models\Tournament  $ownerRecord
+     */
+    public static function canViewForRecord(Model $ownerRecord, string $pageClass): bool
+    {
+        if ($ownerRecord->participants->isEmpty()) {
+            return false;
+        }
+
+        return parent::canViewForRecord($ownerRecord, $pageClass);
+    }
+
     public function form(Form $form): Form
     {
         $form->getRecord()->loadCount(['athletes']);
@@ -48,34 +60,56 @@ class ClassesRelationManager extends RelationManager
         return $table
             ->recordTitleAttribute('display')
             ->defaultSort('order')
-            ->columns([
-                Columns\TextColumn::make('display')
-                    ->label(trans('classification.singular')),
-
-                Columns\TextColumn::make('bye')
-                    ->label(trans('match.field.bye'))
-                    ->width('10%')
-                    ->alignCenter(),
-
-                Columns\TextColumn::make('division')
-                    ->label(trans('match.field.division'))
-                    ->width('10%')
-                    ->alignCenter(),
-            ])
-            ->headerActions([
-                // Actions\CreateAction::make(),
-            ])
+            ->columns($this->configureColumns())
+            ->filters($this->configureFilters())
+            ->headerActions($this->configureHeaderActions())
             ->actions([
-                Actions\ActionGroup::make([
-                    Actions\EditAction::make(),
-
-                    Actions\DeleteAction::make(),
-                ]),
+                Actions\ActionGroup::make($this->configureRowActions())
+                    ->tooltip(trans('app.resource.action_label')),
             ])
-            ->bulkActions([
-                Actions\BulkActionGroup::make([
-                    Actions\DeleteBulkAction::make(),
-                ]),
-            ]);
+            ->bulkActions($this->configureBulkActions());
+    }
+
+    private function configureColumns(): array
+    {
+        return [
+            Columns\TextColumn::make('display')
+                ->label(trans('classification.singular')),
+
+            Columns\TextColumn::make('bye')
+                ->label(trans('match.field.bye'))
+                ->width('10%')
+                ->alignCenter(),
+
+            Columns\TextColumn::make('division')
+                ->label(trans('match.field.division'))
+                ->width('10%')
+                ->alignCenter(),
+        ];
+    }
+
+    private function configureFilters(): array
+    {
+        return [];
+    }
+
+    private function configureHeaderActions(): array
+    {
+        return [];
+    }
+
+    private function configureRowActions(): array
+    {
+        return [
+            Actions\EditAction::make()
+                ->afterFormValidated(function () {}),
+        ];
+    }
+
+    private function configureBulkActions(): array
+    {
+        return [
+            Actions\DeleteBulkAction::make(),
+        ];
     }
 }

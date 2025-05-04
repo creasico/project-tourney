@@ -26,7 +26,7 @@ trait WithTimelineStatus
             }
 
             if ($this->is_started && ! $this->is_finished) {
-                return TimelineStatus::OnGoing;
+                return TimelineStatus::Started;
             }
 
             return TimelineStatus::Scheduled;

@@ -184,9 +184,9 @@ it('could be started', function () {
         ->is_started->toBeTrue()
         ->is_published->toBeTrue()
         ->is_finished->toBeFalse()
-        ->status->toBe(TimelineStatus::OnGoing);
+        ->status->toBe(TimelineStatus::Started);
 
-    expect($model->status->isOnGoing())->toBeTrue();
+    expect($model->status->isStarted())->toBeTrue();
 });
 
 it('could be finished', function () {

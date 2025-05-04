@@ -18,7 +18,7 @@ return [
     'timeline_status' => [
         'draft' => 'Draft',
         'scheduled' => 'Scheduled',
-        'ongoing' => 'On Going',
+        'started' => 'Started',
         'finished' => 'Finished',
     ],
 

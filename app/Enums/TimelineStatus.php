@@ -15,7 +15,7 @@ enum TimelineStatus: int
 
     case Scheduled = 1;
 
-    case OnGoing = 2;
+    case Started = 2;
 
     case Finished = 3;
 
@@ -34,9 +34,9 @@ enum TimelineStatus: int
         return $this === self::Scheduled;
     }
 
-    public function isOnGoing(): bool
+    public function isStarted(): bool
     {
-        return $this === self::OnGoing;
+        return $this === self::Started;
     }
 
     public function isFinished(): bool
