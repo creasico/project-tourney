@@ -1,5 +1,7 @@
 <?php
 
+use App\Enums\AgeRange;
+use App\Enums\Category;
 use App\Enums\Gender;
 use App\Enums\ParticipantRole;
 use Illuminate\Database\Migrations\Migration;
@@ -53,8 +55,13 @@ return new class extends Migration
             $table->string('label');
             $table->string('description')->nullable();
             $table->enum('gender', Gender::toArray());
-            $table->unsignedTinyInteger('age_range');
-            $table->string('weight_range', 5);
+            $table->unsignedTinyInteger('category')->nullable()->comment(
+                sprintf('See %s for detail', Category::class)
+            );
+            $table->unsignedTinyInteger('age_range')->nullable()->comment(
+                sprintf('See %s for detail', AgeRange::class)
+            );
+            $table->string('weight_range', 5)->nullable();
             $table->unsignedSmallInteger('order')->nullable();
 
             $table->timestamps();

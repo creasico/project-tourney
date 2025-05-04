@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Enums\AgeRange;
+use App\Enums\Category;
 use App\Enums\Gender;
 use App\Models\Classification;
 use Illuminate\Database\Seeder;
@@ -117,6 +118,7 @@ class ClassificationSeeder extends Seeder
                             'label' => $label,
                             'age_range' => $age,
                             'weight_range' => $weight,
+                            'category' => Category::Match,
                             'gender' => match ($gender) {
                                 0 => Gender::Male,
                                 1 => Gender::Female,
