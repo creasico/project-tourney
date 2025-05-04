@@ -2,6 +2,8 @@
 
 namespace App\Imports;
 
+use App\Enums\AgeRange;
+use App\Enums\Category;
 use App\Enums\Gender;
 use App\Enums\ParticipantRole;
 use App\Jobs\AthletesParticipation;
@@ -28,8 +30,8 @@ class TournamentAthleteImport implements SkipsEmptyRows, ToCollection, WithHeadi
 
             foreach ($collection as $item) {
                 $gender = Gender::fromLabel($item['gender']);
-                $category = Gender::fromLabel($item['category']);
-                $ageRange = Gender::fromLabel($item['age_range']);
+                $category = Category::fromLabel($item['category']);
+                $ageRange = AgeRange::fromLabel($item['age_range']);
 
                 /** @var Classification */
                 $class = Classification::query()->firstOrCreate([
@@ -53,7 +55,7 @@ class TournamentAthleteImport implements SkipsEmptyRows, ToCollection, WithHeadi
                 ]);
             }
 
-            dispatch(new AthletesParticipation($this->tournament, $athletes));
+            (new AthletesParticipation($this->tournament, $athletes))->handle();
         });
     }
 }

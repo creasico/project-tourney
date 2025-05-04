@@ -9,6 +9,11 @@ return [
         'info_heading' => 'Information',
     ],
 
+    'notification' => [
+        'import_title' => 'Import success',
+        'import_body' => ':value Athlete successfuly registered',
+    ],
+
     'action' => [
         'import' => 'Import participants',
         'verify' => 'Verify',

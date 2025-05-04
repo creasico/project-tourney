@@ -4,7 +4,10 @@ declare(strict_types=1);
 
 namespace App\Filament\Resources\TournamentResource\RelationManagers;
 
+use App\Enums\Category;
 use App\Enums\MatchBye;
+use App\Models\Classification;
+use App\Models\Tournament;
 use Filament\Forms\Components;
 use Filament\Forms\Form;
 use Filament\Forms\Get;
@@ -14,6 +17,9 @@ use Filament\Tables\Columns;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * @property \App\Models\Tournament $ownerRecord
+ */
 class ClassesRelationManager extends RelationManager
 {
     protected static string $relationship = 'classes';
@@ -41,6 +47,11 @@ class ClassesRelationManager extends RelationManager
 
         return $form
             ->schema([
+                Components\Select::make('category')
+                    ->label(trans('category.singular'))
+                    ->options(Category::toOptions())
+                    ->required(),
+
                 Components\Select::make('bye')
                     ->label(trans('match.field.bye'))
                     ->options(MatchBye::toOptions())
@@ -63,10 +74,7 @@ class ClassesRelationManager extends RelationManager
             ->columns($this->configureColumns())
             ->filters($this->configureFilters())
             ->headerActions($this->configureHeaderActions())
-            ->actions([
-                Actions\ActionGroup::make($this->configureRowActions())
-                    ->tooltip(trans('app.resource.action_label')),
-            ])
+            ->actions($this->configureRowActions())
             ->bulkActions($this->configureBulkActions());
     }
 
@@ -76,8 +84,14 @@ class ClassesRelationManager extends RelationManager
             Columns\TextColumn::make('display')
                 ->label(trans('classification.singular')),
 
+            Columns\TextColumn::make('category')
+                ->label(trans('category.singular'))
+                ->formatStateUsing(fn (Classification $record) => $record->category->label())
+                ->width('10%'),
+
             Columns\TextColumn::make('bye')
                 ->label(trans('match.field.bye'))
+                ->formatStateUsing(fn (Classification $record) => $record->bye->label())
                 ->width('10%')
                 ->alignCenter(),
 
@@ -95,14 +109,28 @@ class ClassesRelationManager extends RelationManager
 
     private function configureHeaderActions(): array
     {
-        return [];
+        /** @var Tournament */
+        $tournament = $this->ownerRecord;
+
+        if ($tournament->participants->isNotEmpty() && $tournament->is_started) {
+            return [];
+        }
+
+        return [
+            Actions\Action::make('generate')
+                ->label(trans('match.actions.generate'))
+                ->requiresConfirmation()
+                ->action(function () {}),
+        ];
     }
 
     private function configureRowActions(): array
     {
         return [
-            Actions\EditAction::make()
-                ->afterFormValidated(function () {}),
+            Actions\ActionGroup::make([
+                Actions\EditAction::make()
+                    ->afterFormValidated(function () {}),
+            ])->tooltip(trans('app.resource.action_label')),
         ];
     }
 

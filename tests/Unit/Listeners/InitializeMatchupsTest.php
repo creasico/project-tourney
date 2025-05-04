@@ -44,6 +44,7 @@ it('should calculate matchups with :dataset', function (AthletesParticipated $ev
         "{$athlete} athletes {$division} divisions" => [
             function () use ($athlete, $division) {
                 $tournament = Tournament::factory()
+                    ->published()
                     ->withClassifications(division: $division)
                     ->withAthletes(count: $athlete)
                     ->createOne();

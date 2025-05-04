@@ -25,8 +25,8 @@ return [
     ],
 
     'bye' => [
-        'up' => 'Bye Up',
-        'down' => 'Bye Down',
+        'up' => 'Up',
+        'down' => 'Down',
     ],
 
     'side' => [

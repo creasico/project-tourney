@@ -9,6 +9,11 @@ return [
         'info_heading' => 'Informasi',
     ],
 
+    'notification' => [
+        'import_title' => 'Import berhasil',
+        'import_body' => ':value Peserta berhasil didaftarkan',
+    ],
+
     'action' => [
         'import' => 'Impor peserta',
         'verify' => 'Verifikasi',

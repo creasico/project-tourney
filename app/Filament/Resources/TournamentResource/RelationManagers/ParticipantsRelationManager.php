@@ -6,11 +6,13 @@ namespace App\Filament\Resources\TournamentResource\RelationManagers;
 
 use App\Enums\AgeRange;
 use App\Enums\Gender;
+use App\Filament\Resources\TournamentResource\Pages\EditTournament;
 use App\Imports\TournamentAthleteImport;
 use App\Models\Builders\PersonBuilder;
 use App\Models\Person;
 use Filament\Forms\Components;
 use Filament\Forms\Form;
+use Filament\Notifications\Notification;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables\Actions;
 use Filament\Tables\Columns;
@@ -20,8 +22,12 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
+use Livewire\Component;
 use Maatwebsite\Excel\Facades\Excel;
 
+/**
+ * @property \App\Models\Tournament $ownerRecord
+ */
 class ParticipantsRelationManager extends RelationManager
 {
     protected static string $relationship = 'participants';
@@ -59,10 +65,7 @@ class ParticipantsRelationManager extends RelationManager
             ->columns($this->configureColumns())
             ->filters($this->configureFilters())
             ->headerActions($this->configureHeaderActions())
-            ->actions([
-                Actions\ActionGroup::make($this->configureRowActions())
-                    ->tooltip(trans('app.resource.action_label')),
-            ])
+            ->actions($this->configureRowActions())
             ->bulkActions($this->configureBulkActions());
     }
 
@@ -122,6 +125,10 @@ class ParticipantsRelationManager extends RelationManager
 
     private function configureHeaderActions(): array
     {
+        if ($this->ownerRecord->participants->isNotEmpty()) {
+            return [];
+        }
+
         return [
             Actions\Action::make('import-athletes')
                 ->label(trans('participant.action.import'))
@@ -129,7 +136,6 @@ class ParticipantsRelationManager extends RelationManager
                 ->modalSubmitActionLabel(trans('participant.action.upload_participant'))
                 ->form([
                     Components\FileUpload::make('file')
-                        ->hint('Some hint')
                         ->storeFile(false)
                         ->acceptedFileTypes(['application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'])
                         ->mimeTypeMap([
@@ -137,9 +143,23 @@ class ParticipantsRelationManager extends RelationManager
                         ]),
                 ])
                 ->action(function (array $data) {
+                    $tournament = $this->ownerRecord;
+
                     Excel::import(new TournamentAthleteImport(
-                        tournament: $this->getOwnerRecord()
+                        tournament: $tournament
                     ), $data['file']);
+
+                    $tournament->refresh();
+
+                    Notification::make()
+                        ->success()
+                        ->title(trans('participant.notification.import_title'))
+                        ->send();
+                })
+                ->after(function (Component $livewire): void {
+                    $livewire->redirect(EditTournament::getUrl([
+                        'record' => $this->ownerRecord->getKey(),
+                    ]));
                 }),
         ];
     }
@@ -147,35 +167,37 @@ class ParticipantsRelationManager extends RelationManager
     private function configureRowActions(): array
     {
         return [
-            Actions\Action::make('verify')
-                ->label(trans('participant.action.verify'))
-                ->icon('heroicon-o-check-circle')
-                ->requiresConfirmation()
-                ->action(function (Person $participant) {
-                    $this->getOwnerRecord()->verify($participant);
-                })
-                ->visible(function (Person $participant) {
-                    return ! $participant->participation->is_verified;
-                }),
+            Actions\ActionGroup::make([
+                Actions\Action::make('verify')
+                    ->label(trans('participant.action.verify'))
+                    ->icon('heroicon-o-check-circle')
+                    ->requiresConfirmation()
+                    ->action(function (Person $participant) {
+                        $this->getOwnerRecord()->verify($participant);
+                    })
+                    ->visible(function (Person $participant) {
+                        return ! $participant->participation->is_verified;
+                    }),
 
-            Actions\Action::make('disqualify')
-                ->label(trans('participant.action.disqualify'))
-                ->icon('heroicon-o-x-mark')
-                ->requiresConfirmation()
-                ->action(function (Person $participant) {
-                    $this->getOwnerRecord()->disqualify($participant);
-                })
-                ->visible(function (Person $participant) {
-                    return ! $participant->participation->is_disqualified;
-                }),
+                Actions\Action::make('disqualify')
+                    ->label(trans('participant.action.disqualify'))
+                    ->icon('heroicon-o-x-mark')
+                    ->requiresConfirmation()
+                    ->action(function (Person $participant) {
+                        $this->getOwnerRecord()->disqualify($participant);
+                    })
+                    ->visible(function (Person $participant) {
+                        return ! $participant->participation->is_disqualified;
+                    }),
 
-            Actions\DetachAction::make('deregister')
-                ->label(trans('participant.action.deregister'))
-                ->icon('heroicon-o-trash')
-                ->requiresConfirmation()
-                ->visible(function () {
-                    return ! $this->getOwnerRecord()->is_started;
-                }),
+                Actions\DetachAction::make('deregister')
+                    ->label(trans('participant.action.deregister'))
+                    ->icon('heroicon-o-trash')
+                    ->requiresConfirmation()
+                    ->visible(function () {
+                        return ! $this->getOwnerRecord()->is_started;
+                    }),
+            ])->tooltip(trans('app.resource.action_label')),
         ];
     }
 

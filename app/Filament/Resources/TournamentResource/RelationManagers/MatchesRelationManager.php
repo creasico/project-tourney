@@ -19,6 +19,9 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * @property \App\Models\Tournament $ownerRecord
+ */
 class MatchesRelationManager extends RelationManager
 {
     protected static string $relationship = 'matches';
@@ -33,7 +36,7 @@ class MatchesRelationManager extends RelationManager
      */
     public static function canViewForRecord(Model $ownerRecord, string $pageClass): bool
     {
-        if ($ownerRecord->participants->isEmpty()) {
+        if ($ownerRecord->matches->isEmpty()) {
             return false;
         }
 
@@ -78,10 +81,7 @@ class MatchesRelationManager extends RelationManager
             ->columns($this->configureColumns())
             ->filters($this->configureFilters())
             ->headerActions($this->configureHeaderActions())
-            ->actions([
-                Actions\ActionGroup::make($this->configureRowActions())
-                    ->tooltip(trans('app.resource.action_label')),
-            ])
+            ->actions($this->configureRowActions())
             ->bulkActions($this->configureBulkActions());
     }
 
@@ -164,7 +164,7 @@ class MatchesRelationManager extends RelationManager
             Filters\SelectFilter::make('classification.gender')
                 ->label(trans('participant.field.gender'))
                 ->options(Gender::toOptions())
-                ->query(function (Builder $query, $data) {
+                ->query(function (Builder $query, array $data) {
                     if (! $data['value']) {
                         return $query;
                     }
@@ -178,7 +178,7 @@ class MatchesRelationManager extends RelationManager
             Filters\SelectFilter::make('classification.age_range')
                 ->label(trans('classification.field.age_range'))
                 ->options(AgeRange::toOptions())
-                ->query(function (Builder $query, $data) {
+                ->query(function (Builder $query, array $data) {
                     if (! $data['value']) {
                         return $query;
                     }
@@ -193,18 +193,15 @@ class MatchesRelationManager extends RelationManager
 
     private function configureHeaderActions(): array
     {
-        return [
-            Actions\Action::make('generate')
-                ->label(trans('match.actions.generate'))
-                ->requiresConfirmation()
-                ->action(function () {}),
-        ];
+        return [];
     }
 
     private function configureRowActions(): array
     {
         return [
-            Actions\EditAction::make(),
+            Actions\ActionGroup::make([
+                Actions\EditAction::make(),
+            ])->tooltip(trans('app.resource.action_label')),
         ];
     }
 

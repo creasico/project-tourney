@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Models;
 
 use App\Enums\AgeRange;
+use App\Enums\Category;
 use App\Enums\Gender;
 use App\Models\Builders\PersonBuilder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
@@ -24,6 +25,7 @@ class Classification extends Model
         return [
             'order' => 'integer',
             'gender' => Gender::class,
+            'category' => Category::class,
             'age_range' => AgeRange::class,
         ];
     }
@@ -44,7 +46,7 @@ class Classification extends Model
     {
         return Attribute::get(fn () => implode(' ', [
             $this->label,
-            $this->age_range->label(),
+            $this->age_range?->label(),
             $this->gender->label(),
         ]));
     }
