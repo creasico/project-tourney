@@ -36,7 +36,7 @@ class MatchesRelationManager extends RelationManager
      */
     public static function canViewForRecord(Model $ownerRecord, string $pageClass): bool
     {
-        if ($ownerRecord->matches->isEmpty()) {
+        if (! $ownerRecord->matches()->exists()) {
             return false;
         }
 

@@ -43,7 +43,7 @@ final class TournamentAthleteImport implements SkipsEmptyRows, ToCollection, Wit
             )
         );
 
-        (new AthletesParticipation($this->tournament, $athletes))->handle();
+        dispatch_sync(new AthletesParticipation($this->tournament, $athletes));
     }
 
     public function toAthlete(

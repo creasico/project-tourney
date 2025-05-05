@@ -13,12 +13,13 @@ use Illuminate\Bus\Batchable;
 use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
+use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 
 class CalculateMatchups implements ShouldBeUnique, ShouldQueue
 {
-    use Batchable, Queueable;
+    use Batchable, Queueable, SerializesModels;
     use ClassifiedAthletes, FailsHelper;
 
     public function __construct(
@@ -150,7 +151,7 @@ class CalculateMatchups implements ShouldBeUnique, ShouldQueue
             ->map(fn ($items) => $items->all())
             ->all();
 
-        $result = $this->suffle(array_values($groupedAthletes));
+        $result = $this->shuffle(array_values($groupedAthletes));
         $count = count($result);
 
         // At this stage we might still find some athletes facing their comrade
@@ -182,11 +183,12 @@ class CalculateMatchups implements ShouldBeUnique, ShouldQueue
                 );
 
                 if (count($range) === 1) {
-                    logger()->notice('Invalid range', [
+                    /** @codeCoverageIgnore */
+                    logger()->debug('Invalid range', [
                         'count' => $count,
                         'iterations' => [$r, $i],
                         'range' => $range,
-                        'row' => $row,
+                        'row' => $row->toArray(),
                         'result' => $result,
                     ]);
                 }
@@ -264,7 +266,7 @@ class CalculateMatchups implements ShouldBeUnique, ShouldQueue
      * @param  list<\App\Models\Person>  $items  Initial value
      * @return list<\App\Models\Person>
      */
-    private function suffle(array $groups, array &$items = []): array
+    private function shuffle(array $groups, array &$items = []): array
     {
         // First, we need to sort the group based on its number of athletes
         // from biggest to smallest one.
@@ -327,7 +329,7 @@ class CalculateMatchups implements ShouldBeUnique, ShouldQueue
 
         // Recursively iterate until there's no opponents left behind.
         if (! empty($groups)) {
-            return $this->suffle($groups, $items);
+            return $this->shuffle($groups, $items);
         }
 
         return $items;

@@ -9,13 +9,14 @@ use App\Events\AthletesParticipated;
 use App\Models\Tournament;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
+use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 
 class AthletesParticipation implements ShouldQueue
 {
     use FailsHelper;
-    use Queueable;
+    use Queueable, SerializesModels;
 
     /**
      * @param  Collection<int, \App\Models\Person>  $athletes

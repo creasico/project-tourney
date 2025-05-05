@@ -125,7 +125,7 @@ class ParticipantsRelationManager extends RelationManager
 
     private function configureHeaderActions(): array
     {
-        if ($this->ownerRecord->participants->isNotEmpty()) {
+        if ($this->ownerRecord->participants()->exists()) {
             return [];
         }
 

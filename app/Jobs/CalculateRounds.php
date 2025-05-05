@@ -9,10 +9,11 @@ use App\Support\ClassifiedAthletes;
 use Illuminate\Bus\Batchable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
+use Illuminate\Queue\SerializesModels;
 
 class CalculateRounds implements ShouldQueue
 {
-    use Batchable, Queueable;
+    use Batchable, Queueable, SerializesModels;
     use ClassifiedAthletes, FailsHelper;
 
     public function __construct(

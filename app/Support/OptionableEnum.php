@@ -22,9 +22,9 @@ trait OptionableEnum
 
     public static function fromLabel(string $label): ?static
     {
-        foreach (self::cases() as $case) {
-            $label = str($label)->lower();
+        $label = str($label)->lower();
 
+        foreach (self::cases() as $case) {
             if (
                 method_exists($case, 'label') &&
                 $label->is($case->label(), true)
@@ -38,7 +38,7 @@ trait OptionableEnum
         }
 
         try {
-            return self::tryFrom($label);
+            return self::tryFrom((string) $label);
         } catch (\Throwable $er) {
             return null;
         }

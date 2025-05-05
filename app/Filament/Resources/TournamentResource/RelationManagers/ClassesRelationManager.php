@@ -40,7 +40,7 @@ class ClassesRelationManager extends RelationManager
      */
     public static function canViewForRecord(Model $ownerRecord, string $pageClass): bool
     {
-        if ($ownerRecord->participants->isEmpty()) {
+        if (! $ownerRecord->participants()->exists()) {
             return false;
         }
 
