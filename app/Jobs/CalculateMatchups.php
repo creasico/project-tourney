@@ -157,6 +157,8 @@ class CalculateMatchups implements ShouldBeUnique, ShouldQueue
         // At this stage we might still find some athletes facing their comrade
         // in the matchup, now we need to ensure that they will be resuffled.
         foreach ($result as $r => $row) {
+            // Skip the first iteration or when the previous iteration has same
+            // continent id as the current one.
             if ($r === 0 || $row->continent_id !== $result[$r - 1]->continent_id) {
                 continue;
             }
@@ -182,17 +184,6 @@ class CalculateMatchups implements ShouldBeUnique, ShouldQueue
                     [],
                 );
 
-                if (count($range) === 1) {
-                    /** @codeCoverageIgnore */
-                    logger()->debug('Invalid range', [
-                        'count' => $count,
-                        'iterations' => [$r, $i],
-                        'range' => $range,
-                        'row' => $row->toArray(),
-                        'result' => $result,
-                    ]);
-                }
-
                 if (in_array($row->continent_id, $range, true)) {
                     continue;
                 }
@@ -209,7 +200,7 @@ class CalculateMatchups implements ShouldBeUnique, ShouldQueue
 
     /**
      * @param  list<\App\Models\Person>  $items
-     * @return array<Sided>
+     * @return list<Sided>
      */
     public function determineSide(array $items): array
     {
