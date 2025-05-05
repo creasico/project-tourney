@@ -50,15 +50,12 @@ class CalculateMatchups implements ShouldBeUnique, ShouldQueue
     {
         $class = $this->classifiedAthletes();
 
-        if ($class->group->divisions()->exists()) {
+        $matches = $this->tournament->matches()
+            ->where('class_id', $class->getKey());
+
+        if ($matches->exists()) {
+            $matches->delete();
             $class->group->divisions()->delete();
-
-            $matches = $this->tournament->matches()
-                ->where('class_id', $class->getKey());
-
-            if ($matches->exists()) {
-                $matches->delete();
-            }
         }
 
         DB::transaction(function () use ($class) {

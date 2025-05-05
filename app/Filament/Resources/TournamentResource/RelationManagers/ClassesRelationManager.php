@@ -69,7 +69,7 @@ class ClassesRelationManager extends RelationManager
                     ->label(trans('match.field.division'))
                     ->required()
                     ->numeric()
-                    ->minValue(3)
+                    ->minValue(1)
                     ->maxValue(fn (Get $get) => $get('athletes_count')),
             ]);
     }
@@ -133,7 +133,7 @@ class ClassesRelationManager extends RelationManager
     {
         $tournament = $this->ownerRecord;
 
-        if ($tournament->participants->isNotEmpty() && $tournament->is_started) {
+        if (! $tournament->participants()->exists() && $tournament->is_started) {
             return [];
         }
 
@@ -177,15 +177,8 @@ class ClassesRelationManager extends RelationManager
     {
         return [
             Actions\ActionGroup::make([
-                Actions\EditAction::make(),
-
-                Actions\Action::make('generate')
-                    ->label(trans('match.actions.generate'))
-                    ->requiresConfirmation()
-                    ->icon('heroicon-m-arrow-path-rounded-square')
-                    ->action(function (Component $livewire, Classification $record) {
-                        $user = auth()->user();
-
+                Actions\EditAction::make()
+                    ->afterFormValidated(function (Classification $record) {
                         try {
                             dispatch_sync(
                                 new CalculateMatchups($this->ownerRecord, $record->getKey())
@@ -201,7 +194,31 @@ class ClassesRelationManager extends RelationManager
                                 ->danger()
                                 ->title(trans('match.notification.calculation_failed_title'))
                                 ->body(trans('match.notification.calculation_failed_body'))
-                                ->sendToDatabase($user);
+                                ->send();
+                        }
+                    }),
+
+                Actions\Action::make('generate')
+                    ->label(trans('match.actions.generate'))
+                    ->requiresConfirmation()
+                    ->icon('heroicon-m-arrow-path-rounded-square')
+                    ->action(function (Classification $record) {
+                        try {
+                            dispatch_sync(
+                                new CalculateMatchups($this->ownerRecord, $record->getKey())
+                            );
+
+                            Notification::make()
+                                ->success()
+                                ->title(trans('match.notification.calculated_title'))
+                                ->body(trans('match.notification.calculated_body'))
+                                ->send();
+                        } catch (\Throwable $_) {
+                            Notification::make()
+                                ->danger()
+                                ->title(trans('match.notification.calculation_failed_title'))
+                                ->body(trans('match.notification.calculation_failed_body'))
+                                ->send();
                         }
                     }),
             ])->tooltip(trans('app.resource.action_label')),

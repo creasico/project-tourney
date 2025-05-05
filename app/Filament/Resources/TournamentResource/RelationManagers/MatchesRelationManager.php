@@ -59,13 +59,13 @@ class MatchesRelationManager extends RelationManager
             ->recordTitleAttribute('party_number')
             ->defaultSort('party_number')
             ->defaultGroup(
-                Group::make('division.id')
+                Group::make('division_id')
                     ->label(trans('match.field.division'))
                     ->getTitleFromRecordUsing(fn (Matchup $record) => $record->division->label)
-                    ->orderQueryUsing(fn (Builder $query, string $direction) => $query->orderBy(
-                        Classification::query()->select('order')->whereColumn('classifications.id', 'matchups.class_id'),
-                        $direction
-                    ))
+                // ->orderQueryUsing(fn (Builder $query, string $direction) => $query->orderBy(
+                //     Classification::query()->select('order')->whereColumn('classifications.id', 'matchups.class_id'),
+                //     $direction
+                // ))
             )
             ->modifyQueryUsing(
                 fn (Builder $query) => $query->with([
