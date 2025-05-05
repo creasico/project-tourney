@@ -11,11 +11,10 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
-use Sentry;
-use Throwable;
 
 class AthletesParticipation implements ShouldQueue
 {
+    use FailsHelper;
     use Queueable;
 
     /**
@@ -27,6 +26,18 @@ class AthletesParticipation implements ShouldQueue
         protected MatchBye $bye = MatchBye::Up,
         protected bool $shoudVerify = false,
     ) {}
+
+    /**
+     * @codeCoverageIgnore
+     */
+    private function context(): array
+    {
+        return [
+            'tournament_id' => $this->tournament->id,
+            'athletes' => $this->athletes->all(),
+            'bye' => $this->bye,
+        ];
+    }
 
     /**
      * Execute the job.
@@ -52,13 +63,5 @@ class AthletesParticipation implements ShouldQueue
                 event(new AthletesParticipated($this->tournament, $classId));
             }
         });
-    }
-
-    /**
-     * @codeCoverageIgnore
-     */
-    public function failed(Throwable $error): void
-    {
-        Sentry\captureException($error);
     }
 }

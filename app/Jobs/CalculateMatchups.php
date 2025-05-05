@@ -10,23 +10,37 @@ use App\Support\ClassifiedAthletes;
 use App\Support\Sided;
 use App\Support\Sliced;
 use Illuminate\Bus\Batchable;
+use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
-use Sentry;
-use Sentry\State\Scope;
-use Throwable;
 
-class CalculateMatchups implements ShouldQueue
+class CalculateMatchups implements ShouldBeUnique, ShouldQueue
 {
     use Batchable, Queueable;
-    use ClassifiedAthletes;
+    use ClassifiedAthletes, FailsHelper;
 
     public function __construct(
         protected Tournament $tournament,
         protected string $classId,
     ) {}
+
+    public function uniqueId(): string
+    {
+        return $this->tournament->getKey().':'.$this->classId;
+    }
+
+    /**
+     * @codeCoverageIgnore
+     */
+    private function context(): array
+    {
+        return [
+            'tournament_id' => $this->tournament->id,
+            'class_id' => $this->classId,
+        ];
+    }
 
     /**
      * Execute the job.
@@ -90,29 +104,6 @@ class CalculateMatchups implements ShouldQueue
                     $division->id
                 ));
             }
-        });
-    }
-
-    /**
-     * @codeCoverageIgnore
-     */
-    public function failed(Throwable $error): void
-    {
-        Sentry\withScope(function (Scope $scope) use ($error) {
-            $context = [
-                'tournament_id' => $this->tournament->id,
-                'class_id' => $this->classId,
-            ];
-
-            if (method_exists($error, 'context')) {
-                $context = array_merge($context, $error->context());
-            }
-
-            $scope->setContext(self::class, $context)
-                ->setTag('class_id', $this->classId)
-                ->setTag('tournament_id', $this->tournament->id);
-
-            Sentry\captureException($error);
         });
     }
 
@@ -254,6 +245,8 @@ class CalculateMatchups implements ShouldQueue
             if (empty($slice->upper) && count($slice->lower) === 1) {
                 $slice->upper[] = array_pop($slice->lower);
             }
+
+            assert(count($slice->upper) === 1, 'Upper slice should not be empty');
 
             $result[] = new Sided(
                 $slice->upper[0],
