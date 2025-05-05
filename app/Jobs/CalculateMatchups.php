@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace App\Jobs;
 
 use App\Events\MatchupInitialized;
-use App\Exceptions\UnprocessableMatchupException;
 use App\Models\Tournament;
+use App\Support\ClassifiedAthletes;
 use App\Support\Sided;
 use App\Support\Sliced;
 use Illuminate\Bus\Batchable;
@@ -21,6 +21,7 @@ use Throwable;
 class CalculateMatchups implements ShouldQueue
 {
     use Batchable, Queueable;
+    use ClassifiedAthletes;
 
     public function __construct(
         protected Tournament $tournament,
@@ -32,29 +33,34 @@ class CalculateMatchups implements ShouldQueue
      */
     public function handle(): void
     {
-        $class = $this->tournament->withClassifiedAthletes()
-            ->where('class_id', $this->classId)
-            ->first();
+        $class = $this->classifiedAthletes();
 
-        if ($class === null) {
-            throw new UnprocessableMatchupException("Class {$this->classId} not found");
-        }
+        if ($class->group->divisions()->exists()) {
+            $class->group->divisions()->delete();
 
-        if ($class->athletes->isEmpty()) {
-            throw new UnprocessableMatchupException('No athletes found');
+            $matches = $this->tournament->matches()
+                ->where('class_id', $class->getKey());
+
+            if ($matches->exists()) {
+                $matches->delete();
+            }
         }
 
         DB::transaction(function () use ($class) {
-            $athletesCount = $class->athletes->count();
-            $athletes = $this->prepareAthletes($class->athletes);
-            $division = $class->group->division > 2 ? $class->group->division : $athletesCount;
+            $divisions = $this->divide(
+                athletes: $this->prepareAthletes($class->athletes),
+                division: $class->group->division,
+                count: $athletesCount = $class->athletes->count()
+            );
 
-            foreach (array_chunk($athletes, $division) as $i => $participants) {
+            $divided = count($divisions) > 1;
+
+            foreach ($divisions as $i => $participants) {
                 $label = $class->display;
 
-                if ($division !== $athletesCount) {
-                    $i++;
-                    $label .= " {$i}";
+                if ($divided) {
+                    $no = $i + 1;
+                    $label .= " {$no}";
                 }
 
                 $division = $class->group->divisions()->create([
@@ -62,15 +68,9 @@ class CalculateMatchups implements ShouldQueue
                     'tournament_id' => $this->tournament->id,
                 ]);
 
-                $participants = $this->determineSide(array_map(
-                    fn ($row) => $class->athletes->where('id', $row['id'])->first(),
-                    $participants,
-                ));
-
-                foreach ($participants as $p => $parties) {
+                foreach ($this->determineSide($participants) as $p => $parties) {
                     $p++;
 
-                    /** @var \App\Models\Matchup */
                     $match = $this->tournament->matches()->create([
                         'division_id' => $division->id,
                         'class_id' => $class->id,
@@ -84,7 +84,11 @@ class CalculateMatchups implements ShouldQueue
                     $match->addAthletes($parties, $this->tournament);
                 }
 
-                event(new MatchupInitialized($this->tournament, $class->id, $division->id));
+                event(new MatchupInitialized(
+                    $this->tournament,
+                    $class->id,
+                    $division->id
+                ));
             }
         });
     }
@@ -113,14 +117,47 @@ class CalculateMatchups implements ShouldQueue
     }
 
     /**
+     * Evenly distribute athletes for each matchup divisions.
+     *
+     * @param  list<\App\Models\Person>  $athletes
+     * @return array<int, list<\App\Models\Person>>
+     */
+    public function divide(array $athletes, int $division, int $count): array
+    {
+        $division = $division > 0 ? $division : $count;
+        $chunks = array_chunk($athletes, $division);
+
+        if (
+            $count % $division === 0 ||
+            count(end($chunks)) > floor($division / 2)
+        ) {
+            return $chunks;
+        }
+
+        $last = array_merge(...array_splice($chunks, -2));
+        $lastCount = count($last);
+        $div = ceil($lastCount / 2);
+
+        if ($div <= 2) {
+            $chunks[] = $last;
+
+            return $chunks;
+        }
+
+        array_push($chunks, ...array_chunk($last, (int) $div));
+
+        return $chunks;
+    }
+
+    /**
      * @param  Collection<int, \App\Models\Person>  $athletes
-     * @return array<int, array>
+     * @return list<\App\Models\Person>
      */
     public function prepareAthletes(Collection $athletes): array
     {
         $groupedAthletes = $athletes->groupBy('continent_id')
-            ->each->pluck('id')
-            ->toArray();
+            ->map(fn ($items) => $items->all())
+            ->all();
 
         $result = $this->suffle(array_values($groupedAthletes));
         $count = count($result);
@@ -128,7 +165,7 @@ class CalculateMatchups implements ShouldQueue
         // At this stage we might still find some athletes facing their comrade
         // in the matchup, now we need to ensure that they will be resuffled.
         foreach ($result as $r => $row) {
-            if ($r === 0 || $row['continent_id'] !== $result[$r - 1]['continent_id']) {
+            if ($r === 0 || $row->continent_id !== $result[$r - 1]->continent_id) {
                 continue;
             }
 
@@ -145,7 +182,7 @@ class CalculateMatchups implements ShouldQueue
                     range($i - 1, $i + 1),
                     function (array $range, int $i) use ($result): array {
                         if (array_key_exists($i, $result)) {
-                            $range[] = $result[$i]['continent_id'];
+                            $range[] = $result[$i]->continent_id;
                         }
 
                         return $range;
@@ -163,7 +200,7 @@ class CalculateMatchups implements ShouldQueue
                     ]);
                 }
 
-                if (in_array($row['continent_id'], $range, true)) {
+                if (in_array($row->continent_id, $range, true)) {
                     continue;
                 }
 
@@ -230,8 +267,9 @@ class CalculateMatchups implements ShouldQueue
     /**
      * Recursive method to find opponents for each athletes from another continents
      *
-     * @param  array<int, array<int, array>>  $groups  Grouped athletes by continent
-     * @param  array<int, array>  $items  Initial value
+     * @param  array<int, list<\App\Models\Person>>  $groups  Grouped athletes by continent
+     * @param  list<\App\Models\Person>  $items  Initial value
+     * @return list<\App\Models\Person>
      */
     private function suffle(array $groups, array &$items = []): array
     {
@@ -304,6 +342,8 @@ class CalculateMatchups implements ShouldQueue
 
     /**
      * Split the items into upper and lower section.
+     *
+     * @param  list<\App\Models\Person>  $name
      */
     private function slice(array $items, int $slice): Sliced
     {

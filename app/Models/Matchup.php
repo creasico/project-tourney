@@ -75,10 +75,18 @@ class Matchup extends Model
 
     public function addAthletes(Sided $sided, Tournament $tournament): void
     {
-        $this->addAthlete($sided->blue, $tournament, MatchSide::Blue);
+        $this->addAthlete(
+            athlete: $sided->blue,
+            tournament: $tournament,
+            side: MatchSide::Blue,
+        );
 
         if ($sided->red) {
-            $this->addAthlete($sided->red, $tournament, MatchSide::Red);
+            $this->addAthlete(
+                athlete: $sided->red,
+                tournament: $tournament,
+                side: MatchSide::Red,
+            );
         }
     }
 
@@ -86,7 +94,7 @@ class Matchup extends Model
         Person $athlete,
         Tournament $tournament,
         MatchSide $side,
-        PartyStatus $status = PartyStatus::Queue
+        PartyStatus $status = PartyStatus::Queue,
     ): void {
         $this->athletes()->attach($athlete, [
             'side' => $side,

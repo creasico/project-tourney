@@ -37,9 +37,12 @@ class AthletesParticipation implements ShouldQueue
             $verify = $this->shoudVerify ? now() : null;
 
             foreach ($this->athletes->groupBy('class_id') as $classId => $athletes) {
-                $this->tournament->participants()->attach($athletes, [
-                    'verified_at' => $verify,
-                ]);
+                foreach ($athletes as $a => $athlete) {
+                    $this->tournament->participants()->attach($athlete, [
+                        'verified_at' => $verify,
+                        'draw_number' => $a + 1,
+                    ]);
+                }
 
                 $this->tournament->classes()->attach($classId, [
                     'division' => $athletes->count(),

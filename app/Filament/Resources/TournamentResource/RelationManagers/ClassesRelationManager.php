@@ -7,6 +7,7 @@ namespace App\Filament\Resources\TournamentResource\RelationManagers;
 use App\Enums\Category;
 use App\Enums\MatchBye;
 use App\Jobs\CalculateMatchups;
+use App\Models\Builders\PersonBuilder;
 use App\Models\Classification;
 use Filament\Forms\Components;
 use Filament\Forms\Form;
@@ -16,7 +17,9 @@ use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables\Actions;
 use Filament\Tables\Columns;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Facades\Bus;
 use Livewire\Component;
 
@@ -46,7 +49,9 @@ class ClassesRelationManager extends RelationManager
 
     public function form(Form $form): Form
     {
-        $form->getRecord()->loadCount(['athletes']);
+        $form->getRecord()->loadCount([
+            'athletes' => $this->athleteQuery(),
+        ]);
 
         return $form
             ->schema([
@@ -74,6 +79,15 @@ class ClassesRelationManager extends RelationManager
         return $table
             ->recordTitleAttribute('display')
             ->defaultSort('order')
+            ->modifyQueryUsing(
+                fn (Builder $query) => $query
+                    ->withCount([
+                        'athletes as athletes_count' => $this->athleteQuery(),
+                    ])
+                    ->with([
+                        'athletes' => $this->athleteQuery(),
+                    ])
+            )
             ->columns($this->configureColumns())
             ->filters($this->configureFilters())
             ->headerActions($this->configureHeaderActions())
@@ -90,16 +104,21 @@ class ClassesRelationManager extends RelationManager
             Columns\TextColumn::make('category')
                 ->label(trans('category.singular'))
                 ->formatStateUsing(fn (Classification $record) => $record->category->label())
-                ->width('10%'),
+                ->width('8%'),
 
             Columns\TextColumn::make('bye')
                 ->label(trans('match.field.bye'))
                 ->formatStateUsing(fn (Classification $record) => $record->bye->label())
-                ->width('10%')
+                ->width('8%')
                 ->alignCenter(),
 
             Columns\TextColumn::make('division')
                 ->label(trans('match.field.division'))
+                ->width('10%')
+                ->alignCenter(),
+
+            Columns\TextColumn::make('athletes_count')
+                ->label(trans('continent.field.athletes_count'))
                 ->width('10%')
                 ->alignCenter(),
         ];
@@ -119,9 +138,10 @@ class ClassesRelationManager extends RelationManager
         }
 
         return [
-            Actions\Action::make('generate')
+            Actions\Action::make('generate_all')
                 ->label(trans('match.actions.generate'))
                 ->requiresConfirmation()
+                ->icon('heroicon-m-arrow-path-rounded-square')
                 ->action(function (Component $livewire) {
                     $user = auth()->user();
 
@@ -130,7 +150,13 @@ class ClassesRelationManager extends RelationManager
                             $this->ownerRecord,
                             $class->getKey(),
                         )
-                    ))->then(function () use ($user) {
+                    ))->catch(function () use ($user) {
+                        Notification::make()
+                            ->danger()
+                            ->title(trans('match.notification.calculation_failed_title'))
+                            ->body(trans('match.notification.calculation_failed_body'))
+                            ->sendToDatabase($user);
+                    })->then(function () use ($user) {
                         Notification::make()
                             ->success()
                             ->title(trans('match.notification.calculated_title'))
@@ -151,8 +177,33 @@ class ClassesRelationManager extends RelationManager
     {
         return [
             Actions\ActionGroup::make([
-                Actions\EditAction::make()
-                    ->afterFormValidated(function () {}),
+                Actions\EditAction::make(),
+
+                Actions\Action::make('generate')
+                    ->label(trans('match.actions.generate'))
+                    ->requiresConfirmation()
+                    ->icon('heroicon-m-arrow-path-rounded-square')
+                    ->action(function (Component $livewire, Classification $record) {
+                        $user = auth()->user();
+
+                        try {
+                            dispatch_sync(
+                                new CalculateMatchups($this->ownerRecord, $record->getKey())
+                            );
+
+                            Notification::make()
+                                ->success()
+                                ->title(trans('match.notification.calculated_title'))
+                                ->body(trans('match.notification.calculated_body'))
+                                ->send();
+                        } catch (\Throwable $_) {
+                            Notification::make()
+                                ->danger()
+                                ->title(trans('match.notification.calculation_failed_title'))
+                                ->body(trans('match.notification.calculation_failed_body'))
+                                ->sendToDatabase($user);
+                        }
+                    }),
             ])->tooltip(trans('app.resource.action_label')),
         ];
     }
@@ -162,5 +213,10 @@ class ClassesRelationManager extends RelationManager
         return [
             Actions\DeleteBulkAction::make(),
         ];
+    }
+
+    private function athleteQuery()
+    {
+        return fn (HasMany|PersonBuilder $query) => $query->haveParticipate($this->ownerRecord);
     }
 }

@@ -76,6 +76,7 @@
       "docker compose --env-file .env.sail down"
     ],
     "sail:exec": [
+      "Composer\\Config::disableProcessTimeout",
       "docker compose --env-file=.env.sail exec app"
     ]
   },

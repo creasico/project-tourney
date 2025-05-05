@@ -35,6 +35,22 @@ it('should not proceed a tournament with no athletes', function () {
     ))->handle();
 })->throws(UnprocessableMatchupException::class, 'No athletes found');
 
+$structures = collect([
+    [4, 4, [4]],
+    [5, 3, [3, 2]],
+    [7, 3, [3, 4]],
+    [9, 4, [4, 3, 2]],
+    [10, 3, [3, 3, 4]],
+    [10, 4, [4, 3, 3]],
+    [11, 3, [3, 3, 3, 2]],
+    [11, 4, [4, 4, 3]],
+    [11, 5, [5, 3, 3]],
+    [12, 3, [3, 3, 3, 3]],
+    [12, 4, [4, 4, 4]],
+    [12, 5, [5, 4, 3]],
+    [12, 7, [7, 5]],
+]);
+
 it('should calculate matchups with :dataset', function (Tournament $tournament, int $expected) {
     Event::fake(MatchupInitialized::class);
 
@@ -50,8 +66,7 @@ it('should calculate matchups with :dataset', function (Tournament $tournament, 
     Event::assertDispatched(function (MatchupInitialized $event) use ($expected) {
         $tournament = $event->tournament->fresh(['withClassifiedAthletes']);
 
-        expect($event->tournament)->id->toBe($tournament->id);
-
+        /** @var \App\Models\Classification */
         $class = $tournament->withClassifiedAthletes->first();
 
         expect($event)->classId->toBe($class->id);
@@ -60,26 +75,60 @@ it('should calculate matchups with :dataset', function (Tournament $tournament, 
 
         expect($group->divisions)->toHaveCount($expected);
 
-        return true;
+        return $event->tournament->id === $tournament->id;
     });
-})->with(collect([
-    [3, 0, 1],
-    [5, 3, 2],
-    [7, 3, 3],
-])->mapWithKeys(function ($value) {
-    [$athlete, $division, $expected] = $value;
+})->with($structures->mapWithKeys(function ($value) {
+    [$total, $division, $expected] = $value;
+    $exp = implode(' ', $expected);
 
     return [
-        "{$athlete} athletes {$division} divisions" => [
+        "{$total} by {$division} to [{$exp}]" => [
             fn () => Tournament::factory()
                 ->published()
                 ->withClassifications(division: $division)
-                ->withAthletes(count: $athlete)
+                ->withAthletes(count: $total)
                 ->createOne(),
+            count($expected),
             $expected,
         ],
     ];
 })->toArray());
+
+describe('::divide()', function () use ($structures) {
+    beforeEach(function () {
+        $ref = new ReflectionClass(CalculateMatchups::class);
+
+        $this->calc = $ref->newInstanceWithoutConstructor();
+    });
+
+    it('can divide with :dataset', function (int $division, array $items, array $expect) {
+        /** @var CalculateMatchups */
+        $calc = $this->calc;
+
+        $result = array_reduce(
+            $calc->divide($items, $division, count($items)),
+            function (array $result, $items) {
+                $result[] = count($items);
+
+                return $result;
+            },
+            [],
+        );
+
+        expect($result)->toBe($expect);
+    })->with($structures->mapWithKeys(function ($item) {
+        [$total, $division, $expected] = $item;
+        $exp = implode(' ', $expected);
+
+        return [
+            "{$total} by {$division} to [{$exp}]" => [
+                $division,
+                fn () => Person::factory($total)->make()->pluck('name')->all(),
+                $expected,
+            ],
+        ];
+    })->all());
+});
 
 describe('::prepareAthletes()', function () {
     /** @param Collection<int, Continent> $continents */

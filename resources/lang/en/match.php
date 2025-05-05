@@ -16,6 +16,8 @@ return [
         'calculating_body' => 'The calculating process might take a while',
         'calculated_title' => 'Matches calculated',
         'calculated_body' => 'Please reload the page',
+        'calculation_failed_title' => 'Matches calculation failed',
+        'calculation_failed_body' => 'Something went wrong, please contact developer',
     ],
 
     'actions' => [

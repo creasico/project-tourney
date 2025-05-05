@@ -16,6 +16,8 @@ return [
         'calculating_body' => 'Proses ini akan memakan waktu',
         'calculated_title' => 'Proses pertandingan selesai',
         'calculated_body' => 'Silakan muat ulang halaman ini',
+        'calculation_failed_title' => 'Proses pertandingan gagal',
+        'calculation_failed_body' => 'Ada sebuah kesalahan, silakan hubungi developer',
     ],
 
     'actions' => [
