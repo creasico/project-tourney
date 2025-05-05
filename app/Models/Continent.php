@@ -26,16 +26,25 @@ class Continent extends Model
         ];
     }
 
+    /**
+     * @return HasMany<Person, Continent>
+     */
     public function members(): HasMany|Builders\PersonBuilder
     {
         return $this->hasMany(Person::class);
     }
 
+    /**
+     * @return Builders\PersonBuilder<Person>|HasMany<Person, Continent>
+     */
     public function athletes(): HasMany|Builders\PersonBuilder
     {
         return $this->members()->onlyAthletes();
     }
 
+    /**
+     * @return Builders\PersonBuilder<Person>|HasMany<Person, Continent>
+     */
     public function managers(): HasMany|Builders\PersonBuilder
     {
         return $this->members()->onlyManagers();

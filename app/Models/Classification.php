@@ -30,6 +30,9 @@ class Classification extends Model
         ];
     }
 
+    /**
+     * @return BelongsToMany<Tournament, Classification, MatchGroup, 'group'>
+     */
     public function tournaments(): BelongsToMany
     {
         return $this->belongsToMany(Tournament::class, MatchGroup::class, 'class_id')
@@ -37,6 +40,9 @@ class Classification extends Model
             ->as('group');
     }
 
+    /**
+     * @return HasMany<Person, Classification>
+     */
     public function athletes(): HasMany|PersonBuilder
     {
         return $this->hasMany(Person::class, 'class_id');

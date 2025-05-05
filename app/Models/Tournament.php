@@ -59,21 +59,33 @@ class Tournament extends Model
         return $model->save() ? $model->fresh() : null;
     }
 
+    /**
+     * @return HasMany<Matchup, Tournament>
+     */
     public function matches(): HasMany
     {
         return $this->hasMany(Matchup::class);
     }
 
+    /**
+     * @return HasMany<MatchGroup, Tournament>
+     */
     public function groups(): HasMany
     {
         return $this->hasMany(MatchGroup::class);
     }
 
+    /**
+     * @return HasMany<Division, Tournament>
+     */
     public function divisions(): HasMany
     {
         return $this->hasMany(Division::class);
     }
 
+    /**
+     * @return BelongsToMany<Classification, Tournament, MatchGroup, 'group'>
+     */
     public function classes(): BelongsToMany
     {
         return $this->belongsToMany(Classification::class, MatchGroup::class, relatedPivotKey: 'class_id')
@@ -81,6 +93,9 @@ class Tournament extends Model
             ->as('group');
     }
 
+    /**
+     * @return BelongsToMany<Classification, Tournament, MatchGroup, 'group'>
+     */
     public function withClassifiedAthletes()
     {
         /** @param HasMany|Builders\PersonBuilder $query */
@@ -89,6 +104,9 @@ class Tournament extends Model
         ]);
     }
 
+    /**
+     * @return BelongsToMany<Person, Tournament, Participation, 'participation'>
+     */
     public function participants(): BelongsToMany
     {
         return $this->belongsToMany(Person::class, Participation::class, relatedPivotKey: 'participant_id')
@@ -100,11 +118,17 @@ class Tournament extends Model
             ->as('participation');
     }
 
+    /**
+     * @return BelongsToMany<Person, Tournament, Participation, 'participation'>
+     */
     public function verifiedParticipants()
     {
         return $this->participants()->wherePivotNotNull('verified_at');
     }
 
+    /**
+     * @return BelongsToMany<Person, Tournament, Participation, 'participation'>
+     */
     public function unverifiedParticipants()
     {
         return $this->participants()->wherePivotNull('verified_at');

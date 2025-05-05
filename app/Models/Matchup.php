@@ -39,21 +39,33 @@ class Matchup extends Model
         ];
     }
 
+    /**
+     * @return BelongsTo<Tournament, Matchup>
+     */
     public function tournament(): BelongsTo
     {
         return $this->belongsTo(Tournament::class);
     }
 
+    /**
+     * @return BelongsTo<Division, Matchup>
+     */
     public function division(): BelongsTo
     {
         return $this->belongsTo(Division::class);
     }
 
+    /**
+     * @return HasMany<Participation, Matchup>
+     */
     public function participations(): HasMany
     {
         return $this->hasMany(Participation::class, 'match_id');
     }
 
+    /**
+     * @return BelongsToMany<Person, Matchup, MatchParty, 'party'>
+     */
     public function athletes(): BelongsToMany|Builders\PersonBuilder
     {
         return $this->belongsToMany(Person::class, MatchParty::class, 'match_id', 'participant_id')
@@ -61,7 +73,7 @@ class Matchup extends Model
             ->as('party');
     }
 
-    public function addAthletes(Sided $sided, Tournament $tournament)
+    public function addAthletes(Sided $sided, Tournament $tournament): void
     {
         $this->addAthlete($sided->blue, $tournament, MatchSide::Blue);
 
@@ -86,31 +98,49 @@ class Matchup extends Model
         ]);
     }
 
+    /**
+     * @return BelongsToMany<Person, Matchup, MatchParty, 'party'>
+     */
     public function blue(): BelongsToMany|Builders\PersonBuilder
     {
         return $this->athletes()->wherePivot('side', MatchSide::Blue);
     }
 
+    /**
+     * @return BelongsToMany<Person, Matchup, MatchParty, 'party'>
+     */
     public function red(): BelongsToMany|Builders\PersonBuilder
     {
         return $this->athletes()->wherePivot('side', MatchSide::Red);
     }
 
+    /**
+     * @return BelongsToMany<Person, Matchup, MatchParty, 'party'>
+     */
     public function winner(): BelongsToMany|Builders\PersonBuilder
     {
         return $this->athletes()->wherePivot('status', PartyStatus::Win);
     }
 
+    /**
+     * @return BelongsToMany<Person, Matchup, MatchParty, 'party'>
+     */
     public function loser(): BelongsToMany|Builders\PersonBuilder
     {
         return $this->athletes()->wherePivot('status', PartyStatus::Lose);
     }
 
+    /**
+     * @return BelongsTo<Matchup, Matchup>
+     */
     public function next(): BelongsTo
     {
         return $this->belongsTo(Matchup::class, 'next_id');
     }
 
+    /**
+     * @return HasOne<Matchup, Matchup>
+     */
     public function prev(): HasOne
     {
         return $this->hasOne(Matchup::class, 'next_id');

@@ -25,21 +25,33 @@ class Division extends Model
         ];
     }
 
+    /**
+     * @return BelongsTo<Tournament, Division>
+     */
     public function tournament(): BelongsTo
     {
         return $this->belongsTo(Tournament::class);
     }
 
+    /**
+     * @return BelongsTo<MatchGroup, Division>
+     */
     public function group(): BelongsTo
     {
         return $this->belongsTo(MatchGroup::class, 'group_id');
     }
 
+    /**
+     * @return HasMany<Matchup, Division>
+     */
     public function matches(): HasMany
     {
         return $this->hasMany(Matchup::class);
     }
 
+    /**
+     * @return BelongsToMany<PrizePool, Division, DivisionPrize, 'pool'>
+     */
     public function prizes(): BelongsToMany
     {
         return $this->belongsToMany(PrizePool::class, DivisionPrize::class, 'division_id', 'prize_id')

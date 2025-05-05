@@ -29,16 +29,25 @@ class Person extends Model
         ];
     }
 
+    /**
+     * @return BelongsTo<Continent, Person>
+     */
     public function continent(): BelongsTo
     {
         return $this->belongsTo(Continent::class);
     }
 
+    /**
+     * @return BelongsTo<User, Person>
+     */
     public function credential()
     {
         return $this->belongsTo(User::class, 'user_id');
     }
 
+    /**
+     * @return BelongsToMany<Tournament, Person, Participation, 'participation'>
+     */
     public function tournaments(): BelongsToMany
     {
         return $this->belongsToMany(Tournament::class, Participation::class, foreignPivotKey: 'participant_id')
@@ -50,6 +59,9 @@ class Person extends Model
             ->as('participation');
     }
 
+    /**
+     * @return BelongsToMany<Matchup, Person, MatchParty, 'party'>
+     */
     public function matches(): BelongsToMany
     {
         return $this->belongsToMany(Matchup::class, MatchParty::class, 'participant_id', 'match_id')

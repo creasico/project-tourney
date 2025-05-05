@@ -27,11 +27,17 @@ class Participation extends Pivot
         ];
     }
 
+    /**
+     * @return BelongsTo<Person, Participation>
+     */
     public function participant(): BelongsTo
     {
         return $this->belongsTo(Person::class, 'participant_id');
     }
 
+    /**
+     * @return BelongsTo<Matchup, Participation>
+     */
     public function match(): BelongsTo
     {
         return $this->belongsTo(Matchup::class, 'match_id');
