@@ -9,6 +9,7 @@ use App\Exceptions\UnprocessableMatchupException;
 use App\Models\Tournament;
 use App\Support\Sided;
 use App\Support\Sliced;
+use Illuminate\Bus\Batchable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
 use Illuminate\Support\Collection;
@@ -19,7 +20,7 @@ use Throwable;
 
 class CalculateMatchups implements ShouldQueue
 {
-    use Queueable;
+    use Batchable, Queueable;
 
     public function __construct(
         protected Tournament $tournament,

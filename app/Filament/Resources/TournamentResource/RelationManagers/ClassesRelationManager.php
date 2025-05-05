@@ -6,16 +6,19 @@ namespace App\Filament\Resources\TournamentResource\RelationManagers;
 
 use App\Enums\Category;
 use App\Enums\MatchBye;
+use App\Jobs\CalculateMatchups;
 use App\Models\Classification;
-use App\Models\Tournament;
 use Filament\Forms\Components;
 use Filament\Forms\Form;
 use Filament\Forms\Get;
+use Filament\Notifications\Notification;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables\Actions;
 use Filament\Tables\Columns;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Bus;
+use Livewire\Component;
 
 /**
  * @property \App\Models\Tournament $ownerRecord
@@ -109,7 +112,6 @@ class ClassesRelationManager extends RelationManager
 
     private function configureHeaderActions(): array
     {
-        /** @var Tournament */
         $tournament = $this->ownerRecord;
 
         if ($tournament->participants->isNotEmpty() && $tournament->is_started) {
@@ -120,7 +122,28 @@ class ClassesRelationManager extends RelationManager
             Actions\Action::make('generate')
                 ->label(trans('match.actions.generate'))
                 ->requiresConfirmation()
-                ->action(function () {}),
+                ->action(function (Component $livewire) {
+                    $user = auth()->user();
+
+                    Bus::batch($this->ownerRecord->classes->map(
+                        fn ($class) => new CalculateMatchups(
+                            $this->ownerRecord,
+                            $class->getKey(),
+                        )
+                    ))->then(function () use ($user) {
+                        Notification::make()
+                            ->success()
+                            ->title(trans('match.notification.calculated_title'))
+                            ->body(trans('match.notification.calculated_body'))
+                            ->sendToDatabase($user);
+                    })->name("Calculating matches for {$this->ownerRecord->title}")->dispatch();
+
+                    Notification::make()
+                        ->info()
+                        ->title(trans('match.notification.calculating_title'))
+                        ->body(trans('match.notification.calculating_body'))
+                        ->send();
+                }),
         ];
     }
 

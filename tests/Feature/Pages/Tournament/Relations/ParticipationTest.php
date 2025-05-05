@@ -8,6 +8,7 @@ use App\Filament\Resources\TournamentResource\Pages\EditTournament;
 use App\Filament\Resources\TournamentResource\RelationManagers\ParticipantsRelationManager;
 use App\Models\Continent;
 use App\Models\Tournament;
+use Maatwebsite\Excel\Facades\Excel;
 
 use function Pest\Livewire\livewire;
 
@@ -26,6 +27,19 @@ it('can have many participants', function () {
 });
 
 describe('actions', function () {
+    it('can register athletes throught excel import', function () {
+        $record = Tournament::factory()->createOne();
+
+        $page = livewire(ParticipantsRelationManager::class, [
+            'ownerRecord' => $record,
+            'pageClass' => EditTournament::class,
+        ]);
+
+        // Excel::fake();
+
+        $page->assertTableHeaderActionsExistInOrder(['import-athletes']);
+    });
+
     it('can verify an athlete', function () {
         $record = Tournament::factory()
             ->withAthletes(count: 5, pivot: [

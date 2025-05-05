@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use App\Events\MatchupInitialized;
 use App\Exceptions\UnprocessableMatchupException;
 use App\Jobs\CalculateMatchups;

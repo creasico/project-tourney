@@ -11,6 +11,13 @@ return [
         'draw' => 'Draw',
     ],
 
+    'notification' => [
+        'calculating_title' => 'Calculating matches',
+        'calculating_body' => 'The calculating process might take a while',
+        'calculated_title' => 'Matches calculated',
+        'calculated_body' => 'Please reload the page',
+    ],
+
     'actions' => [
         'generate' => 'Generate Match',
     ],

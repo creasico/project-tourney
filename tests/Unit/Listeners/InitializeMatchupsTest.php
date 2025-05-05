@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use App\Events\AthletesParticipated;
 use App\Jobs\CalculateMatchups;
 use App\Listeners\InitializeMatchups;

@@ -17,45 +17,64 @@ use Maatwebsite\Excel\Concerns\SkipsEmptyRows;
 use Maatwebsite\Excel\Concerns\ToCollection;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 
-class TournamentAthleteImport implements SkipsEmptyRows, ToCollection, WithHeadingRow
+final class TournamentAthleteImport implements SkipsEmptyRows, ToCollection, WithHeadingRow
 {
     public function __construct(
         private Tournament $tournament,
     ) {}
 
+    /**
+     * @param  Collection<int, array>  $collection
+     *
+     * @codeCoverageIgnore
+     */
     public function collection(Collection $collection)
     {
-        DB::transaction(function () use ($collection) {
-            $athletes = collect();
+        $athletes = DB::transaction(
+            fn () => $collection->map(
+                fn ($item) => $this->toAthlete(
+                    category: $item['category'],
+                    classification: $item['classification'],
+                    continent: $item['continent'],
+                    name: $item['name'],
+                    gender: $item['gender'],
+                    ageRange: $item['age_range'],
+                )
+            )
+        );
 
-            foreach ($collection as $item) {
-                $gender = Gender::fromLabel($item['gender']);
-                $category = Category::fromLabel($item['category']);
-                $ageRange = AgeRange::fromLabel($item['age_range']);
+        (new AthletesParticipation($this->tournament, $athletes))->handle();
+    }
 
-                /** @var Classification */
-                $class = Classification::query()->firstOrCreate([
-                    'label' => $item['classification'],
-                    'gender' => $gender,
-                    'category' => $category,
-                    'age_range' => $ageRange,
-                ]);
+    public function toAthlete(
+        string $category,
+        string $classification,
+        string $continent,
+        string $name,
+        string $gender,
+        string $ageRange,
+    ): Person {
+        $gender = Gender::fromLabel($gender);
+        $category = Category::fromLabel($category);
+        $ageRange = AgeRange::fromLabel($ageRange);
 
-                /** @var Continent */
-                $continent = Continent::query()->firstOrCreate([
-                    'name' => $item['continent'],
-                ]);
+        $class = Classification::query()->firstOrCreate([
+            'label' => $classification,
+            'gender' => $gender,
+            'category' => $category,
+            'age_range' => $ageRange,
+        ]);
 
-                $athletes[] = Person::firstOrCreate([
-                    'name' => $item['name'],
-                    'role' => ParticipantRole::Athlete,
-                    'continent_id' => $continent->getKey(),
-                    'class_id' => $class->getKey(),
-                    'gender' => $gender,
-                ]);
-            }
+        $continent = Continent::query()->firstOrCreate([
+            'name' => $continent,
+        ]);
 
-            (new AthletesParticipation($this->tournament, $athletes))->handle();
-        });
+        return Person::firstOrCreate([
+            'name' => $name,
+            'role' => ParticipantRole::Athlete,
+            'continent_id' => $continent->getKey(),
+            'class_id' => $class->getKey(),
+            'gender' => $gender,
+        ]);
     }
 }

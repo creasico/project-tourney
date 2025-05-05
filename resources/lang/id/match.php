@@ -11,6 +11,13 @@ return [
         'draw' => 'Imbang',
     ],
 
+    'notification' => [
+        'calculating_title' => 'Memproses pertandingan',
+        'calculating_body' => 'Proses ini akan memakan waktu',
+        'calculated_title' => 'Proses pertandingan selesai',
+        'calculated_body' => 'Silakan muat ulang halaman ini',
+    ],
+
     'actions' => [
         'generate' => 'Generate Pertandingan',
     ],
