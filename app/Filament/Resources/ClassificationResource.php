@@ -24,6 +24,8 @@ class ClassificationResource extends Resource
 
     protected static ?string $model = Classification::class;
 
+    protected static ?string $recordTitleAttribute = 'label';
+
     protected static ?string $navigationIcon = 'heroicon-o-tag';
 
     public static function form(Form $form): Form

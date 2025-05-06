@@ -24,11 +24,13 @@ class TournamentResource extends Resource
 
     protected static ?string $model = Tournament::class;
 
+    protected static ?string $recordTitleAttribute = 'title';
+
     protected static ?string $navigationIcon = 'heroicon-o-trophy';
 
     protected static ?int $navigationSort = 1;
 
-    public static function getFormInfoSection()
+    private static function configureFormInfoSection()
     {
         return Components\Section::make(trans('tournament.section.info_heading'))
             ->disabled(fn (?Tournament $record) => $record?->is_started)
@@ -50,7 +52,7 @@ class TournamentResource extends Resource
             ]);
     }
 
-    public static function getFormScheduleSection()
+    private static function configureFormScheduleSection()
     {
         return Components\Section::make(trans('tournament.section.schedule_heading'))
             ->disabled(fn (?Tournament $record) => $record?->is_started)
@@ -67,12 +69,104 @@ class TournamentResource extends Resource
             ]);
     }
 
+    private static function configureColumns()
+    {
+        return [
+            Columns\TextColumn::make('title')
+                ->label(trans('tournament.field.title'))
+                ->description(fn (Tournament $record) => $record->description),
+
+            Columns\ColumnGroup::make(trans('participant.plural'), [
+                Columns\TextColumn::make('registered_count')
+                    ->label(trans('participant.participation.registered'))
+                    ->counts([
+                        'participants as registered_count',
+                    ])
+                    ->numeric()
+                    ->alignCenter()
+                    ->width('10%'),
+
+                Columns\TextColumn::make('verified_count')
+                    ->label(trans('participant.participation.verified'))
+                    ->counts([
+                        'participants as verified_count' => fn (PersonBuilder $q) => $q->whereNotNull('verified_at'),
+                    ])
+                    ->numeric()
+                    ->alignCenter()
+                    ->width('10%'),
+
+                Columns\TextColumn::make('disqualified_count')
+                    ->label(trans('participant.participation.disqualified'))
+                    ->counts([
+                        'participants as disqualified_count' => fn (PersonBuilder $q) => $q->whereNotNull('disqualified_at'),
+                    ])
+                    ->numeric()
+                    ->alignCenter()
+                    ->width('10%'),
+            ])->alignment(Alignment::Center)->wrapHeader(),
+
+            Columns\ColumnGroup::make(trans('tournament.field.schedule'), [
+                Columns\TextColumn::make('start_date')
+                    ->label(trans('tournament.field.start_date'))
+                    ->alignRight()
+                    ->width('10%')
+                    ->formatStateUsing(
+                        static fn (Tournament $record) => $record->start_date->toFormattedDateString()
+                    ),
+
+                Columns\TextColumn::make('finish_date')
+                    ->label(trans('tournament.field.finish_date'))
+                    ->alignRight()
+                    ->width('10%')
+                    ->formatStateUsing(
+                        static fn (Tournament $record) => $record->finish_date->toFormattedDateString()
+                    ),
+            ])->alignment(Alignment::Center)->wrapHeader(),
+
+            Columns\TextColumn::make('status')
+                ->label(trans('tournament.field.status'))
+                ->colors([
+                    'primary' => static fn (Tournament $record) => $record->status->isFinished(),
+                    'success' => static fn (Tournament $record) => $record->status->isStarted(),
+                    'warning' => static fn (Tournament $record) => $record->status->isScheduled(),
+                    'info' => static fn (Tournament $record) => $record->status->isDraft(),
+                ])
+                ->formatStateUsing(static fn (Tournament $record) => $record->status->label())
+                ->width('10%')
+                ->badge()
+                ->alignCenter(),
+        ];
+    }
+
+    private static function configureFilters()
+    {
+        return [
+            // .
+        ];
+    }
+
+    private static function configureRowActions()
+    {
+        return [
+            Actions\ActionGroup::make([
+                Actions\EditAction::make('edit')
+                    ->hidden(fn (Tournament $record) => $record->is_finished),
+
+                Actions\ViewAction::make('view')
+                    ->hidden(fn (Tournament $record) => ! $record->is_finished),
+
+                Actions\DeleteAction::make('delete')
+                    ->hidden(fn (Tournament $record) => $record->is_finished),
+            ])->tooltip(trans('app.resource.action_label')),
+        ];
+    }
+
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                self::getFormInfoSection(),
-                self::getFormScheduleSection(),
+                self::configureFormInfoSection(),
+                self::configureFormScheduleSection(),
             ])
             ->columns(1);
     }
@@ -81,80 +175,9 @@ class TournamentResource extends Resource
     {
         return $table
             ->defaultSort('created_at', 'desc')
-            ->columns([
-                Columns\TextColumn::make('title')
-                    ->label(trans('tournament.field.title'))
-                    ->description(fn (Tournament $record) => $record->description),
-
-                Columns\ColumnGroup::make(trans('participant.plural'), [
-                    Columns\TextColumn::make('registered_count')
-                        ->label(trans('participant.participation.registered'))
-                        ->counts([
-                            'participants as registered_count',
-                        ])
-                        ->numeric()
-                        ->alignCenter()
-                        ->width('10%'),
-
-                    Columns\TextColumn::make('verified_count')
-                        ->label(trans('participant.participation.verified'))
-                        ->counts([
-                            'participants as verified_count' => fn (PersonBuilder $q) => $q->whereNotNull('verified_at'),
-                        ])
-                        ->numeric()
-                        ->alignCenter()
-                        ->width('10%'),
-
-                    Columns\TextColumn::make('disqualified_count')
-                        ->label(trans('participant.participation.disqualified'))
-                        ->counts([
-                            'participants as disqualified_count' => fn (PersonBuilder $q) => $q->whereNotNull('disqualified_at'),
-                        ])
-                        ->numeric()
-                        ->alignCenter()
-                        ->width('10%'),
-                ])->alignment(Alignment::Center)->wrapHeader(),
-
-                Columns\ColumnGroup::make(trans('tournament.field.schedule'), [
-                    Columns\TextColumn::make('start_date')
-                        ->label(trans('tournament.field.start_date'))
-                        ->alignRight()
-                        ->width('10%')
-                        ->formatStateUsing(
-                            static fn (Tournament $record) => $record->start_date->toFormattedDateString()
-                        ),
-
-                    Columns\TextColumn::make('finish_date')
-                        ->label(trans('tournament.field.finish_date'))
-                        ->alignRight()
-                        ->width('10%')
-                        ->formatStateUsing(
-                            static fn (Tournament $record) => $record->finish_date->toFormattedDateString()
-                        ),
-                ])->alignment(Alignment::Center)->wrapHeader(),
-
-                Columns\TextColumn::make('status')
-                    ->label(trans('tournament.field.status'))
-                    ->colors([
-                        'primary' => static fn (Tournament $record) => $record->status->isFinished(),
-                        'success' => static fn (Tournament $record) => $record->status->isStarted(),
-                        'warning' => static fn (Tournament $record) => $record->status->isScheduled(),
-                        'info' => static fn (Tournament $record) => $record->status->isDraft(),
-                    ])
-                    ->formatStateUsing(static fn (Tournament $record) => $record->status->label())
-                    ->width('10%')
-                    ->badge()
-                    ->alignCenter(),
-            ])
-            ->filters([
-                //
-            ])
-            ->actions([
-                Actions\ActionGroup::make([
-                    Actions\EditAction::make('edit'),
-                    Actions\DeleteAction::make('delete'),
-                ])->tooltip(trans('app.resource.action_label')),
-            ])
+            ->columns(self::configureColumns())
+            ->filters(self::configureFilters())
+            ->actions(self::configureRowActions())
             ->bulkActions([
                 Actions\BulkActionGroup::make([
                     Actions\DeleteBulkAction::make(),
@@ -176,6 +199,7 @@ class TournamentResource extends Resource
         return [
             'index' => Pages\ListTournaments::route('/'),
             'create' => Pages\CreateTournament::route('/create'),
+            'view' => Pages\EditTournament::route('/{record}'),
             'edit' => Pages\EditTournament::route('/{record}/edit'),
         ];
     }

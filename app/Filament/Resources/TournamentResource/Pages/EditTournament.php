@@ -7,6 +7,7 @@ namespace App\Filament\Resources\TournamentResource\Pages;
 use App\Filament\Resources\TournamentResource;
 use App\Models\Tournament;
 use Filament\Actions;
+use Filament\Notifications\Notification;
 use Filament\Resources\Pages\EditRecord;
 
 /**
@@ -18,11 +19,25 @@ class EditTournament extends EditRecord
 
     protected function getHeaderActions(): array
     {
-        if ($this->record->is_draft) {
+        if ($this->record->is_started) {
             return [];
         }
 
         return [
+            Actions\Action::make('publish')
+                ->hidden(fn (Tournament $record) => $record->is_published)
+                ->requiresConfirmation()
+                ->action(function (Tournament $record) {
+                    $record->update([
+                        'published_at' => now(),
+                    ]);
+
+                    Notification::make()
+                        ->success()
+                        ->title(trans('match.notification.marked_draw_title', ['party' => $record->party_number]))
+                        ->send();
+                }),
+
             Actions\DeleteAction::make()
                 ->hidden(fn (Tournament $record) => $record->is_started),
         ];
@@ -30,7 +45,7 @@ class EditTournament extends EditRecord
 
     protected function getFormActions(): array
     {
-        if ($this->record->is_draft) {
+        if ($this->record->is_started) {
             return [];
         }
 
