@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Models\Helpers;
 
 use App\Enums\TimelineStatus;
+use Carbon\CarbonInterface;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 
 /**
@@ -25,12 +26,19 @@ trait WithTimelineStatus
                 return TimelineStatus::Finished;
             }
 
-            if ($this->is_started && ! $this->is_finished) {
+            if ($this->is_going) {
                 return TimelineStatus::Started;
             }
 
             return TimelineStatus::Scheduled;
         });
+    }
+
+    public function isGoing(): Attribute
+    {
+        return Attribute::get(
+            fn (): bool => $this->is_started && ! $this->is_finished
+        );
     }
 
     public function isStarted(): Attribute
@@ -67,5 +75,40 @@ trait WithTimelineStatus
     protected function getFinishedAtColumn(): string
     {
         return $this->timelineColumns['finish'] ?? 'finished_at';
+    }
+
+    public function markAsStarted(?CarbonInterface $now = null)
+    {
+        $now ??= now();
+
+        $updated = $this->update([
+            $this->getStartedTimeColumn() => $now,
+        ]);
+
+        if (isset($this->timelineEvents['start']) && class_exists($this->timelineEvents['start'])) {
+            event(new $this->timelineEvents['start']($this));
+        }
+
+        return $updated;
+    }
+
+    public function markAsFinished(?CarbonInterface $now = null)
+    {
+        $now ??= now();
+        $attrs = [
+            $this->getFinishedAtColumn() => $now,
+        ];
+
+        if ($this->{$this->getStartedTimeColumn()} === null) {
+            $attrs[$this->getStartedTimeColumn()] = $now;
+        }
+
+        $updated = $this->update($attrs);
+
+        if (isset($this->timelineEvents['finish']) && class_exists($this->timelineEvents['finish'])) {
+            event(new $this->timelineEvents['finish']($this));
+        }
+
+        return $updated;
     }
 }

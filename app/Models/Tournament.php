@@ -8,6 +8,8 @@ use App\Enums\TournamentLevel;
 use App\Events\ParticipantDisqualified;
 use App\Events\ParticipantKnockedOff;
 use App\Events\ParticipantVerified;
+use App\Events\TournamentFinished;
+use App\Events\TournamentStarted;
 use Illuminate\Database\Eloquent\Casts\AsArrayObject;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Concerns\HasUlids;
@@ -27,6 +29,11 @@ class Tournament extends Model
         'draft' => 'published_at',
         'start' => 'start_date',
         'finish' => 'finish_date',
+    ];
+
+    protected $timelineEvents = [
+        'start' => TournamentStarted::class,
+        'finish' => TournamentFinished::class,
     ];
 
     protected function casts(): array

@@ -6,6 +6,8 @@ namespace App\Models;
 
 use App\Enums\MatchSide;
 use App\Enums\PartyStatus;
+use App\Events\MatchupFinished;
+use App\Events\MatchupStarted;
 use App\Support\Athlete;
 use App\Support\Sided;
 use Illuminate\Database\Eloquent\Casts\AsArrayObject;
@@ -16,6 +18,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Facades\DB;
 
 class Matchup extends Model
 {
@@ -24,6 +27,11 @@ class Matchup extends Model
 
     use Helpers\WithClassification;
     use Helpers\WithTimelineStatus;
+
+    protected $timelineEvents = [
+        'start' => MatchupStarted::class,
+        'finish' => MatchupFinished::class,
+    ];
 
     protected function casts(): array
     {
@@ -146,6 +154,22 @@ class Matchup extends Model
         return $this->athletes()->wherePivot('status', PartyStatus::Lose);
     }
 
+    public function markAsDraw()
+    {
+        DB::transaction(function () {
+            foreach ($this->athletes as $athlete) {
+                $this->setPartyStatus($athlete, PartyStatus::Draw);
+            }
+
+            $this->markAsFinished();
+        });
+    }
+
+    public function setPartyStatus(Person $party, PartyStatus $status)
+    {
+        $this->athletes()->updateExistingPivot($party, ['status' => $status]);
+    }
+
     /**
      * @return BelongsTo<Matchup, Matchup>
      */
@@ -160,6 +184,13 @@ class Matchup extends Model
     public function prevs(): HasMany
     {
         return $this->hasMany(Matchup::class, 'next_id');
+    }
+
+    public function isDraw(): Attribute
+    {
+        return Attribute::get(fn (): bool => $this->athletes->every(
+            fn (Person $athlete) => $athlete->party->status->isDraw()
+        ));
     }
 
     public function winner(): Attribute

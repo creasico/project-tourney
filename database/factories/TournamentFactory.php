@@ -36,6 +36,21 @@ class TournamentFactory extends Factory
         ];
     }
 
+    public function unstarted(): static
+    {
+        return $this->state([
+            'start_date' => null,
+            'finish_date' => null,
+        ]);
+    }
+
+    public function unfinished(): static
+    {
+        return $this->state([
+            'finish_date' => null,
+        ]);
+    }
+
     public function published(bool $started = true): static
     {
         return $this->state([

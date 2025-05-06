@@ -4,12 +4,15 @@ declare(strict_types=1);
 
 use App\Enums\MatchSide;
 use App\Enums\PartyStatus;
+use App\Events\MatchupFinished;
+use App\Events\MatchupStarted;
 use App\Models\Classification;
 use App\Models\Division;
 use App\Models\MatchParty;
 use App\Models\Matchup;
 use App\Models\Person;
 use App\Models\Tournament;
+use Illuminate\Support\Facades\Event;
 
 it('belongs to tournament', function () {
     $model = Matchup::factory()
@@ -84,6 +87,32 @@ it('has one prevs match', function () {
     $prev = $model->prevs->first();
 
     expect($prev)->toBeInstanceOf(Matchup::class);
+});
+
+describe('schedule', function () {
+    it('dispatch event on started', function () {
+        Event::fake(MatchupStarted::class);
+
+        $model = Matchup::factory()
+            ->unstarted()
+            ->createOne();
+
+        $model->markAsStarted();
+
+        Event::assertDispatched(MatchupStarted::class, 1);
+    });
+
+    it('dispatch event on finished', function () {
+        Event::fake(MatchupFinished::class);
+
+        $model = Matchup::factory()
+            ->unfinished()
+            ->createOne();
+
+        $model->markAsFinished();
+
+        Event::assertDispatched(MatchupFinished::class, 1);
+    });
 });
 
 describe('sides', function () {
