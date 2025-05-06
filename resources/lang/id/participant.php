@@ -12,6 +12,21 @@ return [
     'notification' => [
         'import_title' => 'Import berhasil',
         'import_body' => ':value Peserta berhasil didaftarkan',
+
+        'verified_title' => 'Verifikasi berhasil',
+        'verified_body' => ':athlete berhasil terverifikasi',
+        'bulk_verified_title' => 'Verifikasi masal berhasil',
+        'bulk_verified_body' => ':number peserta berhasil terverifikasi',
+
+        'disqualified_title' => 'Diskualifikasi berhasil',
+        'disqualified_body' => ':athlete berhasil terdiskualifikasi',
+        'bulk_disqualified_title' => 'Diskualifikasi masal berhasil',
+        'bulk_disqualified_body' => ':number peserta berhasil terdiskualifikasi',
+
+        'deregistered_title' => 'Deregistrasi berhasil',
+        'deregistered_body' => ':athlete berhasil terderegister',
+        'bulk_deregistered_title' => 'Deregistrasi masal berhasil',
+        'bulk_deregistered_body' => ':number peserta berhasil terderegister',
     ],
 
     'action' => [

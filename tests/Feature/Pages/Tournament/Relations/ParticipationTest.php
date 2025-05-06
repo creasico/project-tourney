@@ -8,6 +8,7 @@ use App\Filament\Resources\TournamentResource\Pages\EditTournament;
 use App\Filament\Resources\TournamentResource\RelationManagers\ParticipantsRelationManager;
 use App\Models\Continent;
 use App\Models\Tournament;
+use Filament\Notifications\Notification;
 use Maatwebsite\Excel\Facades\Excel;
 
 use function Pest\Livewire\livewire;
@@ -40,8 +41,25 @@ describe('actions', function () {
         $page->assertTableHeaderActionsExistInOrder(['import-athletes']);
     });
 
-    it('can verify an athlete', function () {
+    it('cannot verify record on finished tournament', function () {
         $record = Tournament::factory()
+            ->finished()
+            ->withAthletes(count: 5, pivot: [
+                'verified_at' => null,
+            ])
+            ->createOne();
+
+        $page = livewire(ParticipantsRelationManager::class, [
+            'ownerRecord' => $record,
+            'pageClass' => EditTournament::class,
+        ])->assertOk();
+
+        $page->assertTableActionHidden('verify');
+    });
+
+    it('can verify record on started tournament', function () {
+        $record = Tournament::factory()
+            ->unfinished()
             ->withAthletes(count: 5, pivot: [
                 'verified_at' => null,
             ])
@@ -55,7 +73,9 @@ describe('actions', function () {
         $page->callTableAction('verify', $athlete = $record->participants->first())
             ->assertHasNoTableActionErrors();
 
-        $record->fresh('participants', 'verifiedParticipants');
+        Notification::assertNotified();
+
+        $record->fresh('unverifiedParticipants', 'verifiedParticipants');
 
         expect($record)
             ->verifiedParticipants->toHaveCount(1)
@@ -64,8 +84,23 @@ describe('actions', function () {
         expect($record->verifiedParticipants->first()->getKey())->toBe($athlete->getKey());
     });
 
-    it('can disqualify athlete', function () {
+    it('cannot disqualify record on finished tournament', function () {
         $record = Tournament::factory()
+            ->finished()
+            ->withAthletes(count: 5)
+            ->createOne();
+
+        $page = livewire(ParticipantsRelationManager::class, [
+            'ownerRecord' => $record,
+            'pageClass' => EditTournament::class,
+        ])->assertOk();
+
+        $page->assertTableActionHidden('disqualify');
+    });
+
+    it('can disqualify record on started tournament', function () {
+        $record = Tournament::factory()
+            ->unfinished()
             ->withAthletes(count: 5)
             ->createOne();
 
@@ -76,9 +111,11 @@ describe('actions', function () {
 
         $page->callTableAction('disqualify', $record->participants->first())
             ->assertHasNoTableActionErrors();
+
+        Notification::assertNotified();
     });
 
-    it('can deregister athlete when tournament is not started', function () {
+    it('can deregister record when tournament is not started', function () {
         $record = Tournament::factory()
             ->published(started: false)
             ->withAthletes(count: 5)
@@ -95,6 +132,88 @@ describe('actions', function () {
         $record->refresh();
 
         expect($record)->participants->toHaveCount(4);
+    });
+});
+
+describe('bulk actions', function () {
+    it('cannot bulk verify record on finished tournament', function () {
+        $record = Tournament::factory()
+            ->finished()
+            ->withClassifications()
+            ->withAthletes(count: 5, pivot: [
+                'verified_at' => null,
+            ])
+            ->createOne();
+
+        $page = livewire(ParticipantsRelationManager::class, [
+            'ownerRecord' => $record,
+            'pageClass' => EditTournament::class,
+        ])->assertOk();
+
+        $page->assertTableBulkActionHidden('bulk_verify');
+    });
+
+    it('can bulk verify record on started tournament', function () {
+        $record = Tournament::factory()
+            ->unfinished()
+            ->withClassifications()
+            ->withAthletes(count: 5, pivot: [
+                'verified_at' => null,
+            ])
+            ->createOne();
+
+        $page = livewire(ParticipantsRelationManager::class, [
+            'ownerRecord' => $record,
+            'pageClass' => EditTournament::class,
+        ])->assertOk();
+
+        $page->callTableBulkAction('bulk_verify', $athlete = $record->participants->take(2))
+            ->assertHasNoTableActionErrors();
+
+        Notification::assertNotified();
+
+        $record->fresh('unverifiedParticipants', 'verifiedParticipants');
+
+        expect($record)
+            ->verifiedParticipants->toHaveCount(2)
+            ->unverifiedParticipants->toHaveCount(3);
+    });
+
+    it('cannot bulk disqualify record on finished tournament', function () {
+        $record = Tournament::factory()
+            ->finished()
+            ->withClassifications()
+            ->withAthletes(count: 5, pivot: [
+                'verified_at' => null,
+            ])
+            ->createOne();
+
+        $page = livewire(ParticipantsRelationManager::class, [
+            'ownerRecord' => $record,
+            'pageClass' => EditTournament::class,
+        ])->assertOk();
+
+        $page->assertTableBulkActionHidden('bulk_disqualify');
+    });
+
+    it('can bulk disqualify record on started tournament', function () {
+        $record = Tournament::factory()
+            ->unfinished()
+            ->withClassifications()
+            ->withAthletes(count: 5, pivot: [
+                'verified_at' => null,
+            ])
+            ->createOne();
+
+        $page = livewire(ParticipantsRelationManager::class, [
+            'ownerRecord' => $record,
+            'pageClass' => EditTournament::class,
+        ])->assertOk();
+
+        $page->callTableBulkAction('bulk_disqualify', $athlete = $record->participants->take(2))
+            ->assertHasNoTableActionErrors();
+
+        Notification::assertNotified();
     });
 });
 

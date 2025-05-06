@@ -11,7 +11,22 @@ return [
 
     'notification' => [
         'import_title' => 'Import success',
-        'import_body' => ':value Athlete successfuly registered',
+        'import_body' => ':value Athlete successfully registered',
+
+        'verified_title' => 'Verification success',
+        'verified_body' => ':athlete successfully verified',
+        'bulk_verified_title' => 'Bulk verification success',
+        'bulk_verified_body' => ':number athletes successfully verified',
+
+        'disqualified_title' => 'Disqualification success',
+        'disqualified_body' => ':athlete successfully disqualified',
+        'bulk_disqualified_title' => 'Bulk disqualification success',
+        'bulk_disqualified_body' => ':number athletes successfully disqualified',
+
+        'deregistered_title' => 'Deregistration success',
+        'deregistered_body' => ':athlete successfully deregistered',
+        'bulk_deregistered_title' => 'Bulk deregistration success',
+        'bulk_deregistered_body' => ':number athletes successfully deregistered',
     ],
 
     'action' => [

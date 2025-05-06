@@ -9,6 +9,7 @@ use App\Events\ParticipantDisqualified;
 use App\Events\ParticipantKnockedOff;
 use App\Events\ParticipantVerified;
 use App\Events\TournamentFinished;
+use App\Events\TournamentPublished;
 use App\Events\TournamentStarted;
 use Illuminate\Database\Eloquent\Casts\AsArrayObject;
 use Illuminate\Database\Eloquent\Casts\Attribute;
@@ -139,6 +140,17 @@ class Tournament extends Model
     public function unverifiedParticipants()
     {
         return $this->participants()->wherePivotNull('verified_at');
+    }
+
+    public function publish()
+    {
+        $updated = $this->update([
+            'published_at' => $this->freshTimestamp(),
+        ]);
+
+        event(new TournamentPublished($this->fresh()));
+
+        return $updated;
     }
 
     public function isPublished(): Attribute

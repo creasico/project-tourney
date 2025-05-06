@@ -46,10 +46,7 @@ it('belongs to classification', function () {
 
 it('belongs to many athletes', function () {
     $model = Matchup::factory()
-        ->withAthletes(pivot: [
-            'side' => MatchSide::Red,
-            'status' => PartyStatus::Queue,
-        ])
+        ->withAthletes()
         ->createOne();
 
     expect($model->athletes)->toHaveCount(1);
@@ -59,7 +56,7 @@ it('belongs to many athletes', function () {
     expect($athlete)->toBeInstanceOf(Person::class);
     expect($athlete->party)
         ->toBeInstanceOf(MatchParty::class)
-        ->side->toBe(MatchSide::Red)
+        ->side->toBe(MatchSide::Blue)
         ->status->toBe(PartyStatus::Queue);
 });
 
@@ -122,19 +119,14 @@ describe('sides', function () {
 
         expect($side)->not->toBeNull();
         expect($side->profile)->toBeInstanceOf(Person::class);
-    })->with(collect(MatchSide::cases())->mapWithKeys(function (MatchSide $side) {
-        return [
-            "{$side->value}_side" => [
-                fn () => Matchup::factory()
-                    ->withAthletes(pivot: [
-                        'side' => $side,
-                        'status' => PartyStatus::Queue,
-                    ])
-                    ->createOne(),
-                "{$side->value}_side",
-            ],
-        ];
-    })->toArray());
+    })->with(collect(MatchSide::cases())->mapWithKeys(fn (MatchSide $side) => [
+        "{$side->value}_side" => [
+            fn () => Matchup::factory()
+                ->withAthletes(side: $side)
+                ->createOne(),
+            "{$side->value}_side",
+        ],
+    ])->toArray());
 
     it('can get :dataset from previous match', function (Matchup $match, string $attr) {
         /** @var \App\Support\Athlete */

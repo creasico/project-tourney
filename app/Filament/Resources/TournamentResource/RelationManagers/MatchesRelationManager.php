@@ -208,12 +208,12 @@ class MatchesRelationManager extends RelationManager
         return [
             Actions\ActionGroup::make([
                 Actions\EditAction::make()
-                    ->visible(fn (Matchup $record): bool => ! $record->is_started),
+                    ->hidden(fn (Matchup $match): bool => $this->ownerRecord->is_finished || $match->is_started),
 
                 Actions\Action::make('start_match')
                     ->label(trans('match.actions.start_match'))
                     ->icon('heroicon-m-paper-airplane')
-                    ->visible(fn (Matchup $record): bool => ! $record->is_started)
+                    ->hidden(fn (Matchup $match): bool => $this->ownerRecord->is_finished || $match->is_started)
                     ->action(function (Matchup $record) {
                         $record->markAsStarted();
 
@@ -226,7 +226,7 @@ class MatchesRelationManager extends RelationManager
                 Actions\Action::make('choose_winner')
                     ->label(trans('match.actions.choose_winner'))
                     ->icon('heroicon-m-trophy')
-                    ->visible(fn (Matchup $record): bool => $record->is_going)
+                    ->visible(fn (Matchup $match): bool => $match->is_going)
                     ->modalHeading(trans('match.actions.choose_winner'))
                     ->modalSubmitActionLabel(trans('match.actions.choose_winner'))
                     ->form([
@@ -256,7 +256,7 @@ class MatchesRelationManager extends RelationManager
                     ->label(trans('match.actions.set_as_draw'))
                     ->requiresConfirmation()
                     ->icon('heroicon-m-scale')
-                    ->visible(fn (Matchup $record): bool => $record->is_going)
+                    ->visible(fn (Matchup $match): bool => $match->is_going)
                     ->action(function (Matchup $record) {
                         $record->markAsDraw();
 

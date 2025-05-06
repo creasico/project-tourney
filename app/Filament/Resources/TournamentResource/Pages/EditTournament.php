@@ -28,9 +28,7 @@ class EditTournament extends EditRecord
                 ->hidden(fn (Tournament $record) => $record->is_published)
                 ->requiresConfirmation()
                 ->action(function (Tournament $record) {
-                    $record->update([
-                        'published_at' => now(),
-                    ]);
+                    $record->publish();
 
                     Notification::make()
                         ->success()
