@@ -6,6 +6,9 @@ namespace App\Models;
 
 use App\Enums\MatchSide;
 use App\Enums\PartyStatus;
+use App\Events\MatchupFinished;
+use App\Events\MatchupStarted;
+use App\Support\Athlete;
 use App\Support\Sided;
 use Illuminate\Database\Eloquent\Casts\AsArrayObject;
 use Illuminate\Database\Eloquent\Casts\Attribute;
@@ -15,7 +18,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Support\Facades\DB;
 
 class Matchup extends Model
 {
@@ -24,6 +27,11 @@ class Matchup extends Model
 
     use Helpers\WithClassification;
     use Helpers\WithTimelineStatus;
+
+    protected $timelineEvents = [
+        'start' => MatchupStarted::class,
+        'finish' => MatchupFinished::class,
+    ];
 
     protected function casts(): array
     {
@@ -39,21 +47,33 @@ class Matchup extends Model
         ];
     }
 
+    /**
+     * @return BelongsTo<Tournament, Matchup>
+     */
     public function tournament(): BelongsTo
     {
         return $this->belongsTo(Tournament::class);
     }
 
+    /**
+     * @return BelongsTo<Division, Matchup>
+     */
     public function division(): BelongsTo
     {
         return $this->belongsTo(Division::class);
     }
 
+    /**
+     * @return HasMany<Participation, Matchup>
+     */
     public function participations(): HasMany
     {
         return $this->hasMany(Participation::class, 'match_id');
     }
 
+    /**
+     * @return BelongsToMany<Person, Matchup, MatchParty, 'party'>
+     */
     public function athletes(): BelongsToMany|Builders\PersonBuilder
     {
         return $this->belongsToMany(Person::class, MatchParty::class, 'match_id', 'participant_id')
@@ -61,12 +81,20 @@ class Matchup extends Model
             ->as('party');
     }
 
-    public function addAthletes(Sided $sided, Tournament $tournament)
+    public function addAthletes(Sided $sided, Tournament $tournament): void
     {
-        $this->addAthlete($sided->blue, $tournament, MatchSide::Blue);
+        $this->addAthlete(
+            athlete: $sided->blue,
+            tournament: $tournament,
+            side: MatchSide::Blue,
+        );
 
         if ($sided->red) {
-            $this->addAthlete($sided->red, $tournament, MatchSide::Red);
+            $this->addAthlete(
+                athlete: $sided->red,
+                tournament: $tournament,
+                side: MatchSide::Red,
+            );
         }
     }
 
@@ -74,7 +102,7 @@ class Matchup extends Model
         Person $athlete,
         Tournament $tournament,
         MatchSide $side,
-        PartyStatus $status = PartyStatus::Queue
+        PartyStatus $status = PartyStatus::Queue,
     ): void {
         $this->athletes()->attach($athlete, [
             'side' => $side,
@@ -86,62 +114,131 @@ class Matchup extends Model
         ]);
     }
 
+    /**
+     * @return BelongsToMany<Person, Matchup, MatchParty, 'party'>
+     */
+    private function whereSide(MatchSide $side): BelongsToMany|Builders\PersonBuilder
+    {
+        return $this->athletes()->wherePivot('side', $side);
+    }
+
+    /**
+     * @return BelongsToMany<Person, Matchup, MatchParty, 'party'>
+     */
     public function blue(): BelongsToMany|Builders\PersonBuilder
     {
-        return $this->athletes()->wherePivot('side', MatchSide::Blue);
+        return $this->whereSide(MatchSide::Blue);
     }
 
+    /**
+     * @return BelongsToMany<Person, Matchup, MatchParty, 'party'>
+     */
     public function red(): BelongsToMany|Builders\PersonBuilder
     {
-        return $this->athletes()->wherePivot('side', MatchSide::Red);
+        return $this->whereSide(MatchSide::Red);
     }
 
-    public function winner(): BelongsToMany|Builders\PersonBuilder
+    /**
+     * @return BelongsToMany<Person, Matchup, MatchParty, 'party'>
+     */
+    public function winning(): BelongsToMany|Builders\PersonBuilder
     {
         return $this->athletes()->wherePivot('status', PartyStatus::Win);
     }
 
-    public function loser(): BelongsToMany|Builders\PersonBuilder
+    /**
+     * @return BelongsToMany<Person, Matchup, MatchParty, 'party'>
+     */
+    public function losing(): BelongsToMany|Builders\PersonBuilder
     {
         return $this->athletes()->wherePivot('status', PartyStatus::Lose);
     }
 
+    public function markAsDraw()
+    {
+        DB::transaction(function () {
+            foreach ($this->athletes as $athlete) {
+                $this->setPartyStatus($athlete, PartyStatus::Draw);
+            }
+
+            $this->markAsFinished();
+        });
+    }
+
+    public function setPartyStatus(Person $party, PartyStatus $status)
+    {
+        $this->athletes()->updateExistingPivot($party, ['status' => $status]);
+    }
+
+    /**
+     * @return BelongsTo<Matchup, Matchup>
+     */
     public function next(): BelongsTo
     {
         return $this->belongsTo(Matchup::class, 'next_id');
     }
 
-    public function prev(): HasOne
+    /**
+     * @return HasMany<Matchup, Matchup>
+     */
+    public function prevs(): HasMany
     {
-        return $this->hasOne(Matchup::class, 'next_id');
+        return $this->hasMany(Matchup::class, 'next_id');
     }
 
-    private function participant(string $side): ?Participation
+    public function isDraw(): Attribute
     {
-        if ($participant = $this->{$side}) {
-            return $this->participations->where('participant_id', $participant->id)->first();
-        }
+        return Attribute::get(fn (): bool => $this->athletes->every(
+            fn (Person $athlete) => $athlete->party->status->isDraw()
+        ));
+    }
 
-        return null;
+    public function winner(): Attribute
+    {
+        return Attribute::get(fn (): ?Person => $this->winning->first());
     }
 
     public function blueSide(): Attribute
     {
-        return Attribute::get(fn (): ?Person => $this->blue->first());
-    }
+        return Attribute::get(function (): ?Athlete {
+            if ($person = $this->blue->first()) {
+                return new Athlete(
+                    $person,
+                    $this->participations->where('participant_id', $person->id)->first(),
+                );
+            }
 
-    public function blueParticipant(): Attribute
-    {
-        return Attribute::get(fn (): ?Participation => $this->participant('blue_side'));
+            $prev = $this->prevs
+                ->where('next_side', MatchSide::Blue)
+                ->first();
+
+            if ($prev) {
+                return new Athlete($prev);
+            }
+
+            return null;
+        });
     }
 
     public function redSide(): Attribute
     {
-        return Attribute::get(fn (): ?Person => $this->red->first());
-    }
+        return Attribute::get(function (): ?Athlete {
+            if ($person = $this->red->first()) {
+                return new Athlete(
+                    $person,
+                    $this->participations->where('participant_id', $person->id)->first(),
+                );
+            }
 
-    public function redParticipant(): Attribute
-    {
-        return Attribute::get(fn (): ?Participation => $this->participant('red_side'));
+            $prev = $this->prevs
+                ->where('next_side', MatchSide::Red)
+                ->first();
+
+            if ($prev) {
+                return new Athlete($prev);
+            }
+
+            return null;
+        });
     }
 }

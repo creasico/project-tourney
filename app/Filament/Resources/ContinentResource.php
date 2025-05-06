@@ -23,9 +23,9 @@ class ContinentResource extends Resource
 {
     use GroupManage;
 
-    protected static ?string $recordTitleAttribute = 'name';
-
     protected static ?string $model = Continent::class;
+
+    protected static ?string $recordTitleAttribute = 'name';
 
     protected static ?string $navigationIcon = 'heroicon-o-flag';
 

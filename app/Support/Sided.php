@@ -21,6 +21,6 @@ final class Sided implements Countable
 
     public function isBye(): bool
     {
-        return $this->count() === 1;
+        return $this->red === null;
     }
 }

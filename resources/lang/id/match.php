@@ -11,6 +11,26 @@ return [
         'draw' => 'Imbang',
     ],
 
+    'notification' => [
+        'calculating_title' => 'Memproses pertandingan',
+        'calculating_body' => 'Proses ini akan memakan waktu',
+        'calculated_title' => 'Proses pertandingan selesai',
+        'calculated_body' => 'Silakan muat ulang halaman ini',
+        'calculation_failed_title' => 'Proses pertandingan gagal',
+        'calculation_failed_body' => 'Ada sebuah kesalahan, silakan hubungi developer',
+        'winner_choosen_title' => 'Pemenang :party telah terpilih',
+        'winner_choosen_body' => ':Athlete telah terpilih sebagai pemenang',
+        'marked_draw_title' => 'Match :party ditandai sebagai Draw',
+        'started_title' => 'Match :party ditandai sebagai dimulai',
+    ],
+
+    'actions' => [
+        'generate' => 'Generate Pertandingan',
+        'start_match' => 'Mulai Pertandingan',
+        'choose_winner' => 'Pilih Pemenang',
+        'set_as_draw' => 'Nyatakan Draw',
+    ],
+
     'field' => [
         'bye' => 'Bye',
         'division' => 'Pembagian',
@@ -20,9 +40,11 @@ return [
         'loser' => 'Kalah',
     ],
 
+    'winner_from' => 'Pemenang dari :number',
+
     'bye' => [
-        'up' => 'Bye Atas',
-        'down' => 'Bye Bawah',
+        'up' => 'Atas',
+        'down' => 'Bawah',
     ],
 
     'side' => [

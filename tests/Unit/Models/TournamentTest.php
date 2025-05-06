@@ -6,6 +6,8 @@ use App\Enums\TimelineStatus;
 use App\Events\ParticipantDisqualified;
 use App\Events\ParticipantKnockedOff;
 use App\Events\ParticipantVerified;
+use App\Events\TournamentFinished;
+use App\Events\TournamentStarted;
 use App\Models\Classification;
 use App\Models\Division;
 use App\Models\MatchGroup;
@@ -145,56 +147,83 @@ it('could knock-off participants', function () {
     expect($participant->participation->is_knocked)->toBeTrue();
 });
 
-it('could be drafted', function () {
-    $model = Tournament::factory()->createOne([
-        'finish_date' => null,
-        'published_at' => null,
-    ]);
+describe('schedule', function () {
+    it('dispatch event on started', function () {
+        Event::fake(TournamentStarted::class);
 
-    expect($model)
-        ->is_draft->toBeTrue()
-        ->status->toBe(TimelineStatus::Draft);
+        $model = Tournament::factory()->createOne([
+            'start_date' => null,
+            'finish_date' => null,
+        ]);
 
-    expect($model->status->isDraft())->toBeTrue();
-});
+        $model->markAsStarted();
 
-it('could be scheduled', function () {
-    $model = Tournament::factory()->createOne([
-        'published_at' => Carbon::now()->addDay(),
-        'start_date' => Carbon::now()->addDay(),
-        'finish_date' => null,
-    ]);
+        Event::assertDispatched(TournamentStarted::class, 1);
+    });
 
-    expect($model)
-        ->is_draft->toBeFalse()
-        ->is_published->toBeFalse()
-        ->status->toBe(TimelineStatus::Scheduled);
+    it('dispatch event on finished', function () {
+        Event::fake(TournamentFinished::class);
 
-    expect($model->status->isScheduled())->toBeTrue();
-});
+        $model = Tournament::factory()->createOne([
+            'finish_date' => null,
+        ]);
 
-it('could be started', function () {
-    $model = Tournament::factory()->createOne([
-        'start_date' => Carbon::now()->subWeek(),
-        'finish_date' => null,
-        'published_at' => Carbon::now()->subWeeks(2),
-    ]);
+        $model->markAsFinished();
 
-    expect($model)
-        ->is_started->toBeTrue()
-        ->is_published->toBeTrue()
-        ->is_finished->toBeFalse()
-        ->status->toBe(TimelineStatus::OnGoing);
+        Event::assertDispatched(TournamentFinished::class, 1);
+    });
 
-    expect($model->status->isOnGoing())->toBeTrue();
-});
+    it('could be drafted', function () {
+        $model = Tournament::factory()->createOne([
+            'finish_date' => null,
+            'published_at' => null,
+        ]);
 
-it('could be finished', function () {
-    $model = Tournament::factory()->finished()->createOne();
+        expect($model)
+            ->is_draft->toBeTrue()
+            ->status->toBe(TimelineStatus::Draft);
 
-    expect($model)
-        ->is_finished->toBeTrue()
-        ->status->toBe(TimelineStatus::Finished);
+        expect($model->status->isDraft())->toBeTrue();
+    });
 
-    expect($model->status->isFinished())->toBeTrue();
+    it('could be scheduled', function () {
+        $model = Tournament::factory()->createOne([
+            'published_at' => Carbon::now()->addDay(),
+            'start_date' => Carbon::now()->addDay(),
+            'finish_date' => null,
+        ]);
+
+        expect($model)
+            ->is_draft->toBeFalse()
+            ->is_published->toBeFalse()
+            ->status->toBe(TimelineStatus::Scheduled);
+
+        expect($model->status->isScheduled())->toBeTrue();
+    });
+
+    it('could be started', function () {
+        $model = Tournament::factory()->createOne([
+            'start_date' => Carbon::now()->subWeek(),
+            'finish_date' => null,
+            'published_at' => Carbon::now()->subWeeks(2),
+        ]);
+
+        expect($model)
+            ->is_started->toBeTrue()
+            ->is_published->toBeTrue()
+            ->is_finished->toBeFalse()
+            ->status->toBe(TimelineStatus::Started);
+
+        expect($model->status->isStarted())->toBeTrue();
+    });
+
+    it('could be finished', function () {
+        $model = Tournament::factory()->finished()->createOne();
+
+        expect($model)
+            ->is_finished->toBeTrue()
+            ->status->toBe(TimelineStatus::Finished);
+
+        expect($model->status->isFinished())->toBeTrue();
+    });
 });

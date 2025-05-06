@@ -11,7 +11,7 @@ use App\Models\Tournament;
 use Illuminate\Database\Eloquent\Builder;
 
 /**
- * @mixin \App\Models\Person
+ * @extends Builder<\App\Models\Person>
  */
 class PersonBuilder extends Builder
 {

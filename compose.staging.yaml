@@ -18,7 +18,6 @@ services:
     depends_on:
       - pgsql
       - valkey
-      - minio
       - mailpit
   pgsql:
     image: postgres:17-alpine
@@ -47,21 +46,6 @@ services:
       test: [CMD, valkey-cli, ping]
       timeout: 5s
       retries: 3
-  minio:
-    image: minio/minio:latest
-    container_name: tourney_minio
-    # ports:
-    #   - ${FORWARD_MINIO_CONSOLE_PORT:-8900}:8900
-    environment:
-      MINIO_ROOT_USER: ${AWS_ACCESS_KEY_ID}
-      MINIO_ROOT_PASSWORD: ${AWS_SECRET_ACCESS_KEY}
-    volumes:
-      - local-minio:/data
-    command: minio server /data --console-address ":8900"
-    healthcheck:
-      test: [CMD, mc, ready, local]
-      timeout: 5s
-      retries: 3
   mailpit:
     image: axllent/mailpit:latest
     container_name: tourney_mail
@@ -77,6 +61,4 @@ volumes:
   local-pgsql:
     driver: local
   local-valkey:
-    driver: local
-  local-minio:
     driver: local

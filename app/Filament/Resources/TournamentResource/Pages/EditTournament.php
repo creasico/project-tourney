@@ -5,32 +5,39 @@ declare(strict_types=1);
 namespace App\Filament\Resources\TournamentResource\Pages;
 
 use App\Filament\Resources\TournamentResource;
-use App\Filament\Resources\TournamentResource\CreationWizardForm;
 use App\Models\Tournament;
 use Filament\Actions;
+use Filament\Notifications\Notification;
 use Filament\Resources\Pages\EditRecord;
-use Filament\Resources\Pages\EditRecord\Concerns\HasWizard;
 
 /**
  * @property \App\Models\Tournament $record
  */
 class EditTournament extends EditRecord
 {
-    use CreationWizardForm {
-        CreationWizardForm::form insteadof HasWizard;
-        CreationWizardForm::getSteps insteadof HasWizard;
-    }
-    use HasWizard;
-
     protected static string $resource = TournamentResource::class;
 
     protected function getHeaderActions(): array
     {
-        if ($this->record->is_draft) {
+        if ($this->record->is_started) {
             return [];
         }
 
         return [
+            Actions\Action::make('publish')
+                ->hidden(fn (Tournament $record) => $record->is_published)
+                ->requiresConfirmation()
+                ->action(function (Tournament $record) {
+                    $record->update([
+                        'published_at' => now(),
+                    ]);
+
+                    Notification::make()
+                        ->success()
+                        ->title(trans('match.notification.marked_draw_title', ['party' => $record->party_number]))
+                        ->send();
+                }),
+
             Actions\DeleteAction::make()
                 ->hidden(fn (Tournament $record) => $record->is_started),
         ];
@@ -38,7 +45,7 @@ class EditTournament extends EditRecord
 
     protected function getFormActions(): array
     {
-        if ($this->record->is_draft) {
+        if ($this->record->is_started) {
             return [];
         }
 
@@ -48,14 +55,5 @@ class EditTournament extends EditRecord
 
             $this->getCancelFormAction(),
         ];
-    }
-
-    public function getRelationManagers(): array
-    {
-        if ($this->record->is_draft) {
-            return [];
-        }
-
-        return parent::getRelationManagers();
     }
 }

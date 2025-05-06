@@ -20,6 +20,8 @@ class PrizeResource extends Resource
 
     protected static ?string $model = PrizePool::class;
 
+    protected static ?string $recordTitleAttribute = 'label';
+
     protected static ?string $navigationIcon = 'heroicon-o-gift';
 
     public static function form(Form $form): Form

@@ -9,6 +9,11 @@ return [
         'info_heading' => 'Information',
     ],
 
+    'notification' => [
+        'import_title' => 'Import success',
+        'import_body' => ':value Athlete successfuly registered',
+    ],
+
     'action' => [
         'import' => 'Import participants',
         'verify' => 'Verify',
@@ -17,6 +22,7 @@ return [
         'bulk_disqualify' => 'Disqualify in bulk',
         'deregister' => 'Deregister',
         'bulk_deregister' => 'Deregister in bulk',
+        'upload_participant' => 'Upload participants',
     ],
 
     'role' => [

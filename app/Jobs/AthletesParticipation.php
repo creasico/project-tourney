@@ -9,14 +9,14 @@ use App\Events\AthletesParticipated;
 use App\Models\Tournament;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
+use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
-use Sentry;
-use Throwable;
 
 class AthletesParticipation implements ShouldQueue
 {
-    use Queueable;
+    use FailsHelper;
+    use Queueable, SerializesModels;
 
     /**
      * @param  Collection<int, \App\Models\Person>  $athletes
@@ -29,6 +29,18 @@ class AthletesParticipation implements ShouldQueue
     ) {}
 
     /**
+     * @codeCoverageIgnore
+     */
+    private function context(): array
+    {
+        return [
+            'tournament_id' => $this->tournament->id,
+            'athletes' => $this->athletes->all(),
+            'bye' => $this->bye,
+        ];
+    }
+
+    /**
      * Execute the job.
      */
     public function handle(): void
@@ -37,9 +49,12 @@ class AthletesParticipation implements ShouldQueue
             $verify = $this->shoudVerify ? now() : null;
 
             foreach ($this->athletes->groupBy('class_id') as $classId => $athletes) {
-                $this->tournament->participants()->attach($athletes, [
-                    'verified_at' => $verify,
-                ]);
+                foreach ($athletes as $a => $athlete) {
+                    $this->tournament->participants()->attach($athlete, [
+                        'verified_at' => $verify,
+                        'draw_number' => $a + 1,
+                    ]);
+                }
 
                 $this->tournament->classes()->attach($classId, [
                     'division' => $athletes->count(),
@@ -49,13 +64,5 @@ class AthletesParticipation implements ShouldQueue
                 event(new AthletesParticipated($this->tournament, $classId));
             }
         });
-    }
-
-    /**
-     * @codeCoverageIgnore
-     */
-    public function failed(Throwable $error): void
-    {
-        Sentry\captureException($error);
     }
 }

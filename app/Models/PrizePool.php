@@ -21,6 +21,9 @@ class PrizePool extends Model
         ];
     }
 
+    /**
+     * @return BelongsToMany<Division, PrizePool, DivisionPrize>
+     */
     public function prizes(): BelongsToMany
     {
         return $this->belongsToMany(Division::class, DivisionPrize::class, 'prize_id', 'division_id')

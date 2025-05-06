@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Enums\AgeRange;
+use App\Enums\Category;
 use App\Models\Tournament;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -34,6 +35,7 @@ class ClassificationFactory extends Factory
             'label' => $label = fake()->randomElement(array_keys($this->ranges)),
             'description' => null,
             'gender' => $this->fakeGender(),
+            'category' => Category::Match,
             'age_range' => fake()->randomElement(AgeRange::cases()),
             'weight_range' => fn () => $this->ranges[$label],
             'order' => null,
