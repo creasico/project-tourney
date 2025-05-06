@@ -12,6 +12,7 @@ use App\Models\Tournament;
 use App\View\Navigations\GroupManage;
 use Filament\Forms\Components;
 use Filament\Forms\Form;
+use Filament\Notifications\Notification;
 use Filament\Resources\Resource;
 use Filament\Support\Enums\Alignment;
 use Filament\Tables\Actions;
@@ -149,6 +150,18 @@ class TournamentResource extends Resource
     {
         return [
             Actions\ActionGroup::make([
+                Actions\Action::make('publish')
+                    ->hidden(fn (Tournament $record) => $record->is_published)
+                    ->requiresConfirmation()
+                    ->action(function (Tournament $record) {
+                        $record->publish();
+
+                        Notification::make()
+                            ->success()
+                            ->title(trans('match.notification.marked_draw_title', ['party' => $record->party_number]))
+                            ->send();
+                    }),
+
                 Actions\EditAction::make('edit')
                     ->hidden(fn (Tournament $record) => $record->is_finished),
 
@@ -204,7 +217,7 @@ class TournamentResource extends Resource
         return [
             'index' => Pages\ListTournaments::route('/'),
             'create' => Pages\CreateTournament::route('/create'),
-            'view' => Pages\EditTournament::route('/{record}'),
+            'view' => Pages\ViewTournament::route('/{record}'),
             'edit' => Pages\EditTournament::route('/{record}/edit'),
         ];
     }

@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Database\Factories;
 
 use App\Enums\MatchSide;
+use App\Enums\PartyStatus;
+use App\Models\Classification;
 use App\Models\Division;
 use App\Models\Person;
 use DateTime;
@@ -25,6 +27,7 @@ class MatchupFactory extends Factory
     public function definition(): array
     {
         return [
+            'class_id' => Classification::factory(),
             'next_side' => fake()->randomElement(MatchSide::cases()),
             'party_number' => fake()->numberBetween(0, 10),
             'round_number' => fake()->numberBetween(0, 10),
@@ -54,12 +57,20 @@ class MatchupFactory extends Factory
     public function withAthletes(
         \Closure|int|null $count = null,
         ?PersonFactory $athletes = null,
-        array $pivot = []
+        ?MatchSide $side = MatchSide::Blue,
+        ?PartyStatus $status = PartyStatus::Queue,
+        \Closure|array $state = [],
     ): static {
         return $this->hasAttached(
-            $athletes ?? Person::factory(count: value($count))->asAthlete(),
-            $pivot,
-            'athletes'
+            factory: $athletes ?? Person::factory(count: value($count))
+                ->asAthlete()
+                ->withContinent()
+                ->state($state),
+            pivot: [
+                'side' => $side,
+                'status' => $status,
+            ],
+            relationship: 'athletes'
         );
     }
 

@@ -132,17 +132,12 @@ class ClassesRelationManager extends RelationManager
 
     private function configureHeaderActions(): array
     {
-        $tournament = $this->ownerRecord;
-
-        if (! $tournament->participants()->exists() || $tournament->is_started) {
-            return [];
-        }
-
         return [
             Actions\Action::make('generate_all')
                 ->label(trans('match.actions.generate'))
                 ->requiresConfirmation()
                 ->icon('heroicon-m-arrow-path-rounded-square')
+                ->visible(fn () => $this->ownerRecord->participants()->exists() && ! $this->ownerRecord->is_finished)
                 ->action(function (Component $livewire) {
                     $user = auth()->user();
 
@@ -179,50 +174,34 @@ class ClassesRelationManager extends RelationManager
         return [
             Actions\ActionGroup::make([
                 Actions\EditAction::make()
-                    ->hidden(fn (Classification $record) => $record->has_started)
+                    ->hidden(fn (Classification $classification) => $this->ownerRecord->is_finished || $classification->has_started)
                     ->afterFormValidated(function (Classification $record) {
-                        try {
-                            dispatch_sync(
-                                new CalculateMatchups($this->ownerRecord, $record->getKey())
-                            );
+                        dispatch_sync(
+                            new CalculateMatchups($this->ownerRecord, $record->getKey())
+                        );
 
-                            Notification::make()
-                                ->success()
-                                ->title(trans('match.notification.calculated_title'))
-                                ->body(trans('match.notification.calculated_body'))
-                                ->send();
-                        } catch (\Throwable $_) {
-                            Notification::make()
-                                ->danger()
-                                ->title(trans('match.notification.calculation_failed_title'))
-                                ->body(trans('match.notification.calculation_failed_body'))
-                                ->send();
-                        }
+                        Notification::make()
+                            ->success()
+                            ->title(trans('match.notification.calculated_title'))
+                            ->body(trans('match.notification.calculated_body'))
+                            ->send();
                     }),
 
                 Actions\Action::make('generate')
                     ->label(trans('match.actions.generate'))
                     ->requiresConfirmation()
                     ->icon('heroicon-m-arrow-path-rounded-square')
-                    ->hidden(fn (Classification $record) => $record->has_started)
+                    ->hidden(fn (Classification $classification) => $this->ownerRecord->is_finished || $classification->has_started)
                     ->action(function (Classification $record) {
-                        try {
-                            dispatch_sync(
-                                new CalculateMatchups($this->ownerRecord, $record->getKey())
-                            );
+                        dispatch_sync(
+                            new CalculateMatchups($this->ownerRecord, $record->getKey())
+                        );
 
-                            Notification::make()
-                                ->success()
-                                ->title(trans('match.notification.calculated_title'))
-                                ->body(trans('match.notification.calculated_body'))
-                                ->send();
-                        } catch (\Throwable $_) {
-                            Notification::make()
-                                ->danger()
-                                ->title(trans('match.notification.calculation_failed_title'))
-                                ->body(trans('match.notification.calculation_failed_body'))
-                                ->send();
-                        }
+                        Notification::make()
+                            ->success()
+                            ->title(trans('match.notification.calculated_title'))
+                            ->body(trans('match.notification.calculated_body'))
+                            ->send();
                     }),
             ])->tooltip(trans('app.resource.action_label')),
         ];

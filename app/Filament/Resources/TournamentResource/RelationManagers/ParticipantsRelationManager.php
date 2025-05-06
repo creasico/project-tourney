@@ -172,31 +172,41 @@ class ParticipantsRelationManager extends RelationManager
                     ->label(trans('participant.action.verify'))
                     ->icon('heroicon-o-check-circle')
                     ->requiresConfirmation()
-                    ->action(function (Person $participant) {
-                        $this->getOwnerRecord()->verify($participant);
-                    })
-                    ->visible(function (Person $participant) {
-                        return ! $participant->participation->is_verified;
+                    ->hidden(fn (Person $participant) => $this->ownerRecord->is_finished || $participant->participation->is_verified)
+                    ->action(function (Person $record) {
+                        $this->ownerRecord->verify($record);
+
+                        Notification::make()
+                            ->success()
+                            ->title(trans('participant.notification.verified_title'))
+                            ->body(trans('participant.notification.verified_body', [
+                                'athlete' => $record->name,
+                            ]))
+                            ->send();
                     }),
 
                 Actions\Action::make('disqualify')
                     ->label(trans('participant.action.disqualify'))
                     ->icon('heroicon-o-x-mark')
                     ->requiresConfirmation()
-                    ->action(function (Person $participant) {
-                        $this->getOwnerRecord()->disqualify($participant);
-                    })
-                    ->visible(function (Person $participant) {
-                        return ! $participant->participation->is_disqualified;
+                    ->hidden(fn (Person $participant) => $this->ownerRecord->is_finished || $participant->participation->is_disqualified)
+                    ->action(function (Person $record) {
+                        $this->ownerRecord->disqualify($record);
+
+                        Notification::make()
+                            ->success()
+                            ->title(trans('participant.notification.disqualified_title'))
+                            ->body(trans('participant.notification.disqualified_body', [
+                                'athlete' => $record->name,
+                            ]))
+                            ->send();
                     }),
 
                 Actions\DetachAction::make('deregister')
                     ->label(trans('participant.action.deregister'))
                     ->icon('heroicon-o-trash')
                     ->requiresConfirmation()
-                    ->visible(function () {
-                        return ! $this->getOwnerRecord()->is_started;
-                    }),
+                    ->hidden(fn () => $this->ownerRecord->is_started),
             ])->tooltip(trans('app.resource.action_label')),
         ];
     }
@@ -208,22 +218,45 @@ class ParticipantsRelationManager extends RelationManager
                 ->label(trans('participant.action.bulk_verify'))
                 ->icon('heroicon-o-check-circle')
                 ->requiresConfirmation()
-                ->action(fn (Collection $records) => $records->each(function (Person $participant) {
-                    $this->getOwnerRecord()->verify($participant);
-                })),
+                ->hidden(fn () => $this->ownerRecord->is_finished)
+                ->action(function (Collection $records) {
+                    $records->each(function (Person $participant) {
+                        $this->getOwnerRecord()->verify($participant);
+                    });
+
+                    Notification::make()
+                        ->success()
+                        ->title(trans('participant.notification.bulk_verified_title'))
+                        ->body(trans('participant.notification.bulk_verified_body', [
+                            'number' => $records->count(),
+                        ]))
+                        ->send();
+                }),
 
             Actions\BulkAction::make('bulk_disqualify')
                 ->label(trans('participant.action.bulk_disqualify'))
                 ->icon('heroicon-o-x-mark')
                 ->requiresConfirmation()
-                ->action(fn (Collection $records) => $records->each(function (Person $participant) {
-                    $this->getOwnerRecord()->disqualify($participant);
-                })),
+                ->hidden(fn () => $this->ownerRecord->is_finished)
+                ->action(function (Collection $records) {
+                    $records->each(function (Person $participant) {
+                        $this->getOwnerRecord()->disqualify($participant);
+                    });
+
+                    Notification::make()
+                        ->success()
+                        ->title(trans('participant.notification.bulk_verified_title'))
+                        ->body(trans('participant.notification.bulk_verified_body', [
+                            'number' => $records->count(),
+                        ]))
+                        ->send();
+                }),
 
             Actions\DissociateBulkAction::make('bulk_deregister')
                 ->label(trans('participant.action.bulk_deregister'))
                 ->icon('heroicon-o-trash')
-                ->requiresConfirmation(),
+                ->requiresConfirmation()
+                ->hidden(fn () => $this->ownerRecord->is_finished),
         ];
     }
 }
