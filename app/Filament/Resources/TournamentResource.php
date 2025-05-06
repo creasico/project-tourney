@@ -158,7 +158,7 @@ class TournamentResource extends Resource
 
                         Notification::make()
                             ->success()
-                            ->title(trans('match.notification.marked_draw_title', ['party' => $record->party_number]))
+                            ->title(trans('tournament.notification.published_title', ['party' => $record->party_number]))
                             ->send();
                     }),
 

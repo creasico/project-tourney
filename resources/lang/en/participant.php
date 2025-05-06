@@ -26,7 +26,7 @@ return [
         'deregistered_title' => 'Deregistration success',
         'deregistered_body' => ':athlete successfully deregistered',
         'bulk_deregistered_title' => 'Bulk deregistration success',
-        'bulk_deregistered_body' => ':number athletes successfully disqualified',
+        'bulk_deregistered_body' => ':number athletes successfully deregistered',
     ],
 
     'action' => [
