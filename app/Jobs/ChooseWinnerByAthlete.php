@@ -47,8 +47,8 @@ final class ChooseWinnerByAthlete implements ShouldBeUnique, ShouldQueue
         $match = DB::transaction(function () {
             $match = $this->match->load(['athletes', 'tournament']);
 
-            $winner = $match->athletes->where('id', '===', $this->athleteId)->firstOrFail();
-            $loser = $match->athletes->where('id', '!==', $this->athleteId)->firstOrFail();
+            $winner = $match->athletes->where('id', '==', $this->athleteId)->firstOrFail();
+            $loser = $match->athletes->where('id', '!=', $this->athleteId)->firstOrFail();
 
             $match->setPartyStatus($winner, PartyStatus::Win);
             $match->setPartyStatus($loser, PartyStatus::Lose);

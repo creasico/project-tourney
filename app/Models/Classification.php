@@ -61,11 +61,6 @@ class Classification extends Model
         return Attribute::get(fn (): bool => $this->matches->some->is_started);
     }
 
-    public function haveMatchStarted(Tournament $tournament, MatchGroup $group)
-    {
-        $this->matches();
-    }
-
     public function display(): Attribute
     {
         return Attribute::get(fn (): string => implode(' ', [

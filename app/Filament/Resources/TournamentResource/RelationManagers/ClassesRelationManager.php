@@ -206,7 +206,6 @@ class ClassesRelationManager extends RelationManager
                     ->icon('heroicon-m-arrow-path-rounded-square')
                     ->hidden(fn (Classification $record) => $record->has_started)
                     ->action(function (Classification $record) {
-                        dd($record->group);
                         try {
                             dispatch_sync(
                                 new CalculateMatchups($this->ownerRecord, $record->getKey())
