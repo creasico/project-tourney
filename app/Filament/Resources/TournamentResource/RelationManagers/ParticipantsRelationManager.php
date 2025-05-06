@@ -245,13 +245,11 @@ class ParticipantsRelationManager extends RelationManager
 
                     Notification::make()
                         ->success()
-Notification::make()
-    ->success()
-    ->title(trans('participant.notification.bulk_disqualified_title'))
-    ->body(trans('participant.notification.bulk_disqualified_body', [
-        'number' => $records->count(),
-    ]))
-    ->send();
+                        ->title(trans('participant.notification.bulk_disqualified_title'))
+                        ->body(trans('participant.notification.bulk_disqualified_body', [
+                            'number' => $records->count(),
+                        ]))
+                        ->send();
                 }),
 
             Actions\DissociateBulkAction::make('bulk_deregister')
