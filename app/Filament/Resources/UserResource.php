@@ -24,6 +24,45 @@ class UserResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-users';
 
+    private static function configureColumns()
+    {
+        return [
+            Columns\TextColumn::make('name')
+                ->label(fn () => __('filament-panels::pages/auth/edit-profile.form.name.label')),
+
+            Columns\TextColumn::make('email')
+                ->label(fn () => __('filament-panels::pages/auth/edit-profile.form.email.label')),
+        ];
+    }
+
+    private static function configureFilters()
+    {
+        return [
+            // .
+        ];
+    }
+
+    private static function configureRowActions()
+    {
+        return [
+            Actions\ActionGroup::make([
+                Actions\EditAction::make('edit'),
+                Actions\DeleteAction::make('delete'),
+            ])
+                ->tooltip(trans('app.resource.action_label'))
+                ->visible(fn (User $record) => $record->isNot(auth()->user())),
+        ];
+    }
+
+    private static function configureBulkActions()
+    {
+        return [
+            Actions\BulkActionGroup::make([
+                Actions\DeleteBulkAction::make(),
+            ]),
+        ];
+    }
+
     public static function form(Form $form): Form
     {
         return $form
@@ -39,30 +78,11 @@ class UserResource extends Resource
     {
         return $table
             ->defaultSort('created_at', 'desc')
-            ->columns([
-                Columns\TextColumn::make('name')
-                    ->label(fn () => __('filament-panels::pages/auth/edit-profile.form.name.label')),
-
-                Columns\TextColumn::make('email')
-                    ->label(fn () => __('filament-panels::pages/auth/edit-profile.form.email.label')),
-            ])
-            ->filters([
-                //
-            ])
-            ->actions([
-                Actions\ActionGroup::make([
-                    Actions\EditAction::make('edit'),
-                    Actions\DeleteAction::make('delete'),
-                ])
-                    ->tooltip(trans('app.resource.action_label'))
-                    ->visible(fn (User $record) => $record->isNot(auth()->user())),
-            ])
             ->recordUrl(fn (User $record) => $record->is(auth()->user()) ? route('filament.admin.auth.profile') : null)
-            ->bulkActions([
-                Actions\BulkActionGroup::make([
-                    Actions\DeleteBulkAction::make(),
-                ]),
-            ]);
+            ->columns(self::configureColumns())
+            ->filters(self::configureFilters())
+            ->actions(self::configureRowActions())
+            ->bulkActions(self::configureBulkActions());
     }
 
     public static function getRelations(): array

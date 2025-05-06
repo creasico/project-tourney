@@ -161,6 +161,15 @@ class TournamentResource extends Resource
         ];
     }
 
+    private static function configureBulkActions()
+    {
+        return [
+            Actions\BulkActionGroup::make([
+                Actions\DeleteBulkAction::make(),
+            ]),
+        ];
+    }
+
     public static function form(Form $form): Form
     {
         return $form
@@ -178,11 +187,7 @@ class TournamentResource extends Resource
             ->columns(self::configureColumns())
             ->filters(self::configureFilters())
             ->actions(self::configureRowActions())
-            ->bulkActions([
-                Actions\BulkActionGroup::make([
-                    Actions\DeleteBulkAction::make(),
-                ]),
-            ]);
+            ->bulkActions(self::configureBulkActions());
     }
 
     public static function getRelations(): array

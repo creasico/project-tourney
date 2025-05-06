@@ -28,6 +28,54 @@ class ClassificationResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-tag';
 
+    private static function configureColumns()
+    {
+        return [
+            Columns\TextColumn::make('label')
+                ->label(trans('classification.field.label'))
+                ->description(fn (Classification $record) => $record->description),
+
+            Columns\TextColumn::make('gender')
+                ->label(trans('participant.field.gender'))
+                ->formatStateUsing(fn (Classification $record) => $record->gender->label()),
+
+            Columns\TextColumn::make('weight_range')
+                ->label(trans('classification.field.weight_range')),
+        ];
+    }
+
+    private static function configureFilters()
+    {
+        return [
+            Filters\SelectFilter::make('gender')
+                ->label(trans('participant.field.gender'))
+                ->options(Gender::toOptions()),
+
+            Filters\SelectFilter::make('age_range')
+                ->label(trans('classification.field.age_range'))
+                ->options(AgeRange::toOptions()),
+        ];
+    }
+
+    private static function configureRowActions()
+    {
+        return [
+            Actions\ActionGroup::make([
+                Actions\EditAction::make('edit'),
+                Actions\DeleteAction::make('delete'),
+            ])->tooltip(trans('app.resource.action_label')),
+        ];
+    }
+
+    private static function configureBulkActions()
+    {
+        return [
+            Actions\BulkActionGroup::make([
+                Actions\DeleteBulkAction::make(),
+            ]),
+        ];
+    }
+
     public static function form(Form $form): Form
     {
         return $form
@@ -69,33 +117,10 @@ class ClassificationResource extends Resource
                     ->label(trans('classification.field.age_range'))
                     ->getTitleFromRecordUsing(fn (Classification $record) => $record->age_range->label())
             )
-            ->columns([
-                Columns\TextColumn::make('label')
-                    ->label(trans('classification.field.label'))
-                    ->description(fn (Classification $record) => $record->description),
-
-                Columns\TextColumn::make('gender')
-                    ->label(trans('participant.field.gender'))
-                    ->formatStateUsing(fn (Classification $record) => $record->gender->label()),
-
-                Columns\TextColumn::make('weight_range')
-                    ->label(trans('classification.field.weight_range')),
-            ])
-            ->filters([
-                Filters\SelectFilter::make('gender')
-                    ->label(trans('participant.field.gender'))
-                    ->options(Gender::toOptions()),
-
-                Filters\SelectFilter::make('age_range')
-                    ->label(trans('classification.field.age_range'))
-                    ->options(AgeRange::toOptions()),
-            ])
-            ->actions([
-                Actions\ActionGroup::make([
-                    Actions\EditAction::make('edit'),
-                    Actions\DeleteAction::make('delete'),
-                ])->tooltip(trans('app.resource.action_label')),
-            ]);
+            ->columns(self::configureColumns())
+            ->filters(self::configureFilters())
+            ->actions(self::configureRowActions())
+            ->bulkActions(self::configureBulkActions());
     }
 
     public static function getRelations(): array

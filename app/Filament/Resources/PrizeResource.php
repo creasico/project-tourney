@@ -24,6 +24,47 @@ class PrizeResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-gift';
 
+    private static function configureColumns()
+    {
+        return [
+            Columns\TextColumn::make('order')
+                ->label(trans('prize.field.order'))
+                ->numeric()
+                ->width(1)
+                ->alignCenter(),
+
+            Columns\TextColumn::make('label')
+                ->label(trans('prize.field.label'))
+                ->description(fn (PrizePool $record) => $record->description),
+        ];
+    }
+
+    private static function configureFilters()
+    {
+        return [
+            // .
+        ];
+    }
+
+    private static function configureRowActions()
+    {
+        return [
+            Actions\ActionGroup::make([
+                Actions\EditAction::make('edit'),
+                Actions\DeleteAction::make('delete'),
+            ])->tooltip(trans('app.resource.action_label')),
+        ];
+    }
+
+    private static function configureBulkActions()
+    {
+        return [
+            Actions\BulkActionGroup::make([
+                Actions\DeleteBulkAction::make(),
+            ]),
+        ];
+    }
+
     public static function form(Form $form): Form
     {
         return $form
@@ -48,26 +89,10 @@ class PrizeResource extends Resource
         return $table
             ->reorderable('order')
             ->defaultSort('order')
-            ->columns([
-                Columns\TextColumn::make('order')
-                    ->label(trans('prize.field.order'))
-                    ->numeric()
-                    ->width(1)
-                    ->alignCenter(),
-
-                Columns\TextColumn::make('label')
-                    ->label(trans('prize.field.label'))
-                    ->description(fn (PrizePool $record) => $record->description),
-            ])
-            ->filters([
-                //
-            ])
-            ->actions([
-                Actions\ActionGroup::make([
-                    Actions\EditAction::make('edit'),
-                    Actions\DeleteAction::make('delete'),
-                ])->tooltip(trans('app.resource.action_label')),
-            ]);
+            ->columns(self::configureColumns())
+            ->filters(self::configureFilters())
+            ->actions(self::configureRowActions())
+            ->bulkActions(self::configureBulkActions());
     }
 
     public static function getRelations(): array

@@ -31,6 +31,54 @@ class ContinentResource extends Resource
 
     protected static ?int $navigationSort = 3;
 
+    private static function configureColumns()
+    {
+        return [
+            Columns\TextColumn::make('name')
+                ->label(trans('continent.field.name')),
+
+            Columns\TextColumn::make('managers_count')
+                ->label(trans('continent.field.managers_count'))
+                ->counts(['managers'])
+                ->numeric()
+                ->width('10%')
+                ->alignCenter(),
+
+            Columns\TextColumn::make('athletes_count')
+                ->label(trans('continent.field.athletes_count'))
+                ->counts(['athletes'])
+                ->numeric()
+                ->width('10%')
+                ->alignCenter(),
+        ];
+    }
+
+    private static function configureFilters()
+    {
+        return [
+            // .
+        ];
+    }
+
+    private static function configureRowActions()
+    {
+        return [
+            Actions\ActionGroup::make([
+                Actions\ViewAction::make('view'),
+                Actions\DeleteAction::make('delete'),
+            ])->tooltip(trans('app.resource.action_label')),
+        ];
+    }
+
+    private static function configureBulkActions()
+    {
+        return [
+            Actions\BulkActionGroup::make([
+                Actions\DeleteBulkAction::make(),
+            ]),
+        ];
+    }
+
     public static function form(Form $form): Form
     {
         $nameField = fn () => Components\TextInput::make('name')
@@ -103,38 +151,10 @@ class ContinentResource extends Resource
     {
         return $table
             ->defaultSort('updated_at', 'desc')
-            ->columns([
-                Columns\TextColumn::make('name')
-                    ->label(trans('continent.field.name')),
-
-                Columns\TextColumn::make('managers_count')
-                    ->label(trans('continent.field.managers_count'))
-                    ->counts(['managers'])
-                    ->numeric()
-                    ->width('10%')
-                    ->alignCenter(),
-
-                Columns\TextColumn::make('athletes_count')
-                    ->label(trans('continent.field.athletes_count'))
-                    ->counts(['athletes'])
-                    ->numeric()
-                    ->width('10%')
-                    ->alignCenter(),
-            ])
-            ->filters([
-                //
-            ])
-            ->actions([
-                Actions\ActionGroup::make([
-                    Actions\ViewAction::make('view'),
-                    Actions\DeleteAction::make('delete'),
-                ])->tooltip(trans('app.resource.action_label')),
-            ])
-            ->bulkActions([
-                Actions\BulkActionGroup::make([
-                    Actions\DeleteBulkAction::make(),
-                ]),
-            ]);
+            ->columns(self::configureColumns())
+            ->filters(self::configureFilters())
+            ->actions(self::configureRowActions())
+            ->bulkActions(self::configureBulkActions());
     }
 
     public static function getRelations(): array
