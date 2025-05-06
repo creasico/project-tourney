@@ -73,9 +73,9 @@ class MatchesRelationManager extends RelationManager
                     'red.continent',
                     'participations',
                     'division',
-                    'winner',
+                    'winning',
                     'next',
-                    'prev',
+                    'prevs',
                 ])
             )
             ->columns($this->configureColumns())
@@ -99,35 +99,35 @@ class MatchesRelationManager extends RelationManager
                 ->alignCenter(),
 
             Columns\ColumnGroup::make(trans('participant.plural'), [
-                Columns\TextColumn::make('blue_side.name')
+                Columns\TextColumn::make('blue_side.display')
                     ->label(trans('match.side.blue'))
                     ->limit(50)
                     ->width('20%')
                     ->alignRight()
                     ->description(
-                        fn (Matchup $record) => $record->blue_side?->continent->name
+                        fn (Matchup $record) => $record->blue_side?->continentName
                     ),
 
-                Columns\TextColumn::make('blue_participant.draw_number')
+                Columns\TextColumn::make('blue_side.drawNumber')
                     ->label('#')
                     ->width('5%')
                     ->tooltip(trans('participant.field.draw_number'))
                     ->alignCenter()
                     ->numeric(),
 
-                Columns\TextColumn::make('red_participant.draw_number')
+                Columns\TextColumn::make('red_side.drawNumber')
                     ->label('#')
                     ->width('5%')
                     ->tooltip(trans('participant.field.draw_number'))
                     ->alignCenter()
                     ->numeric(),
 
-                Columns\TextColumn::make('red_side.name')
+                Columns\TextColumn::make('red_side.display')
                     ->label(trans('match.side.red'))
                     ->limit(50)
                     ->width('20%')
                     ->description(
-                        fn (Matchup $record) => $record->red_side?->continent->name
+                        fn (Matchup $record) => $record->red_side?->continentName
                     ),
             ])->alignCenter()->wrapHeader(),
 
@@ -138,7 +138,7 @@ class MatchesRelationManager extends RelationManager
                 ->alignCenter()
                 ->description(function (Matchup $record) {
                     /** @var \App\Models\Person */
-                    $athlete = $record->winner->first();
+                    $athlete = $record->winner;
 
                     return $athlete?->continent->name;
                 }),

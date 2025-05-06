@@ -33,6 +33,8 @@ return [
         'loser' => 'Kalah',
     ],
 
+    'winner_from' => 'Pemenang dari :number',
+
     'bye' => [
         'up' => 'Atas',
         'down' => 'Bawah',

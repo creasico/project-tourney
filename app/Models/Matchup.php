@@ -6,6 +6,7 @@ namespace App\Models;
 
 use App\Enums\MatchSide;
 use App\Enums\PartyStatus;
+use App\Support\Athlete;
 use App\Support\Sided;
 use Illuminate\Database\Eloquent\Casts\AsArrayObject;
 use Illuminate\Database\Eloquent\Casts\Attribute;
@@ -15,7 +16,6 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Matchup extends Model
 {
@@ -109,9 +109,17 @@ class Matchup extends Model
     /**
      * @return BelongsToMany<Person, Matchup, MatchParty, 'party'>
      */
+    private function whereSide(MatchSide $side): BelongsToMany|Builders\PersonBuilder
+    {
+        return $this->athletes()->wherePivot('side', $side);
+    }
+
+    /**
+     * @return BelongsToMany<Person, Matchup, MatchParty, 'party'>
+     */
     public function blue(): BelongsToMany|Builders\PersonBuilder
     {
-        return $this->athletes()->wherePivot('side', MatchSide::Blue);
+        return $this->whereSide(MatchSide::Blue);
     }
 
     /**
@@ -119,13 +127,13 @@ class Matchup extends Model
      */
     public function red(): BelongsToMany|Builders\PersonBuilder
     {
-        return $this->athletes()->wherePivot('side', MatchSide::Red);
+        return $this->whereSide(MatchSide::Red);
     }
 
     /**
      * @return BelongsToMany<Person, Matchup, MatchParty, 'party'>
      */
-    public function winner(): BelongsToMany|Builders\PersonBuilder
+    public function winning(): BelongsToMany|Builders\PersonBuilder
     {
         return $this->athletes()->wherePivot('status', PartyStatus::Win);
     }
@@ -133,7 +141,7 @@ class Matchup extends Model
     /**
      * @return BelongsToMany<Person, Matchup, MatchParty, 'party'>
      */
-    public function loser(): BelongsToMany|Builders\PersonBuilder
+    public function losing(): BelongsToMany|Builders\PersonBuilder
     {
         return $this->athletes()->wherePivot('status', PartyStatus::Lose);
     }
@@ -147,39 +155,59 @@ class Matchup extends Model
     }
 
     /**
-     * @return HasOne<Matchup, Matchup>
+     * @return HasMany<Matchup, Matchup>
      */
-    public function prev(): HasOne
+    public function prevs(): HasMany
     {
-        return $this->hasOne(Matchup::class, 'next_id');
+        return $this->hasMany(Matchup::class, 'next_id');
     }
 
-    private function participant(string $side): ?Participation
+    public function winner(): Attribute
     {
-        if ($participant = $this->{$side}) {
-            return $this->participations->where('participant_id', $participant->id)->first();
-        }
-
-        return null;
+        return Attribute::get(fn (): ?Person => $this->winning->first());
     }
 
     public function blueSide(): Attribute
     {
-        return Attribute::get(fn (): ?Person => $this->blue->first());
-    }
+        return Attribute::get(function (): ?Athlete {
+            if ($person = $this->blue->first()) {
+                return new Athlete(
+                    $person,
+                    $this->participations->where('participant_id', $person->id)->first(),
+                );
+            }
 
-    public function blueParticipant(): Attribute
-    {
-        return Attribute::get(fn (): ?Participation => $this->participant('blue_side'));
+            $prev = $this->prevs
+                ->where('next_side', MatchSide::Blue)
+                ->first();
+
+            if ($prev) {
+                return new Athlete($prev);
+            }
+
+            return null;
+        });
     }
 
     public function redSide(): Attribute
     {
-        return Attribute::get(fn (): ?Person => $this->red->first());
-    }
+        return Attribute::get(function (): ?Athlete {
+            if ($person = $this->red->first()) {
+                return new Athlete(
+                    $person,
+                    $this->participations->where('participant_id', $person->id)->first(),
+                );
+            }
 
-    public function redParticipant(): Attribute
-    {
-        return Attribute::get(fn (): ?Participation => $this->participant('red_side'));
+            $prev = $this->prevs
+                ->where('next_side', MatchSide::Red)
+                ->first();
+
+            if ($prev) {
+                return new Athlete($prev);
+            }
+
+            return null;
+        });
     }
 }

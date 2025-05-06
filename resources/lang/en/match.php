@@ -33,6 +33,8 @@ return [
         'loser' => 'loser',
     ],
 
+    'winner_from' => 'Winner of :number',
+
     'bye' => [
         'up' => 'Up',
         'down' => 'Down',

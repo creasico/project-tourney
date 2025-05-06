@@ -71,13 +71,59 @@ it('belongs to next match', function () {
     expect($model->next)->toBeInstanceOf(Matchup::class);
 });
 
-it('has one prev match', function () {
+it('has one prevs match', function () {
     $model = Matchup::factory()
         ->has(
             Matchup::factory(),
-            'prev'
+            'prevs'
         )
         ->createOne();
 
-    expect($model->prev)->toBeInstanceOf(Matchup::class);
+    expect($model->prevs)->toHaveCount(1);
+
+    $prev = $model->prevs->first();
+
+    expect($prev)->toBeInstanceOf(Matchup::class);
+});
+
+describe('sides', function () {
+    it('can get :dataset from athlete', function (Matchup $match, string $attr) {
+        /** @var \App\Support\Athlete */
+        $side = $match->{$attr};
+
+        expect($side)->not->toBeNull();
+        expect($side->profile)->toBeInstanceOf(Person::class);
+    })->with(collect(MatchSide::cases())->mapWithKeys(function (MatchSide $side) {
+        return [
+            "{$side->value}_side" => [
+                fn () => Matchup::factory()
+                    ->withAthletes(pivot: [
+                        'side' => $side,
+                        'status' => PartyStatus::Queue,
+                    ])
+                    ->createOne(),
+                "{$side->value}_side",
+            ],
+        ];
+    })->toArray());
+
+    it('can get :dataset from previous match', function (Matchup $match, string $attr) {
+        /** @var \App\Support\Athlete */
+        $side = $match->{$attr};
+
+        expect($side)->not->toBeNull();
+        expect($side->profile)->toBeInstanceOf(Matchup::class);
+    })->with(collect(MatchSide::cases())->mapWithKeys(function (MatchSide $side) {
+        return [
+            "{$side->value}_side" => [
+                fn () => Matchup::factory()
+                    ->has(
+                        Matchup::factory()->state(['next_side' => $side]),
+                        'prevs'
+                    )
+                    ->createOne(),
+                "{$side->value}_side",
+            ],
+        ];
+    })->toArray());
 });
