@@ -8,7 +8,7 @@ use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-final class WinnerChoosen
+final class WinnerChosen
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 

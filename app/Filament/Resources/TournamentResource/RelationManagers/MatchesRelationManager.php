@@ -219,7 +219,7 @@ class MatchesRelationManager extends RelationManager
 
                         Notification::make()
                             ->success()
-                            ->title(trans('match.notification.winner_choosen_title', ['party' => $record->party_number]))
+                            ->title(trans('match.notification.started_title', ['party' => $record->party_number]))
                             ->send();
                     }),
 

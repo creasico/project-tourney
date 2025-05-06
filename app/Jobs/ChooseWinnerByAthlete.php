@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Jobs;
 
 use App\Enums\PartyStatus;
-use App\Events\WinnerChoosen;
+use App\Events\WinnerChosen;
 use App\Models\Matchup;
 use Illuminate\Contracts\Broadcasting\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -44,7 +44,7 @@ final class ChooseWinnerByAthlete implements ShouldBeUnique, ShouldQueue
      */
     public function handle(): void
     {
-        DB::transaction(function () {
+        $match = DB::transaction(function () {
             $match = $this->match->load(['athletes', 'tournament']);
 
             $winner = $match->athletes->where('id', '===', $this->athleteId)->firstOrFail();
@@ -60,7 +60,9 @@ final class ChooseWinnerByAthlete implements ShouldBeUnique, ShouldQueue
                 'knocked_at' => $now,
             ]);
 
-            event(new WinnerChoosen($match->fresh()));
+            return $match->fresh();
         });
+
+        event(new WinnerChosen($match));
     }
 }

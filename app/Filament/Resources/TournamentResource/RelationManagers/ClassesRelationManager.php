@@ -86,6 +86,7 @@ class ClassesRelationManager extends RelationManager
                     ])
                     ->with([
                         'athletes' => $this->athleteQuery(),
+                        'matches' => $this->matchQuery(),
                     ])
             )
             ->columns($this->configureColumns())
@@ -133,7 +134,7 @@ class ClassesRelationManager extends RelationManager
     {
         $tournament = $this->ownerRecord;
 
-        if (! $tournament->participants()->exists() && $tournament->is_started) {
+        if (! $tournament->participants()->exists() || $tournament->is_started) {
             return [];
         }
 
@@ -178,6 +179,7 @@ class ClassesRelationManager extends RelationManager
         return [
             Actions\ActionGroup::make([
                 Actions\EditAction::make()
+                    ->hidden(fn (Classification $record) => $record->has_started)
                     ->afterFormValidated(function (Classification $record) {
                         try {
                             dispatch_sync(
@@ -202,7 +204,9 @@ class ClassesRelationManager extends RelationManager
                     ->label(trans('match.actions.generate'))
                     ->requiresConfirmation()
                     ->icon('heroicon-m-arrow-path-rounded-square')
+                    ->hidden(fn (Classification $record) => $record->has_started)
                     ->action(function (Classification $record) {
+                        dd($record->group);
                         try {
                             dispatch_sync(
                                 new CalculateMatchups($this->ownerRecord, $record->getKey())
@@ -234,6 +238,13 @@ class ClassesRelationManager extends RelationManager
 
     private function athleteQuery()
     {
-        return fn (HasMany|PersonBuilder $query) => $query->haveParticipate($this->ownerRecord);
+        return fn (HasMany|PersonBuilder $query) => $query
+            ->haveParticipate($this->ownerRecord);
+    }
+
+    private function matchQuery()
+    {
+        return fn (HasMany $query) => $query
+            ->where('tournament_id', $this->ownerRecord->getKey());
     }
 }

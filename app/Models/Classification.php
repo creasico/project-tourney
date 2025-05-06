@@ -48,9 +48,27 @@ class Classification extends Model
         return $this->hasMany(Person::class, 'class_id');
     }
 
+    /**
+     * @return HasMany<Matchup, Classification>
+     */
+    public function matches(): HasMany
+    {
+        return $this->hasMany(Matchup::class, 'class_id');
+    }
+
+    public function hasStarted(): Attribute
+    {
+        return Attribute::get(fn (): bool => $this->matches->some->is_started);
+    }
+
+    public function haveMatchStarted(Tournament $tournament, MatchGroup $group)
+    {
+        $this->matches();
+    }
+
     public function display(): Attribute
     {
-        return Attribute::get(fn () => implode(' ', [
+        return Attribute::get(fn (): string => implode(' ', [
             $this->label,
             $this->age_range?->label(),
             $this->gender->label(),
