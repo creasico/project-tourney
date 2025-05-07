@@ -27,6 +27,8 @@ class Athlete implements HasLabel
             $this->continentName = $profile->continent?->name;
             $this->status = $profile->party?->status;
         } else {
+            $this->continentName = null;
+            $this->status = PartyStatus::Queue;
             $this->display = trans('match.winner_from', [
                 'number' => $profile->party_number,
             ]);

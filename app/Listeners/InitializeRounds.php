@@ -18,6 +18,7 @@ class InitializeRounds
             tournament: $event->tournament,
             classId: $event->classId,
             divisionId: $event->divisionId,
+            matches: $event->matches,
         ))->afterCommit();
     }
 }

@@ -16,10 +16,14 @@ class CalculateRounds implements ShouldQueue
     use Batchable, Queueable, SerializesModels;
     use ClassifiedAthletes, FailsHelper;
 
+    /**
+     * @param  list<\App\Models\Matchup>  $matches
+     */
     public function __construct(
         protected Tournament $tournament,
         protected string $classId,
         protected int $divisionId,
+        protected array $matches,
     ) {}
 
     /**
@@ -31,6 +35,7 @@ class CalculateRounds implements ShouldQueue
             'tournament_id' => $this->tournament->id,
             'class_id' => $this->classId,
             'division_id' => $this->divisionId,
+            'matches' => $this->matches,
         ];
     }
 
