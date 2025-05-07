@@ -97,11 +97,13 @@ class TournamentFactory extends Factory
     public function withClassifications(
         \Closure|int|null $count = null,
         ClassificationFactory|Classification|null $classifications = null,
+        \Closure|array $state = [],
         int $division = 0,
         ?MatchBye $bye = null,
     ): static {
         return $this->hasAttached(
-            $classifications ?? Classification::factory(count: value($count)),
+            $classifications ?? Classification::factory(count: value($count))
+                ->state($state),
             array_filter([
                 'division' => $division,
                 'bye' => $bye,
@@ -117,19 +119,16 @@ class TournamentFactory extends Factory
     ): static {
         return $this->has(
             $matches ?? Matchup::factory(count: value($count))
-                ->withAthletes(side: MatchSide::Blue, state: fn ($attr, Matchup $match) => [
-                    ...$attr,
-                    'class_id' => $match->class_id ?? $attr['class_id'],
-                    'gender' => $match->class?->gender ?? $attr['gender'],
-                ])
-                ->withAthletes(side: MatchSide::Red, state: fn ($attr, Matchup $match) => [
-                    ...$attr,
-                    'class_id' => $match->class_id ?? $attr['class_id'],
-                    'gender' => $match->class?->gender ?? $attr['gender'],
-                ])
+                ->withAthletes(side: MatchSide::Blue)
+                ->withAthletes(side: MatchSide::Red)
                 ->withDivision()
                 ->afterCreating(function (Matchup $match, Tournament $tournament) {
                     foreach ($match->athletes as $athlete) {
+                        $athlete->update([
+                            'class_id' => $match->class_id,
+                            'gender' => $match->classification->gender,
+                        ]);
+
                         $tournament->participants()->attach($athlete, [
                             'match_id' => $match->getKey(),
                         ]);
