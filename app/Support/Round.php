@@ -33,12 +33,12 @@ final class Round
         //
     }
 
-    public function contains(Matchup $party)
+    public function contains(Matchup $match)
     {
-        if (empty($this->participants)) {
+        if (empty($this->matches)) {
             return false;
         }
 
-        return Arr::first($this->participants, fn ($p) => $p->id === $party->id) !== null;
+        return Arr::first($this->matches, fn ($m) => $m->id === $match->id) !== null;
     }
 }

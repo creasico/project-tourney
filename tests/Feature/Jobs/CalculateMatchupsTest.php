@@ -172,6 +172,7 @@ describe('::createRounds()', function () use ($structures) {
                 'matches' => collect($round->matches)->map(fn (Matchup $m) => (object) [
                     'id' => $m->id,
                     'index' => $m->index,
+                    'gap' => $m->gap,
                     'round' => $m->round,
                     'isBye' => $m->isBye,
                     'nextId' => $m->nextId,
@@ -184,7 +185,7 @@ describe('::createRounds()', function () use ($structures) {
             return $out;
         }, []);
 
-        dump($dump);
+        // dump($dump);
 
         expect(true)->toBeTrue();
     })->with(collect($structures)->mapWithKeys(function ($val, $count) {
@@ -200,7 +201,7 @@ describe('::createRounds()', function () use ($structures) {
                 $val,
             ],
         ];
-    })->take(16)->all());
+    })->all());
 });
 
 describe('::divide()', function () use ($divisions) {

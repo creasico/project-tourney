@@ -21,7 +21,7 @@ final class Sided implements Arrayable, Countable, IteratorAggregate
 
     public function __construct(
         public readonly Person|Party $blue,
-        public readonly Person|Party|null $red = null,
+        public Person|Party|null $red = null,
     ) {
         $this->isPerson = $blue instanceof Person;
     }
@@ -52,7 +52,7 @@ final class Sided implements Arrayable, Countable, IteratorAggregate
 
     public function count(): int
     {
-        return $this->red === null ? 1 : 2;
+        return $this->isBye() ? 1 : 2;
     }
 
     public function isBye(): bool

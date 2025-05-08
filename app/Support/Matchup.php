@@ -28,6 +28,11 @@ final class Matchup
      */
     public MatchSide $nextSide;
 
+    /**
+     * Gap between this match and the previous match in the same round.
+     */
+    public int $gap = 0;
+
     public function __construct(
         public readonly Sided $party,
         public readonly int $index,

@@ -149,18 +149,21 @@ class CalculateMatchups implements ShouldBeUnique, ShouldQueue
         $r = 0;
 
         while ($next) {
+            if (! array_key_exists($r, $rounds)) {
+                // In case of the current iteration is actually already exists
+                // due to match relocation from previous match calculation.
+                $rounds[$r] = new Round($r, $items);
+            }
+
             if ($r > 0) {
                 // On second round onward, we might have some participant already
                 // regitered from previous round and in current iteration all
                 // we need is take them as the basis for creating matches.
-                $items = array_key_exists($r, $rounds)
-                    ? $rounds[$r]->participants
-                    : [];
-
-                break;
+                $items = $rounds[$r]->participants;
+                $matches = $rounds[$r]->matches;
             }
 
-            if (count($items) <= 1) {
+            if (count($items) === 1) {
                 // When this round only contains of 1 participant, meaning we've
                 // already reacing the final round, no need further iteration.
                 array_pop($rounds);
@@ -168,28 +171,32 @@ class CalculateMatchups implements ShouldBeUnique, ShouldQueue
                 break;
             }
 
-            $rounds[$r] = new Round($r, $items);
-
             $sides = $r === 0
                 ? $this->determineSide($items)
                 : $this->assignSide($items);
+
+            $gap = 0;
+            $byes = [];
 
             foreach ($this->createMatches($sides, $r, $matches) as $match) {
                 if (! array_key_exists($match->round, $rounds)) {
                     $rounds[$match->round] = new Round($match->round);
                 }
 
-                if ($match->isBye) {
-                    // We need to keep the match information in the current round.
-                    $rounds[$r]->matches[] = $match;
-
-                    // Also copy the participant to the next round its belongs to.
-                    array_push(
-                        $rounds[$match->round]->participants,
-                        ...$match->party->toArray()
-                    );
-
+                if ($rounds[$match->round]->contains($match)) {
                     continue;
+                }
+
+                $lastBye = false;
+
+                if ($match->isBye) {
+                    $gap++;
+                    $byes[] = $match->id;
+                } else {
+                    $lastBye = end($byes);
+                    $match->gap = $gap;
+                    $gap = 0;
+                    $byes = [];
                 }
 
                 $rounds[$match->round]->matches[] = $match;
@@ -203,7 +210,19 @@ class CalculateMatchups implements ShouldBeUnique, ShouldQueue
                     $rounds[$nextRound] = new Round($nextRound);
                 }
 
-                $rounds[$nextRound]->participants[] = new Party($match->id, $match->nextSide);
+                $party = new Party($match->id, $match->nextSide);
+
+                if ($lastBye && ! empty($rounds[$nextRound]->matches)) {
+                    foreach ($rounds[$nextRound]->matches as $bm => $byeMatch) {
+                        if ($lastBye === $byeMatch->id && ! $byeMatch->party->red) {
+                            $rounds[$nextRound]->matches[$bm]->party->red = $party;
+
+                            break;
+                        }
+                    }
+                } else {
+                    $rounds[$nextRound]->participants[] = $party;
+                }
             }
 
             $r++;
@@ -226,45 +245,59 @@ class CalculateMatchups implements ShouldBeUnique, ShouldQueue
         array &$matches = [],
         array &$byes = [],
     ): array {
+        if (empty($items)) {
+            return $matches;
+        }
+
         $parties = $items;
         $half = (int) floor(count($parties) / 2);
-        $chunks = $half >= 2 ? array_chunk($parties, $half) : [$parties, []];
+        $chunks = $half >= 2 ? [
+            array_slice($parties, 0, $half),
+            array_slice($parties, $half),
+        ] : [$parties, []];
 
         if (empty($byes)) {
-            foreach ($parties as $p => $party) {
-                if ($party->isBye()) {
-                    $byes[] = $p;
-                }
-            }
+            $byes = $this->collectByes($parties);
         }
 
         $hasByes = count($byes) > 0;
 
-        foreach ($chunks as $parties) {
+        foreach ($chunks as $c => $parties) {
             $total = count($parties);
 
-            // Recusively calculate when the number of `matchups` on `round` 0 is 5 or more
+            // Recusively calculate when the number of `parties` on `round` 0 is 5 or more
             if ($round === 0 && $total > 5) {
                 $this->createMatches($parties, $round, $matches, $byes);
 
                 continue;
             }
 
+            // Retrieve the last match on the previous chunk
             $prevMatch = end($matches) ?: null;
 
+            // Reassure that the current chunk has bye mathces
             if (! $hasByes && $prevMatch?->party->isBye() === false) {
-                $hasByes = collect($parties)->some->isBye();
+                $hasByes = count($this->collectByes($parties)) > 0;
             }
 
             foreach ($parties as $p => $party) {
+                // Get the match index based on number of already registered matches
                 $index = count($matches);
-                $bye = $hasByes && end($byes) < $index;
+
+                // Determine whether this one is a bye match based on previous iteration
+                $bye = $hasByes && $index <= end($byes);
+
                 $match = new Matchup($party, $index, $round, $bye);
+
+                if ($p > 0 && $matches[$index - 1]->party->isBye()) {
+                    $hasByes = $match->isBye = false;
+                }
+
                 $isLast = $total > 1 && ($p + 1) === $total;
 
                 // Force next side to be `red` when it was the last match in
                 // the split or the previous registered match was a bye match.
-                if ($isLast || $prevMatch?->isBye) {
+                if ($isLast || $prevMatch?->party->isBye()) {
                     $match->nextSide = MatchSide::Red;
                 }
 
@@ -519,6 +552,23 @@ class CalculateMatchups implements ShouldBeUnique, ShouldQueue
         }
 
         return $items;
+    }
+
+    /**
+     * @param  list<Sided>  $items
+     * @return list<int>
+     */
+    private function collectByes(array $items)
+    {
+        $byes = [];
+
+        foreach ($items as $i => $item) {
+            if ($item->isBye()) {
+                $byes[] = $i;
+            }
+        }
+
+        return $byes;
     }
 
     /**
