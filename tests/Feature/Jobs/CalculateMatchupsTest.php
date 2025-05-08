@@ -8,6 +8,8 @@ use App\Jobs\CalculateMatchups;
 use App\Models\Continent;
 use App\Models\Person;
 use App\Models\Tournament;
+use App\Support\Matchup;
+use App\Support\Round;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Event;
 use PHPUnit\Framework\ExpectationFailedException;
@@ -164,7 +166,25 @@ describe('::createRounds()', function () use ($structures) {
 
         $rounds = $ref->createRounds($items);
 
-        dump($rounds);
+        $dump = collect($rounds)->reduce(function (array $out, Round $round) {
+            $out[] = (object) [
+                'participants' => collect($round->participants)->toArray(),
+                'matches' => collect($round->matches)->map(fn (Matchup $m) => (object) [
+                    'id' => $m->id,
+                    'index' => $m->index,
+                    'round' => $m->round,
+                    'isBye' => $m->isBye,
+                    'nextId' => $m->nextId,
+                    'nextSide' => $m->nextSide->value,
+                    'isHidden' => $m->isHidden,
+                    'party' => collect($m->party->toArray())->toArray(),
+                ])->all(),
+            ];
+
+            return $out;
+        }, []);
+
+        dump($dump);
 
         expect(true)->toBeTrue();
     })->with(collect($structures)->mapWithKeys(function ($val, $count) {

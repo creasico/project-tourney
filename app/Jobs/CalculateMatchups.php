@@ -215,17 +215,18 @@ class CalculateMatchups implements ShouldBeUnique, ShouldQueue
     }
 
     /**
-     * @param  list<Sided>  $parties
+     * @param  list<Sided>  $items
      * @param  list<Matchup>  $matches
      * @param  list<int>  $byes
      * @return list<Matchup>
      */
     public function createMatches(
-        array $parties,
+        array $items,
         int $round,
         array &$matches = [],
         array &$byes = [],
     ): array {
+        $parties = $items;
         $half = (int) floor(count($parties) / 2);
         $chunks = $half >= 2 ? array_chunk($parties, $half) : [$parties, []];
 
@@ -256,18 +257,14 @@ class CalculateMatchups implements ShouldBeUnique, ShouldQueue
             }
 
             foreach ($parties as $p => $party) {
-                $match = new Matchup($party, count($matches), $round);
+                $index = count($matches);
+                $bye = $hasByes && end($byes) < $index;
+                $match = new Matchup($party, $index, $round, $bye);
                 $isLast = $total > 1 && ($p + 1) === $total;
-
-                // Turn next side into `blue` if this is a bye match and was not
-                // the last match in this round.
-                if ($party->isBye() || ! $isLast) {
-                    $match->nextSide = MatchSide::Blue;
-                }
 
                 // Force next side to be `red` when it was the last match in
                 // the split or the previous registered match was a bye match.
-                if ($isLast || $prevMatch?->party->isBye()) {
+                if ($isLast || $prevMatch?->isBye) {
                     $match->nextSide = MatchSide::Red;
                 }
 

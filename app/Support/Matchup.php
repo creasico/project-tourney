@@ -16,23 +16,28 @@ final class Matchup
 
     public bool $isBye;
 
+    public bool $isHidden = false;
+
     public ?string $nextId = null;
 
-    public ?MatchSide $nextSide = null;
-
-    public bool $isHidden = false;
+    public MatchSide $nextSide;
 
     public function __construct(
         public readonly Sided $party,
-        public int $index,
+        public readonly int $index,
         public int $round,
+        bool $bye = false,
     ) {
         $this->id = strtolower((string) Str::ulid());
-        $this->isBye = $party->isBye();
+        $this->isBye = $party->isBye() || $bye;
 
-        if ($party->isBye()) {
+        if ($this->isBye) {
+            // Hide and relocate this match to next round when it was a bye match.
             $this->round++;
             $this->isHidden = true;
         }
+
+        // Determine which side the winner of this match would be on the next round.
+        $this->nextSide = $index % 2 === 0 ? MatchSide::Blue : MatchSide::Red;
     }
 }
