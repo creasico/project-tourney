@@ -7,9 +7,13 @@ namespace App\Support;
 use App\Models\Person;
 use ArrayIterator;
 use Countable;
+use Illuminate\Contracts\Support\Arrayable;
 use IteratorAggregate;
 
-final class Sided implements Countable, IteratorAggregate
+/**
+ * @implements IteratorAggregate<string, Person|Party|null>
+ */
+final class Sided implements Arrayable, Countable, IteratorAggregate
 {
     public readonly bool $isPerson;
 
@@ -26,6 +30,11 @@ final class Sided implements Countable, IteratorAggregate
             'blue' => $this->blue,
             'red' => $this->red,
         ]);
+    }
+
+    public function toArray(): array
+    {
+        return array_filter([$this->blue, $this->red]);
     }
 
     public function have(string $id)

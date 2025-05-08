@@ -85,15 +85,15 @@ class CalculateMatchups implements ShouldBeUnique, ShouldQueue
                     'tournament_id' => $this->tournament->id,
                 ]);
 
-                $rounds = $this->createRounds($participants);
+                /** @var array<string, string> */
                 $matches = [];
+                $rounds = $this->createRounds($participants);
 
                 krsort($rounds);
 
                 foreach ($rounds as $r => $round) {
                     foreach ($round->matches as $match) {
                         $attrs = [
-                            'id' => $match->id,
                             'class_id' => $class->id,
                             'division_id' => $division->id,
                             'round_number' => $r,
@@ -104,9 +104,9 @@ class CalculateMatchups implements ShouldBeUnique, ShouldQueue
                             ],
                         ];
 
-                        if ($match->nextId) {
-                            $attrs['next_id'] = $match->nextId;
-                            $attrs['next_side'] = $match->nextSide;
+                        if ($match->nextId && array_key_exists($match->nextId, $matches)) {
+                            $attrs['next_id'] = $matches[$match->nextId];
+                            // $attrs['next_side'] = $match->nextSide;
                         }
 
                         $matchup = $this->tournament->matches()->create($attrs);
@@ -121,7 +121,7 @@ class CalculateMatchups implements ShouldBeUnique, ShouldQueue
                             }
                         }
 
-                        $matches[] = $match->id;
+                        $matches[$match->id] = $matchup->getKey();
                     }
                 }
 
@@ -137,25 +137,30 @@ class CalculateMatchups implements ShouldBeUnique, ShouldQueue
 
     /**
      * @param  list<Person>  $participants
+     * @param  list<Matchup>  $matches
      * @return list<Round>
      */
-    public function createRounds(array $participants): array
+    public function createRounds(array $participants, array $matches = []): array
     {
-        /** @var list<\App\Support\Round> */
+        /** @var list<Round> */
         $rounds = [];
+        $items = $participants;
+        $next = true;
         $r = 0;
 
-        while (true) {
+        while ($next) {
             if ($r > 0) {
                 // On second round onward, we might have some participant already
                 // regitered from previous round and in current iteration all
                 // we need is take them as the basis for creating matches.
-                $participants = array_key_exists($r, $rounds)
+                $items = array_key_exists($r, $rounds)
                     ? $rounds[$r]->participants
                     : [];
+
+                break;
             }
 
-            if (count($participants) === 1) {
+            if (count($items) <= 1) {
                 // When this round only contains of 1 participant, meaning we've
                 // already reacing the final round, no need further iteration.
                 array_pop($rounds);
@@ -163,56 +168,47 @@ class CalculateMatchups implements ShouldBeUnique, ShouldQueue
                 break;
             }
 
-            $rounds[$r] = new Round($r, $participants);
+            $rounds[$r] = new Round($r, $items);
 
             $sides = $r === 0
-                ? $this->determineSide($participants)
-                : $this->assignSide($participants);
+                ? $this->determineSide($items)
+                : $this->assignSide($items);
 
-            foreach ($this->createMatches($sides, $r) as $match) {
+            foreach ($this->createMatches($sides, $r, $matches) as $match) {
                 if (! array_key_exists($match->round, $rounds)) {
                     $rounds[$match->round] = new Round($match->round);
                 }
 
                 if ($match->isBye) {
+                    // We need to keep the match information in the current round.
                     $rounds[$r]->matches[] = $match;
-                    $rounds[$match->round]->participants[] = $match->party->blue;
+
+                    // Also copy the participant to the next round its belongs to.
+                    array_push(
+                        $rounds[$match->round]->participants,
+                        ...$match->party->toArray()
+                    );
 
                     continue;
                 }
 
                 $rounds[$match->round]->matches[] = $match;
+
+                // Once we've done registering the match to its desire round,
+                // now we should registers the match as a participant of the
+                // next round.
                 $nextRound = $match->round + 1;
 
                 if (! array_key_exists($nextRound, $rounds)) {
                     $rounds[$nextRound] = new Round($nextRound);
                 }
 
-                $rounds[$nextRound]->participants[] = new Party(
-                    $match->id,
-                    $match->nextSide
-                );
-
-                if ($r === 0) {
-                    continue;
-                }
-
-                foreach ($match->party as $side) {
-                    $fromMatch = $side instanceof Party;
-
-                    foreach ($rounds[$r - 1]->matches as $m => $parent) {
-                        if (
-                            ($fromMatch && $side->id === $parent->id) ||
-                            $parent->party->have($side->id)
-                        ) {
-                            $rounds[$r - 1]->matches[$m]->nextId = $match->id;
-                        }
-                    }
-                }
-
+                $rounds[$nextRound]->participants[] = new Party($match->id, $match->nextSide);
             }
 
             $r++;
+
+            unset($nextRound, $match, $sides);
         }
 
         return $rounds;
@@ -220,18 +216,18 @@ class CalculateMatchups implements ShouldBeUnique, ShouldQueue
 
     /**
      * @param  list<Sided>  $parties
-     * @param  list<int>  $byes
      * @param  list<Matchup>  $matches
+     * @param  list<int>  $byes
      * @return list<Matchup>
      */
     public function createMatches(
         array $parties,
         int $round,
-        array &$byes = [],
         array &$matches = [],
+        array &$byes = [],
     ): array {
-        $half = floor(count($parties) / 2);
-        $chunks = $half >= 2 ? array_chunk($parties, 2) : [$parties, []];
+        $half = (int) floor(count($parties) / 2);
+        $chunks = $half >= 2 ? array_chunk($parties, $half) : [$parties, []];
 
         if (empty($byes)) {
             foreach ($parties as $p => $party) {
@@ -248,7 +244,7 @@ class CalculateMatchups implements ShouldBeUnique, ShouldQueue
 
             // Recusively calculate when the number of `matchups` on `round` 0 is 5 or more
             if ($round === 0 && $total > 5) {
-                $this->createMatches($parties, $round, $byes, $matches);
+                $this->createMatches($parties, $round, $matches, $byes);
 
                 continue;
             }
@@ -263,14 +259,14 @@ class CalculateMatchups implements ShouldBeUnique, ShouldQueue
                 $match = new Matchup($party, count($matches), $round);
                 $isLast = $total > 1 && ($p + 1) === $total;
 
-                // Turn next side into `blue` if this entry is a singular and
-                // not the last one.
+                // Turn next side into `blue` if this is a bye match and was not
+                // the last match in this round.
                 if ($party->isBye() || ! $isLast) {
                     $match->nextSide = MatchSide::Blue;
                 }
 
                 // Force next side to be `red` when it was the last match in
-                // the split or the previous registered match was a singularn.
+                // the split or the previous registered match was a bye match.
                 if ($isLast || $prevMatch?->party->isBye()) {
                     $match->nextSide = MatchSide::Red;
                 }
@@ -316,7 +312,7 @@ class CalculateMatchups implements ShouldBeUnique, ShouldQueue
     }
 
     /**
-     * @param  Collection<int,   $athletes
+     * @param  Collection<int, Person>  $athletes
      * @return list<Person>
      */
     public function prepareAthletes(Collection $athletes): array

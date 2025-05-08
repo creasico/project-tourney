@@ -12,6 +12,86 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Event;
 use PHPUnit\Framework\ExpectationFailedException;
 
+/**
+ * @var list<list<int>>
+ */
+$structures = [
+    2 => [2],
+    3 => [1, 2],
+    4 => [2, 2],
+    5 => [2, 1, 2],
+];
+
+foreach (range(3, 50) as $c) {
+    if (isset($structures[$c])) {
+        continue;
+    }
+
+    $upper = floor($c / 2);
+    $lower = $c - $upper;
+
+    $structures[$c] = array_reduce([$upper, $lower], static function ($result, $size) use ($structures) {
+        $prev = $structures[$size] ?? null;
+
+        if ($prev) {
+            array_push($result, ...$prev);
+        }
+
+        return $result;
+    }, []);
+}
+
+/**
+ * @var list<array{int, int, list<int>}>
+ */
+$divisions = [];
+$slices = [
+    5 => [
+        3 => [3, 2],
+    ],
+    7 => [
+        3 => [3, 4],
+        4 => [4, 3],
+    ],
+    9 => [
+        4 => [4, 3, 2],
+        5 => [5, 4],
+    ],
+    10 => [
+        3 => [3, 3, 4],
+        4 => [4, 3, 3],
+    ],
+    11 => [
+        3 => [3, 3, 3, 2],
+        4 => [4, 4, 3],
+        5 => [5, 3, 3],
+    ],
+    12 => [
+        3 => [3, 3, 3, 3],
+        4 => [4, 4, 4],
+        5 => [5, 4, 3],
+        7 => [7, 5],
+    ],
+];
+
+foreach ($structures as $key => $val) {
+    $divisions[] = [$key, 0, [$key]];
+
+    if ($key === 15) {
+        break;
+    }
+
+    if (! array_key_exists($key, $slices)) {
+        continue;
+    }
+
+    foreach ($slices[$key] as $k => $v) {
+        $divisions[] = [$key, $k, $v];
+    }
+}
+
+$divisions = collect($divisions);
+
 it('should not proceed a tournament with no classification', function () {
     $tournament = Tournament::factory()
         ->published()
@@ -35,31 +115,13 @@ it('should not proceed a tournament with no athletes', function () {
     ))->handle();
 })->throws(UnprocessableMatchupException::class, 'No athletes found');
 
-$structures = collect([
-    [4, 4, [4]],
-    [5, 3, [3, 2]],
-    [7, 3, [3, 4]],
-    [9, 4, [4, 3, 2]],
-    [10, 3, [3, 3, 4]],
-    [10, 4, [4, 3, 3]],
-    [11, 3, [3, 3, 3, 2]],
-    [11, 4, [4, 4, 3]],
-    [11, 5, [5, 3, 3]],
-    [12, 3, [3, 3, 3, 3]],
-    [12, 4, [4, 4, 4]],
-    [12, 5, [5, 4, 3]],
-    [12, 7, [7, 5]],
-]);
-
 it('should calculate matchups with :dataset', function (Tournament $tournament, int $expected) {
     Event::fake(MatchupInitialized::class);
 
-    $job = new CalculateMatchups(
+    (new CalculateMatchups(
         $tournament,
         $tournament->classes->first()->getKey()
-    );
-
-    $job->handle();
+    ))->handle();
 
     Event::assertDispatchedTimes(MatchupInitialized::class, $expected);
 
@@ -77,7 +139,7 @@ it('should calculate matchups with :dataset', function (Tournament $tournament, 
 
         return $event->tournament->id === $tournament->id;
     });
-})->with($structures->mapWithKeys(function ($value) {
+})->with($divisions->mapWithKeys(function ($value) {
     [$total, $division, $expected] = $value;
     $exp = implode(' ', $expected);
 
@@ -94,19 +156,41 @@ it('should calculate matchups with :dataset', function (Tournament $tournament, 
     ];
 })->toArray());
 
-describe('::divide()', function () use ($structures) {
-    beforeEach(function () {
-        $ref = new ReflectionClass(CalculateMatchups::class);
+describe('::createRounds()', function () use ($structures) {
+    it('creates rounds from :dataset', function (array $items) {
+        /** @var CalculateMatchups */
+        $ref = (new ReflectionClass(CalculateMatchups::class))
+            ->newInstanceWithoutConstructor();
 
-        $this->calc = $ref->newInstanceWithoutConstructor();
-    });
+        $rounds = $ref->createRounds($items);
 
+        dump($rounds);
+
+        expect(true)->toBeTrue();
+    })->with(collect($structures)->mapWithKeys(function ($val, $count) {
+        $text = implode(' ', $val);
+
+        return [
+            "{$count} athletes" => [
+                fn () => Person::factory($count)
+                    ->asAthlete()
+                    ->withContinent()
+                    ->createMany()
+                    ->all(),
+                $val,
+            ],
+        ];
+    })->take(16)->all());
+});
+
+describe('::divide()', function () use ($divisions) {
     it('can divide with :dataset', function (int $division, array $items, array $expect) {
         /** @var CalculateMatchups */
-        $calc = $this->calc;
+        $ref = (new ReflectionClass(CalculateMatchups::class))
+            ->newInstanceWithoutConstructor();
 
         $result = array_reduce(
-            $calc->divide($items, $division, count($items)),
+            $ref->divide($items, $division, count($items)),
             function (array $result, $items) {
                 $result[] = count($items);
 
@@ -116,7 +200,7 @@ describe('::divide()', function () use ($structures) {
         );
 
         expect($result)->toBe($expect);
-    })->with($structures->mapWithKeys(function ($item) {
+    })->with($divisions->mapWithKeys(function ($item) {
         [$total, $division, $expected] = $item;
         $exp = implode(' ', $expected);
 
@@ -139,9 +223,11 @@ describe('::prepareAthletes()', function () {
             collect()
         );
 
-        $ref = new ReflectionClass(CalculateMatchups::class);
+        /** @var CalculateMatchups */
+        $ref = (new ReflectionClass(CalculateMatchups::class))
+            ->newInstanceWithoutConstructor();
 
-        $result = $ref->newInstanceWithoutConstructor()->prepareAthletes($athletes);
+        $result = $ref->prepareAthletes($athletes);
 
         // Ensure nothing is left behind
         expect($result)->toHaveCount($athletes->count());
@@ -170,32 +256,7 @@ describe('::prepareAthletes()', function () {
     ])->toArray());
 });
 
-describe('::determineSide()', function () {
-    $structures = [
-        3 => [1, 2],
-        4 => [2, 2],
-        5 => [2, 1, 2],
-    ];
-
-    foreach (range(3, 50) as $c) {
-        if (isset($structures[$c])) {
-            continue;
-        }
-
-        $upper = floor($c / 2);
-        $lower = $c - $upper;
-
-        $structures[$c] = array_reduce([$upper, $lower], function ($result, $size) use ($structures) {
-            $prev = $structures[$size] ?? null;
-
-            if ($prev) {
-                array_push($result, ...$prev);
-            }
-
-            return $result;
-        }, []);
-    }
-
+describe('::determineSide()', function () use ($structures) {
     /**
      * @param  Collection<int, Person>  $athletes
      * @param  int[]  $structure
@@ -215,7 +276,7 @@ describe('::determineSide()', function () {
         $text = implode(' ', $val);
 
         return [
-            "{$key} athletes [{$text}]" => [
+            "{$key} to [{$text}]" => [
                 fn () => Person::factory($key)
                     ->asAthlete()
                     ->createMany(),

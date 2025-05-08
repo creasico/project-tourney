@@ -7,15 +7,20 @@ namespace App\Support;
 use App\Enums\MatchSide;
 use Illuminate\Support\Str;
 
+/**
+ * State class to hold matchup information before get stored in the database.
+ */
 final class Matchup
 {
     public readonly string $id;
 
-    public readonly bool $isBye;
+    public bool $isBye;
 
     public ?string $nextId = null;
 
     public ?MatchSide $nextSide = null;
+
+    public bool $isHidden = false;
 
     public function __construct(
         public readonly Sided $party,
@@ -27,6 +32,7 @@ final class Matchup
 
         if ($party->isBye()) {
             $this->round++;
+            $this->isHidden = true;
         }
     }
 }
