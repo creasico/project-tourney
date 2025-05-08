@@ -11,6 +11,8 @@ use Illuminate\Contracts\Support\Arrayable;
 use IteratorAggregate;
 
 /**
+ * State class to hold matchup information while calculating a match.
+ *
  * @implements IteratorAggregate<string, Person|Party|null>
  */
 final class Sided implements Arrayable, Countable, IteratorAggregate

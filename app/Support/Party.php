@@ -7,6 +7,9 @@ namespace App\Support;
 use App\Enums\MatchSide;
 use Illuminate\Contracts\Support\Arrayable;
 
+/**
+ * State class to hold participant information while calculating matches on each round.
+ */
 final class Party implements Arrayable
 {
     public function __construct(

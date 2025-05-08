@@ -8,6 +8,9 @@ use App\Models\Participation;
 use App\Models\Person;
 use Filament\Support\Contracts\HasLabel;
 
+/**
+ * State class to hold participant information to diplay in the UI.
+ */
 class Athlete implements HasLabel
 {
     public readonly string $display;

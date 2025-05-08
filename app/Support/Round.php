@@ -6,6 +6,9 @@ namespace App\Support;
 
 use Illuminate\Support\Arr;
 
+/**
+ * State class to hold round information while calculating its matches.
+ */
 final class Round
 {
     /**

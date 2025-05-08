@@ -18,8 +18,14 @@ final class Matchup
 
     public bool $isHidden = false;
 
+    /**
+     * Match ID on the next round.
+     */
     public ?string $nextId = null;
 
+    /**
+     * Match side on the next round.
+     */
     public MatchSide $nextSide;
 
     public function __construct(
@@ -31,8 +37,8 @@ final class Matchup
         $this->id = strtolower((string) Str::ulid());
         $this->isBye = $party->isBye() || $bye;
 
+        // Hide and relocate this match to next round when it was a bye match.
         if ($this->isBye) {
-            // Hide and relocate this match to next round when it was a bye match.
             $this->round++;
             $this->isHidden = true;
         }
