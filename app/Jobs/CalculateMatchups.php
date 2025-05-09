@@ -586,15 +586,9 @@ class CalculateMatchups implements ShouldBeUnique, ShouldQueue
      */
     private function collectByes(array $items)
     {
-        $byes = [];
-
-        foreach ($items as $i => $item) {
-            if ($item->isBye()) {
-                $byes[] = $i;
-            }
-        }
-
-        return $byes;
+        return array_keys(
+            array_filter($items, fn (Sided $item) => $item->isBye())
+        );
     }
 
     /**

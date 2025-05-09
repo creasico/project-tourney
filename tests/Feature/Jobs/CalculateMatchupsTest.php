@@ -23,7 +23,9 @@ $structures = [
     5 => [2, 1, 2],
 ];
 
-foreach (range(3, 50) as $c) {
+$ranges = range(3, 50);
+
+foreach ($ranges as $c) {
     if (isset($structures[$c])) {
         continue;
     }
@@ -77,10 +79,6 @@ $slices = [
 
 foreach ($structures as $key => $val) {
     $divisions[] = [$key, 0, [$key]];
-
-    if ($key === 15) {
-        break;
-    }
 
     if (! array_key_exists($key, $slices)) {
         continue;
@@ -145,7 +143,7 @@ it('should calculate matchups with :dataset', function (Tournament $tournament, 
     $exp = implode(' ', $expected);
 
     return [
-        "{$total} by {$division} to [{$exp}]" => [
+        "p:{$total} d:{$division} [{$exp}]" => [
             fn () => Tournament::factory()
                 ->published()
                 ->withClassifications(division: $division)
@@ -157,60 +155,40 @@ it('should calculate matchups with :dataset', function (Tournament $tournament, 
     ];
 })->toArray());
 
-describe('::createRounds()', function () {
+describe('::createRounds()', function () use ($ranges) {
+    /**
+     * @var list<list<int>>
+     */
     $charts = [
         2 => [1],
         3 => [1, 1],
         4 => [2, 1],
-        5 => [1, 2, 1],
-        6 => [2, 2, 1],
-        7 => [3, 2, 1],
-        8 => [4, 2, 1],
-        9 => [1, 4, 2, 1],
-        10 => [2, 4, 2, 1],
-        11 => [3, 4, 2, 1],
-        12 => [4, 4, 2, 1],
-        13 => [5, 4, 2, 1],
-        14 => [6, 4, 2, 1],
-        15 => [7, 4, 2, 1],
-        16 => [8, 4, 2, 1],
-        17 => [1, 8, 4, 2, 1],
-        18 => [2, 8, 4, 2, 1],
-        19 => [3, 8, 4, 2, 1],
-        20 => [4, 8, 4, 2, 1],
-        21 => [5, 8, 4, 2, 1],
-        22 => [6, 8, 4, 2, 1],
-        23 => [7, 8, 4, 2, 1],
-        24 => [8, 8, 4, 2, 1],
-        25 => [9, 8, 4, 2, 1],
-        26 => [10, 8, 4, 2, 1],
-        27 => [11, 8, 4, 2, 1],
-        28 => [12, 8, 4, 2, 1],
-        29 => [13, 8, 4, 2, 1],
-        30 => [14, 8, 4, 2, 1],
-        31 => [15, 8, 4, 2, 1],
-        32 => [16, 8, 4, 2, 1],
-        33 => [1, 16, 8, 4, 2, 1],
-        34 => [2, 16, 8, 4, 2, 1],
-        35 => [3, 16, 8, 4, 2, 1],
-        36 => [4, 16, 8, 4, 2, 1],
-        37 => [5, 16, 8, 4, 2, 1],
-        38 => [6, 16, 8, 4, 2, 1],
-        39 => [7, 16, 8, 4, 2, 1],
-        40 => [8, 16, 8, 4, 2, 1],
-        41 => [9, 16, 8, 4, 2, 1],
-        42 => [10, 16, 8, 4, 2, 1],
-        43 => [11, 16, 8, 4, 2, 1],
-        44 => [12, 16, 8, 4, 2, 1],
-        45 => [13, 16, 8, 4, 2, 1],
-        46 => [14, 16, 8, 4, 2, 1],
-        47 => [15, 16, 8, 4, 2, 1],
-        48 => [16, 16, 8, 4, 2, 1],
-        49 => [17, 16, 8, 4, 2, 1],
-        50 => [18, 16, 8, 4, 2, 1],
     ];
 
-    it('creates rounds with :dataset', function (array $items, array $charts) {
+    $prev = [];
+    $i = 0;
+
+    foreach ($ranges as $c) {
+        if (isset($charts[$c])) {
+            $prev = $charts[$c];
+
+            continue;
+        }
+
+        $i++;
+        $curr = $prev;
+
+        array_unshift($curr, $i);
+
+        $charts[$c] = $curr;
+
+        if ($c / 2 === $i) {
+            $prev = $charts[$c];
+            $i = 0;
+        }
+    }
+
+    it('create rounds with :dataset', function (array $items, array $charts) {
         /** @var CalculateMatchups */
         $ref = (new ReflectionClass(CalculateMatchups::class))
             ->newInstanceWithoutConstructor();
@@ -253,7 +231,7 @@ describe('::createRounds()', function () {
 });
 
 describe('::divide()', function () use ($divisions) {
-    it('can divide with :dataset', function (int $division, array $items, array $expect) {
+    it('create match divisions with :dataset', function (int $division, array $items, array $expect) {
         /** @var CalculateMatchups */
         $ref = (new ReflectionClass(CalculateMatchups::class))
             ->newInstanceWithoutConstructor();
@@ -274,7 +252,7 @@ describe('::divide()', function () use ($divisions) {
         $exp = implode(' ', $expected);
 
         return [
-            "{$total} by {$division} to [{$exp}]" => [
+            "p:{$total} d:{$division} [{$exp}]" => [
                 $division,
                 fn () => Person::factory($total)->make()->pluck('name')->all(),
                 $expected,
@@ -285,7 +263,7 @@ describe('::divide()', function () use ($divisions) {
 
 describe('::prepareAthletes()', function () {
     /** @param Collection<int, Continent> $continents */
-    it('should randomize :dataset', function (Collection $continents) {
+    it('should randomize continents with :dataset', function (Collection $continents) {
         /** @var Collection<int, \App\Models\Person> */
         $athletes = $continents->reduce(
             fn (Collection $result, $continent) => $result->push(...$continent->athletes),
@@ -317,7 +295,7 @@ describe('::prepareAthletes()', function () {
             }
         }
     })->with(collect(range(1, 20))->mapWithKeys(fn ($val) => [
-        "{$val} continents" => [
+        "c:{$val}" => [
             fn () => Continent::factory($val)
                 ->withAthletes(fn () => fake()->numberBetween(2, 9))
                 ->createMany(),
@@ -330,7 +308,7 @@ describe('::determineSide()', function () use ($structures) {
      * @param  Collection<int, Person>  $athletes
      * @param  int[]  $structure
      */
-    it('should calculate :dataset', function (Collection $athletes, array $expected) {
+    it('should distribute participants with :dataset', function (Collection $athletes, array $expected) {
         $ref = new ReflectionClass(CalculateMatchups::class);
 
         $result = $ref->newInstanceWithoutConstructor()->determineSide($athletes->all());
@@ -345,7 +323,7 @@ describe('::determineSide()', function () use ($structures) {
         $text = implode(' ', $val);
 
         return [
-            "{$key} to [{$text}]" => [
+            "p:{$key} [{$text}]" => [
                 fn () => Person::factory($key)
                     ->asAthlete()
                     ->createMany(),

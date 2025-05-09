@@ -54,7 +54,7 @@ final class Matchup
     /**
      * @codeCoverageIgnore
      */
-    public function __debugInfo()
+    public function __debugInfo(): array
     {
         return [
             'id' => $this->id,

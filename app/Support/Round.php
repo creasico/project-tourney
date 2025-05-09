@@ -39,7 +39,7 @@ final class Round
         ];
     }
 
-    public function contains(Matchup|Party $match)
+    public function contains(Matchup|Party $match): bool
     {
         if (empty($this->matches)) {
             return false;
@@ -48,7 +48,7 @@ final class Round
         return Arr::first($this->matches, fn ($m) => $m->id === $match->id) !== null;
     }
 
-    public function isEmpty()
+    public function isEmpty(): bool
     {
         return empty($this->matches) && count($this->participants) === 1;
     }
