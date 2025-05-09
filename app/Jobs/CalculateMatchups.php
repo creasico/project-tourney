@@ -230,6 +230,32 @@ class CalculateMatchups implements ShouldBeUnique, ShouldQueue
             $round++;
         }
 
+        $order = 1;
+
+        // Lets normalize the output by ordering each matches.
+        foreach ($rounds as $r => $round) {
+            foreach ($round->matches as $match) {
+                $match->order = $order++;
+
+                if ($r === 0) {
+                    continue;
+                }
+
+                // Final touch is linking this match to their parent.
+                foreach ($match->party as $party) {
+                    if ($party instanceof Person) {
+                        continue;
+                    }
+
+                    foreach ($rounds[$r - 1]->matches as &$parent) {
+                        if ($parent->id === $party->id) {
+                            $parent->nextId = $match->id;
+                        }
+                    }
+                }
+            }
+        }
+
         return $rounds;
     }
 

@@ -31,6 +31,8 @@ final class Matchup
      */
     public int $gap = 0;
 
+    public int $order = 0;
+
     public function __construct(
         public readonly Sided $party,
         public int $index,
@@ -57,6 +59,7 @@ final class Matchup
         return [
             'id' => $this->id,
             'index' => $this->index,
+            'order' => $this->order,
             'gap' => $this->gap,
             'round' => $this->round,
             'isBye' => $this->isBye,

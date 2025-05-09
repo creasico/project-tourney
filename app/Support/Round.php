@@ -39,7 +39,7 @@ final class Round
         ];
     }
 
-    public function contains(Matchup $match)
+    public function contains(Matchup|Party $match)
     {
         if (empty($this->matches)) {
             return false;

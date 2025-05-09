@@ -13,7 +13,7 @@ use IteratorAggregate;
 /**
  * State class to hold matchup information while calculating a match.
  *
- * @implements IteratorAggregate<string, Person|Party|null>
+ * @implements IteratorAggregate<string, Person|Party>
  */
 final class Sided implements Arrayable, Countable, IteratorAggregate
 {
