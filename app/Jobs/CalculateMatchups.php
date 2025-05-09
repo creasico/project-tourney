@@ -98,9 +98,11 @@ class CalculateMatchups implements ShouldBeUnique, ShouldQueue
                             'division_id' => $division->id,
                             'round_number' => $r,
                             'is_bye' => $match->isBye,
-                            'order' => count($matches),
+                            'order' => $match->order,
+                            'party_number' => $match->order,
                             'attr' => [
                                 'index' => $match->index,
+                                'gap' => $match->gap,
                             ],
                         ];
 
