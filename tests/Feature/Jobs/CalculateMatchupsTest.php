@@ -12,6 +12,7 @@ use App\Support\Matchup;
 use App\Support\Round;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Event;
+use PHPUnit\Framework\AssertionFailedError;
 use PHPUnit\Framework\ExpectationFailedException;
 
 /**
@@ -158,8 +159,60 @@ it('should calculate matchups with :dataset', function (Tournament $tournament, 
     ];
 })->toArray());
 
-describe('::createRounds()', function () use ($structures) {
-    it('creates rounds from :dataset', function (array $items) {
+describe('::createRounds()', function () {
+    $charts = [
+        2 => [1],
+        3 => [1, 1],
+        4 => [2, 1],
+        5 => [1, 2, 1],
+        6 => [2, 2, 1],
+        7 => [3, 2, 1],
+        8 => [4, 2, 1],
+        9 => [1, 4, 2, 1],
+        10 => [2, 4, 2, 1],
+        11 => [3, 4, 2, 1],
+        12 => [4, 4, 2, 1],
+        13 => [5, 4, 2, 1],
+        14 => [6, 4, 2, 1],
+        15 => [7, 4, 2, 1],
+        16 => [8, 4, 2, 1],
+        17 => [1, 8, 4, 2, 1],
+        18 => [2, 8, 4, 2, 1],
+        19 => [3, 8, 4, 2, 1],
+        20 => [4, 8, 4, 2, 1],
+        21 => [5, 8, 4, 2, 1],
+        22 => [6, 8, 4, 2, 1],
+        23 => [7, 8, 4, 2, 1],
+        24 => [8, 8, 4, 2, 1],
+        25 => [9, 8, 4, 2, 1],
+        26 => [10, 8, 4, 2, 1],
+        27 => [11, 8, 4, 2, 1],
+        28 => [12, 8, 4, 2, 1],
+        29 => [13, 8, 4, 2, 1],
+        30 => [14, 8, 4, 2, 1],
+        31 => [15, 8, 4, 2, 1],
+        32 => [16, 8, 4, 2, 1],
+        33 => [1, 16, 8, 4, 2, 1],
+        34 => [2, 16, 8, 4, 2, 1],
+        35 => [3, 16, 8, 4, 2, 1],
+        36 => [4, 16, 8, 4, 2, 1],
+        37 => [5, 16, 8, 4, 2, 1],
+        38 => [6, 16, 8, 4, 2, 1],
+        39 => [7, 16, 8, 4, 2, 1],
+        40 => [8, 16, 8, 4, 2, 1],
+        41 => [9, 16, 8, 4, 2, 1],
+        42 => [10, 16, 8, 4, 2, 1],
+        43 => [11, 16, 8, 4, 2, 1],
+        44 => [12, 16, 8, 4, 2, 1],
+        45 => [13, 16, 8, 4, 2, 1],
+        46 => [14, 16, 8, 4, 2, 1],
+        47 => [15, 16, 8, 4, 2, 1],
+        48 => [16, 16, 8, 4, 2, 1],
+        49 => [17, 16, 8, 4, 2, 1],
+        50 => [18, 16, 8, 4, 2, 1],
+    ];
+
+    it('creates rounds with :dataset', function (array $items, array $charts) {
         /** @var CalculateMatchups */
         $ref = (new ReflectionClass(CalculateMatchups::class))
             ->newInstanceWithoutConstructor();
@@ -168,7 +221,9 @@ describe('::createRounds()', function () use ($structures) {
 
         $dump = collect($rounds)->reduce(function (array $out, Round $round) {
             $out[] = (object) [
-                'participants' => collect($round->participants)->toArray(),
+                'participants' => collect($round->participants)->mapWithKeys(fn ($p) => [
+                    $p->id => sprintf('%s(%s)', $p::class, $p->side?->value ?? 'none'),
+                ])->toArray(),
                 'matches' => collect($round->matches)->map(fn (Matchup $m) => (object) [
                     'id' => $m->id,
                     'index' => $m->index,
@@ -178,27 +233,45 @@ describe('::createRounds()', function () use ($structures) {
                     'nextId' => $m->nextId,
                     'nextSide' => $m->nextSide->value,
                     'isHidden' => $m->isHidden,
-                    'party' => collect($m->party->toArray())->toArray(),
+                    'party' => collect($m->party)->mapWithKeys(fn ($p) => [
+                        $p->id => $p::class,
+                    ])->toArray(),
                 ])->all(),
             ];
 
             return $out;
         }, []);
 
-        // dump($dump);
+        try {
+            expect($rounds)->toHaveCount(
+                $c = count($charts),
+                sprintf('Expected to generate %d rounds, %d recieved', $c, count($rounds))
+            );
 
-        expect(true)->toBeTrue();
-    })->with(collect($structures)->mapWithKeys(function ($val, $count) {
-        $text = implode(' ', $val);
+            foreach ($charts as $round => $matches) {
+                expect($rounds[$round]->matches)->toHaveCount(
+                    $matches,
+                    sprintf('Expected round %d to have %d matches', $round, $matches)
+                );
+            }
+        } catch (AssertionFailedError $err) {
+            dump($dump);
+
+            throw $err;
+        }
+    })->with(collect($charts)->mapWithKeys(function ($charts, $count) {
+        $text = implode(' ', $charts);
+        $sum = array_sum($charts);
+        $rounds = count($charts);
 
         return [
-            "{$count} athletes" => [
+            "p:{$count} r:{$rounds} m:{$sum} [{$text}]" => [
                 fn () => Person::factory($count)
                     ->asAthlete()
                     ->withContinent()
                     ->createMany()
                     ->all(),
-                $val,
+                $charts,
             ],
         ];
     })->all());
