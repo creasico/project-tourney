@@ -6,8 +6,9 @@ namespace App\Enums;
 
 use App\Support\ArrayableEnum;
 use App\Support\OptionableEnum;
+use Filament\Support\Contracts\HasLabel;
 
-enum TournamentLevel: int
+enum TournamentLevel: int implements HasLabel
 {
     use ArrayableEnum, OptionableEnum;
 
@@ -19,7 +20,7 @@ enum TournamentLevel: int
 
     case District = 4;
 
-    public function label(): string
+    public function getLabel(): string
     {
         return trans('tournament.level.'.str($this->name)->slug());
     }

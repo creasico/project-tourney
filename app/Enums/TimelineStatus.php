@@ -6,8 +6,9 @@ namespace App\Enums;
 
 use App\Support\ArrayableEnum;
 use App\Support\OptionableEnum;
+use Filament\Support\Contracts\HasLabel;
 
-enum TimelineStatus: int
+enum TimelineStatus: int implements HasLabel
 {
     use ArrayableEnum, OptionableEnum;
 
@@ -19,7 +20,7 @@ enum TimelineStatus: int
 
     case Finished = 3;
 
-    public function label(): string
+    public function getLabel(): string
     {
         return trans('app.timeline_status.'.str($this->name)->slug());
     }

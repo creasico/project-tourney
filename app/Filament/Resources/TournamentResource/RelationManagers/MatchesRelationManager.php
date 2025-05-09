@@ -74,6 +74,7 @@ class MatchesRelationManager extends RelationManager
                     'blue.continent',
                     'red.continent',
                     'participations',
+                    'parties',
                     'division',
                     'winning',
                     'next',
@@ -158,7 +159,6 @@ class MatchesRelationManager extends RelationManager
                     'warning' => static fn (Matchup $record) => $record->status->isScheduled(),
                     'info' => static fn (Matchup $record) => $record->status->isDraft(),
                 ])
-                ->formatStateUsing(static fn (Matchup $record) => $record->status->label())
                 ->width('10%')
                 ->badge()
                 ->alignCenter(),
@@ -233,11 +233,9 @@ class MatchesRelationManager extends RelationManager
                         Components\Select::make('athlete')
                             ->native(false)
                             ->options(
-                                fn (Matchup $record) => $record->athletes->mapWithKeys(function ($athlete) {
-                                    return [
-                                        $athlete->id => "{$athlete->party->side->label()} - {$athlete->name}",
-                                    ];
-                                })
+                                fn (Matchup $record) => $record->athletes->mapWithKeys(fn ($athlete) => [
+                                    $athlete->id => "{$athlete->party->side->getLabel()} - {$athlete->name}",
+                                ])
                             ),
                     ])
                     ->action(function (Matchup $record, array $data) {

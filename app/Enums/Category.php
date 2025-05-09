@@ -6,8 +6,9 @@ namespace App\Enums;
 
 use App\Support\ArrayableEnum;
 use App\Support\OptionableEnum;
+use Filament\Support\Contracts\HasLabel;
 
-enum Category: int
+enum Category: int implements HasLabel
 {
     use ArrayableEnum, OptionableEnum;
 
@@ -19,7 +20,7 @@ enum Category: int
 
     case Group = 4;
 
-    public function label(): string
+    public function getLabel(): string
     {
         return trans('category.'.str($this->name)->slug());
     }

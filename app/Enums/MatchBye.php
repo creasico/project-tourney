@@ -6,8 +6,9 @@ namespace App\Enums;
 
 use App\Support\ArrayableEnum;
 use App\Support\OptionableEnum;
+use Filament\Support\Contracts\HasLabel;
 
-enum MatchBye: string
+enum MatchBye: string implements HasLabel
 {
     use ArrayableEnum, OptionableEnum;
 
@@ -15,7 +16,7 @@ enum MatchBye: string
 
     case Down = 'down';
 
-    public function label(): string
+    public function getLabel(): string
     {
         return trans('match.bye.'.$this->value);
     }

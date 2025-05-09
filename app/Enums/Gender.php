@@ -6,8 +6,9 @@ namespace App\Enums;
 
 use App\Support\ArrayableEnum;
 use App\Support\OptionableEnum;
+use Filament\Support\Contracts\HasLabel;
 
-enum Gender: string
+enum Gender: string implements HasLabel
 {
     use ArrayableEnum, OptionableEnum;
 
@@ -15,7 +16,7 @@ enum Gender: string
 
     case Female = 'female';
 
-    public function label(): string
+    public function getLabel(): string
     {
         return trans('app.gender.'.$this->value);
     }

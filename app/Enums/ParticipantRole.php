@@ -6,8 +6,9 @@ namespace App\Enums;
 
 use App\Support\ArrayableEnum;
 use App\Support\OptionableEnum;
+use Filament\Support\Contracts\HasLabel;
 
-enum ParticipantRole: int
+enum ParticipantRole: int implements HasLabel
 {
     use ArrayableEnum, OptionableEnum;
 
@@ -15,7 +16,7 @@ enum ParticipantRole: int
 
     case Manager = 1;
 
-    public function label(): string
+    public function getLabel(): string
     {
         return trans('participant.role.'.str($this->name)->slug());
     }

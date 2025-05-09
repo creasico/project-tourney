@@ -65,8 +65,8 @@ class Classification extends Model
     {
         return Attribute::get(fn (): string => implode(' ', [
             $this->label,
-            $this->age_range?->label(),
-            $this->gender->label(),
+            $this->age_range?->getLabel(),
+            $this->gender->getLabel(),
         ]));
     }
 }

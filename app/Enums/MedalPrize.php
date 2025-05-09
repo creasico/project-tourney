@@ -6,8 +6,9 @@ namespace App\Enums;
 
 use App\Support\ArrayableEnum;
 use App\Support\OptionableEnum;
+use Filament\Support\Contracts\HasLabel;
 
-enum MedalPrize: int
+enum MedalPrize: int implements HasLabel
 {
     use ArrayableEnum, OptionableEnum;
 
@@ -21,7 +22,7 @@ enum MedalPrize: int
 
     case Certificate = 4;
 
-    public function label(): string
+    public function getLabel(): string
     {
         return trans('tournament.prize.'.str($this->name)->slug());
     }

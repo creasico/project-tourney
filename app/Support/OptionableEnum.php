@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Support;
 
+use Filament\Support\Contracts\HasLabel;
+
 /**
  * @mixin \BackedEnum
  */
@@ -14,7 +16,7 @@ trait OptionableEnum
         $out = [];
 
         foreach (self::cases() as $case) {
-            $out[$case->value] = $case->label();
+            $out[$case->value] = $case instanceof HasLabel ? $case->getLabel() : $case->name;
         }
 
         return $out;
@@ -25,10 +27,7 @@ trait OptionableEnum
         $label = str($label)->lower();
 
         foreach (self::cases() as $case) {
-            if (
-                method_exists($case, 'label') &&
-                $label->is($case->label(), true)
-            ) {
+            if ($case instanceof HasLabel && $label->is($case->getLabel(), true)) {
                 return $case;
             }
 

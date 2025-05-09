@@ -6,8 +6,9 @@ namespace App\Enums;
 
 use App\Support\ArrayableEnum;
 use App\Support\OptionableEnum;
+use Filament\Support\Contracts\HasLabel;
 
-enum AgeRange: int
+enum AgeRange: int implements HasLabel
 {
     use ArrayableEnum, OptionableEnum;
 
@@ -46,7 +47,7 @@ enum AgeRange: int
      */
     case MasterII = 7;
 
-    public function label(): string
+    public function getLabel(): string
     {
         return trans('classification.age.'.str($this->name)->slug());
     }

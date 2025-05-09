@@ -104,12 +104,10 @@ class ClassesRelationManager extends RelationManager
 
             Columns\TextColumn::make('category')
                 ->label(trans('category.singular'))
-                ->formatStateUsing(fn (Classification $record) => $record->category->label())
                 ->width('8%'),
 
             Columns\TextColumn::make('bye')
                 ->label(trans('match.field.bye'))
-                ->formatStateUsing(fn (Classification $record) => $record->bye->label())
                 ->width('8%')
                 ->alignCenter(),
 

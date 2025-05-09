@@ -132,7 +132,6 @@ class TournamentResource extends Resource
                     'warning' => static fn (Tournament $record) => $record->status->isScheduled(),
                     'info' => static fn (Tournament $record) => $record->status->isDraft(),
                 ])
-                ->formatStateUsing(static fn (Tournament $record) => $record->status->label())
                 ->width('10%')
                 ->badge()
                 ->alignCenter(),

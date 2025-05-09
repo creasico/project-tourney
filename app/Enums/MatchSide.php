@@ -6,8 +6,9 @@ namespace App\Enums;
 
 use App\Support\ArrayableEnum;
 use App\Support\OptionableEnum;
+use Filament\Support\Contracts\HasLabel;
 
-enum MatchSide: string
+enum MatchSide: string implements HasLabel
 {
     use ArrayableEnum, OptionableEnum;
 
@@ -15,7 +16,7 @@ enum MatchSide: string
 
     case Red = 'red';
 
-    public function label(): string
+    public function getLabel(): string
     {
         return trans('match.side.'.$this->value);
     }

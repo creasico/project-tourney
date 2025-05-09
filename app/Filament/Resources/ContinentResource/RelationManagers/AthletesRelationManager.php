@@ -8,7 +8,6 @@ use App\Enums\AgeRange;
 use App\Enums\Gender;
 use App\Filament\Resources\ContinentResource\WithMembershipRecord;
 use App\Models\Builders\PersonBuilder;
-use App\Models\Person;
 use Filament\Forms\Components;
 use Filament\Forms\Form;
 use Filament\Resources\RelationManagers\RelationManager;
@@ -46,7 +45,6 @@ class AthletesRelationManager extends RelationManager
             ->defaultGroup(
                 Group::make('classification.age_range')
                     ->label(trans('classification.field.age_range'))
-                    ->getTitleFromRecordUsing(fn (Person $record) => $record->classification->age_range->label())
             )
             ->columns($this->getMembershipTableColumns(true))
             ->filters([

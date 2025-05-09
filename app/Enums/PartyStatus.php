@@ -6,8 +6,9 @@ namespace App\Enums;
 
 use App\Support\ArrayableEnum;
 use App\Support\OptionableEnum;
+use Filament\Support\Contracts\HasLabel;
 
-enum PartyStatus: int
+enum PartyStatus: int implements HasLabel
 {
     use ArrayableEnum, OptionableEnum;
 
@@ -19,7 +20,7 @@ enum PartyStatus: int
 
     case Draw = 3;
 
-    public function label(): string
+    public function getLabel(): string
     {
         return trans('match.party_status.'.str($this->name)->slug());
     }

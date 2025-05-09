@@ -29,8 +29,8 @@ it('should be able to use existing athlete', function () {
         classification: $class->label,
         continent: $person->continent->name,
         name: $person->name,
-        gender: $person->gender->label(),
-        ageRange: $class->age_range->label(),
+        gender: $person->gender->getLabel(),
+        ageRange: $class->age_range->getLabel(),
     );
 
     expect($athlete->classification->getKey())->toBe($person->classification->getKey());
@@ -50,8 +50,8 @@ it('should be able to create new athlete if not exists', function () {
         classification: 'sample class',
         continent: 'sample continent',
         name: 'khusnul aslih',
-        gender: Gender::Male->label(),
-        ageRange: AgeRange::Junior->label(),
+        gender: Gender::Male->getLabel(),
+        ageRange: AgeRange::Junior->getLabel(),
     );
 
     expect($athlete->wasRecentlyCreated)->toBeTrue();

@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Filament\Resources\ContinentResource;
 
 use App\Enums\Gender;
-use App\Models\Person;
 use Filament\Forms\Components;
 use Filament\Tables\Actions;
 use Filament\Tables\Columns;
@@ -40,7 +39,6 @@ trait WithMembershipRecord
 
             Columns\TextColumn::make('gender')
                 ->label(trans('participant.field.gender'))
-                ->formatStateUsing(fn (Person $record) => $record->gender->label())
                 ->width('14%')
                 ->alignCenter(),
         ];

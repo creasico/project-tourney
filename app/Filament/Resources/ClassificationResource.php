@@ -36,8 +36,7 @@ class ClassificationResource extends Resource
                 ->description(fn (Classification $record) => $record->description),
 
             Columns\TextColumn::make('gender')
-                ->label(trans('participant.field.gender'))
-                ->formatStateUsing(fn (Classification $record) => $record->gender->label()),
+                ->label(trans('participant.field.gender')),
 
             Columns\TextColumn::make('weight_range')
                 ->label(trans('classification.field.weight_range')),
@@ -115,7 +114,7 @@ class ClassificationResource extends Resource
             ->defaultGroup(
                 Group::make('age_range')
                     ->label(trans('classification.field.age_range'))
-                    ->getTitleFromRecordUsing(fn (Classification $record) => $record->age_range->label())
+                // ->getTitleFromRecordUsing(fn (Classification $record) => $record->age_range)
             )
             ->columns(self::configureColumns())
             ->filters(self::configureFilters())

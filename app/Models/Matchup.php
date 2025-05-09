@@ -18,6 +18,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 
 class Matchup extends Model
@@ -61,6 +62,14 @@ class Matchup extends Model
     public function division(): BelongsTo
     {
         return $this->belongsTo(Division::class);
+    }
+
+    /**
+     * @return HasMany<MatchParty, Matchup>
+     */
+    public function parties(): HasMany
+    {
+        return $this->hasMany(MatchParty::class, 'match_id');
     }
 
     /**
@@ -188,8 +197,11 @@ class Matchup extends Model
 
     public function isDraw(): Attribute
     {
-        return Attribute::get(fn (): bool => $this->athletes->every(
-            fn (Person $athlete) => $athlete->party->status->isDraw()
+        return Attribute::get(fn () => $this->parties->whenNotEmpty(
+            fn (Collection $parties) => $parties->every(
+                fn (MatchParty $party) => $party->status->isDraw()
+            ),
+            fn () => false,
         ));
     }
 
