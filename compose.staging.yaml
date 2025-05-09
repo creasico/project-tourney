@@ -1,7 +1,7 @@
 services:
   app:
     image: ghcr.io/creasico/project-tourney
-    container_name: tourney_app
+    container_name: tourney-app
     env_file:
       - .env
     environment:
@@ -21,7 +21,7 @@ services:
       - mailpit
   pgsql:
     image: postgres:17-alpine
-    container_name: tourney_db
+    container_name: tourney-db
     # ports:
     #   - ${FORWARD_PGSQL_PORT:-5432}:5432
     environment:
@@ -37,7 +37,7 @@ services:
       timeout: 5s
   valkey:
     image: valkey/valkey:8.0-alpine
-    container_name: tourney_valkey
+    container_name: tourney-valkey
     # ports:
     #   - ${FORWARD_REDIS_PORT:-6379}:6379
     volumes:
@@ -48,7 +48,7 @@ services:
       retries: 3
   mailpit:
     image: axllent/mailpit:latest
-    container_name: tourney_mail
+    container_name: tourney-mail
     # ports:
     #   - ${FORWARD_MAILPIT_DASHBOARD_PORT:-8025}:8025
 

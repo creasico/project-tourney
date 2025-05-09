@@ -21,6 +21,7 @@ class MatchupInitialized
         public readonly Tournament $tournament,
         public readonly string $classId,
         public readonly int $divisionId,
+        public readonly array $matches,
     ) {}
 
     /**

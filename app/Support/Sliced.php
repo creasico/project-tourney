@@ -7,6 +7,10 @@ namespace App\Support;
 use ArrayIterator;
 use IteratorAggregate;
 
+/**
+ * State class to hold information while calculating which participants are
+ * belongs to which side on each match.
+ */
 final class Sliced implements IteratorAggregate
 {
     public function __construct(

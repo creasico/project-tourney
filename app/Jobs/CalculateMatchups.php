@@ -4,9 +4,14 @@ declare(strict_types=1);
 
 namespace App\Jobs;
 
+use App\Enums\MatchSide;
 use App\Events\MatchupInitialized;
+use App\Models\Person;
 use App\Models\Tournament;
 use App\Support\ClassifiedAthletes;
+use App\Support\Matchup;
+use App\Support\Party;
+use App\Support\Round;
 use App\Support\Sided;
 use App\Support\Sliced;
 use Illuminate\Bus\Batchable;
@@ -80,36 +85,262 @@ class CalculateMatchups implements ShouldBeUnique, ShouldQueue
                     'tournament_id' => $this->tournament->id,
                 ]);
 
-                foreach ($this->determineSide($participants) as $p => $parties) {
-                    $p++;
+                /** @var array<string, string> */
+                $matches = [];
+                $rounds = $this->createRounds($participants);
 
-                    $match = $this->tournament->matches()->create([
-                        'division_id' => $division->id,
-                        'class_id' => $class->id,
-                        'is_bye' => $parties->isBye(),
-                        'party_number' => $p,
-                        'attr' => [
-                            'index' => $p,
-                        ],
-                    ]);
+                krsort($rounds);
 
-                    $match->addAthletes($parties, $this->tournament);
+                foreach ($rounds as $r => $round) {
+                    foreach ($round->matches as $match) {
+                        $attrs = [
+                            'class_id' => $class->id,
+                            'division_id' => $division->id,
+                            'round_number' => $r,
+                            'is_bye' => $match->isBye,
+                            'order' => $match->order,
+                            'party_number' => $match->order,
+                            'attr' => [
+                                'index' => $match->index,
+                                'gap' => $match->gap,
+                            ],
+                        ];
+
+                        if ($match->nextId && array_key_exists($match->nextId, $matches)) {
+                            $attrs['next_id'] = $matches[$match->nextId];
+                            $attrs['next_side'] = $match->nextSide;
+                        }
+
+                        $matchup = $this->tournament->matches()->create($attrs);
+
+                        foreach ($match->party as $side => $party) {
+                            if ($party instanceof Person) {
+                                $matchup->addAthlete(
+                                    $party,
+                                    $this->tournament,
+                                    MatchSide::from($side),
+                                );
+                            }
+                        }
+
+                        $matches[$match->id] = $matchup->getKey();
+                    }
                 }
 
                 event(new MatchupInitialized(
-                    $this->tournament,
-                    $class->id,
-                    $division->id
+                    tournament: $this->tournament,
+                    classId: $class->id,
+                    divisionId: $division->id,
+                    matches: $matches,
                 ));
             }
         });
     }
 
     /**
+     * @param  list<Person>  $participants
+     * @param  list<Matchup>  $matches
+     * @return list<Round>
+     */
+    public function createRounds(array $participants, array $matches = []): array
+    {
+        /** @var list<Round> */
+        $rounds = [];
+        $items = $participants;
+        $round = 0;
+
+        while (true) {
+            if (! array_key_exists($round, $rounds)) {
+                // In case of the current iteration is actually already exists
+                // due to match relocation from previous match calculation.
+                $rounds[$round] = new Round($round, $items);
+            }
+
+            if ($round > 0) {
+                // On second round onward, we might have some participant already
+                // regitered from previous round and in current iteration all
+                // we need is take them as the basis for creating matches.
+                $items = $rounds[$round]->participants;
+                $matches = $rounds[$round]->matches;
+            }
+
+            $sides = $round === 0
+                ? $this->determineSide($items)
+                : $this->assignSide($items);
+
+            $byes = [];
+
+            foreach ($this->createMatches($sides, $round, $matches) as $match) {
+                if (! array_key_exists($match->round, $rounds)) {
+                    $rounds[$match->round] = new Round($match->round);
+                }
+
+                if ($rounds[$match->round]->contains($match)) {
+                    continue;
+                }
+
+                $lastBye = false;
+
+                if ($match->isBye) {
+                    $byes[] = $match->id;
+                } else {
+                    $lastBye = end($byes);
+                    $match->gap = count($byes);
+                    $byes = [];
+                }
+
+                if ($match->round > $round) {
+                    $match->nextSide = $match->getNextSide(
+                        count($rounds[$match->round]->matches)
+                    );
+                }
+
+                $rounds[$match->round]->matches[] = $match;
+
+                // Once we've done registering the match to its desire round,
+                // now we should registers the match as a participant of the
+                // next round.
+                $nextRound = $match->round + 1;
+
+                if (! array_key_exists($nextRound, $rounds)) {
+                    $rounds[$nextRound] = new Round($nextRound);
+                }
+
+                $party = new Party($match->id, $match->nextSide);
+
+                if ($lastBye && ! empty($rounds[$nextRound]->matches)) {
+                    foreach ($rounds[$nextRound]->matches as &$byeMatch) {
+                        if ($lastBye === $byeMatch->id && ! $byeMatch->party->red) {
+                            $byeMatch->party->red = $party;
+
+                            break;
+                        }
+                    }
+                } else {
+                    $rounds[$nextRound]->participants[] = $party;
+                }
+            }
+
+            unset($nextRound, $match, $sides, $party, $lastBye, $byes);
+
+            if ($rounds[$round]->isEmpty()) {
+                $rounds = array_slice($rounds, 0, $round);
+
+                break;
+            }
+
+            $round++;
+        }
+
+        $order = 1;
+
+        // Lets normalize the output by ordering each matches.
+        foreach ($rounds as $r => $round) {
+            foreach ($round->matches as $match) {
+                $match->order = $order++;
+
+                if ($r === 0) {
+                    continue;
+                }
+
+                // Final touch is linking this match to their parent.
+                foreach ($match->party as $party) {
+                    if ($party instanceof Person) {
+                        continue;
+                    }
+
+                    foreach ($rounds[$r - 1]->matches as &$parent) {
+                        if ($parent->id === $party->id) {
+                            $parent->nextId = $match->id;
+                        }
+                    }
+                }
+            }
+        }
+
+        return $rounds;
+    }
+
+    /**
+     * @param  list<Sided>  $items
+     * @param  list<Matchup>  $matches
+     * @param  list<int>  $byes
+     * @return list<Matchup>
+     */
+    public function createMatches(
+        array $items,
+        int $round,
+        array &$matches = [],
+        array &$byes = [],
+    ): array {
+        if (empty($items)) {
+            return $matches;
+        }
+
+        $parties = $items;
+        $half = (int) floor(count($parties) / 2);
+        $chunks = $half > 2 ? [
+            array_slice($parties, 0, $half),
+            array_slice($parties, $half),
+        ] : [$parties, []];
+
+        if (empty($byes)) {
+            $byes = $this->collectByes($parties);
+        }
+
+        $hasByes = count($byes) > 0;
+
+        foreach ($chunks as $c => $parties) {
+            $total = count($parties);
+
+            // Recusively calculate when the number of `parties` on `round` 0 is 5 or more
+            if ($round === 0 && $total > 5) {
+                $this->createMatches($parties, $round, $matches, $byes);
+
+                continue;
+            }
+
+            // Retrieve the last match on the previous chunk
+            $prevMatch = end($matches) ?: null;
+
+            // Reassure that the current chunk has bye mathces
+            if (! $hasByes && $prevMatch?->party->isBye() === false) {
+                $hasByes = count($this->collectByes($parties)) > 0;
+            }
+
+            foreach ($parties as $p => $party) {
+                // Get the match index based on number of already registered matches
+                $index = count($matches);
+
+                // Determine whether this one is a bye match based on previous iteration
+                $hasByes = $hasByes && $index <= end($byes);
+
+                if ($p > 0 && $matches[$index - 1]->party->isBye()) {
+                    $hasByes = false;
+                }
+
+                $match = new Matchup($party, $index, $round, $hasByes);
+
+                $isLast = $total > 1 && ($p + 1) === $total;
+
+                // Force next side to be `red` when it was the last match in
+                // the split or the previous registered match was a bye match.
+                if ($round === 0 && ($isLast || $prevMatch?->party->isBye())) {
+                    $match->nextSide = MatchSide::Red;
+                }
+
+                $matches[] = $match;
+            }
+        }
+
+        return $matches;
+    }
+
+    /**
      * Evenly distribute athletes for each matchup divisions.
      *
-     * @param  list<\App\Models\Person>  $athletes
-     * @return array<int, list<\App\Models\Person>>
+     * @param  list<Person>  $athletes
+     * @return array<int, list<Person>>
      */
     public function divide(array $athletes, int $division, int $count): array
     {
@@ -139,8 +370,8 @@ class CalculateMatchups implements ShouldBeUnique, ShouldQueue
     }
 
     /**
-     * @param  Collection<int, \App\Models\Person>  $athletes
-     * @return list<\App\Models\Person>
+     * @param  Collection<int, Person>  $athletes
+     * @return list<Person>
      */
     public function prepareAthletes(Collection $athletes): array
     {
@@ -196,7 +427,35 @@ class CalculateMatchups implements ShouldBeUnique, ShouldQueue
     }
 
     /**
-     * @param  list<\App\Models\Person>  $items
+     * @param  list<Party|Person>  $items
+     * @return list<Sided>
+     */
+    private function assignSide(array $items): array
+    {
+        $result = [];
+
+        foreach ($items as $i => $item) {
+            if ($i === 0) {
+                $result[] = new Sided($item);
+
+                continue;
+            }
+
+            if ($item instanceof Person || ($item instanceof Party && $item->side->isBlue())) {
+                $result[] = new Sided($item);
+
+                continue;
+            }
+
+            $last = count($result) - 1;
+            $result[$last] = new Sided($result[$last]->blue, $item);
+        }
+
+        return $result;
+    }
+
+    /**
+     * @param  list<Person>  $items
      * @return list<Sided>
      */
     public function determineSide(array $items): array
@@ -250,9 +509,9 @@ class CalculateMatchups implements ShouldBeUnique, ShouldQueue
     /**
      * Recursive method to find opponents for each athletes from another continents
      *
-     * @param  array<int, list<\App\Models\Person>>  $groups  Grouped athletes by continent
-     * @param  list<\App\Models\Person>  $items  Initial value
-     * @return list<\App\Models\Person>
+     * @param  array<int, list<Person>>  $groups  Grouped athletes by continent
+     * @param  list<Person>  $items  Initial value
+     * @return list<Person>
      */
     private function shuffle(array $groups, array &$items = []): array
     {
@@ -324,9 +583,20 @@ class CalculateMatchups implements ShouldBeUnique, ShouldQueue
     }
 
     /**
+     * @param  list<Sided>  $items
+     * @return list<int>
+     */
+    private function collectByes(array $items)
+    {
+        return array_keys(
+            array_filter($items, fn (Sided $item) => $item->isBye())
+        );
+    }
+
+    /**
      * Split the items into upper and lower section.
      *
-     * @param  list<\App\Models\Person>  $name
+     * @param  list<Person>  $name
      */
     private function slice(array $items, int $slice): Sliced
     {
