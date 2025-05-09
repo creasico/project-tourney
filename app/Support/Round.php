@@ -21,6 +21,24 @@ final class Round
         public array $matches = [],
     ) {}
 
+    /**
+     * @codeCoverageIgnore
+     */
+    public function __debugInfo(): array
+    {
+        return [
+            'participants' => collect($this->participants)
+                ->mapWithKeys(fn ($p) => [
+                    $p->id => sprintf('%s(%s)', $p::class, $p->side?->value ?? 'none'),
+                ])
+                ->all(),
+
+            'matches' => collect(value: $this->matches)
+                ->map(fn (Matchup $m) => $m->__debugInfo())
+                ->all(),
+        ];
+    }
+
     public function contains(Matchup $match)
     {
         if (empty($this->matches)) {
@@ -28,5 +46,10 @@ final class Round
         }
 
         return Arr::first($this->matches, fn ($m) => $m->id === $match->id) !== null;
+    }
+
+    public function isEmpty()
+    {
+        return empty($this->matches) && count($this->participants) === 1;
     }
 }

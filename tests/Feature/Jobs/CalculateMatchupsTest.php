@@ -8,8 +8,6 @@ use App\Jobs\CalculateMatchups;
 use App\Models\Continent;
 use App\Models\Person;
 use App\Models\Tournament;
-use App\Support\Matchup;
-use App\Support\Round;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Event;
 use PHPUnit\Framework\AssertionFailedError;
@@ -219,29 +217,6 @@ describe('::createRounds()', function () {
 
         $rounds = $ref->createRounds($items);
 
-        $dump = collect($rounds)->reduce(function (array $out, Round $round) {
-            $out[] = (object) [
-                'participants' => collect($round->participants)->mapWithKeys(fn ($p) => [
-                    $p->id => sprintf('%s(%s)', $p::class, $p->side?->value ?? 'none'),
-                ])->toArray(),
-                'matches' => collect($round->matches)->map(fn (Matchup $m) => (object) [
-                    'id' => $m->id,
-                    'index' => $m->index,
-                    'gap' => $m->gap,
-                    'round' => $m->round,
-                    'isBye' => $m->isBye,
-                    'nextId' => $m->nextId,
-                    'nextSide' => $m->nextSide->value,
-                    'isHidden' => $m->isHidden,
-                    'party' => collect($m->party)->mapWithKeys(fn ($p) => [
-                        $p->id => $p::class,
-                    ])->toArray(),
-                ])->all(),
-            ];
-
-            return $out;
-        }, []);
-
         try {
             expect($rounds)->toHaveCount(
                 $c = count($charts),
@@ -255,11 +230,11 @@ describe('::createRounds()', function () {
                 );
             }
         } catch (AssertionFailedError $err) {
-            dump($dump);
+            dump(array_map(fn ($r) => $r->__debugInfo(), $rounds));
 
             throw $err;
         }
-    })->with(collect($charts)->mapWithKeys(function ($charts, $count) {
+    })->with(collect($charts)->mapWithKeys(callback: function ($charts, $count) {
         $text = implode(' ', $charts);
         $sum = array_sum($charts);
         $rounds = count($charts);

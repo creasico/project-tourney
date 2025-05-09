@@ -16,8 +16,6 @@ final class Matchup
 
     public bool $isBye;
 
-    public bool $isHidden = false;
-
     /**
      * Match ID on the next round.
      */
@@ -35,20 +33,57 @@ final class Matchup
 
     public function __construct(
         public readonly Sided $party,
-        public readonly int $index,
+        public int $index,
         public int $round,
         bool $bye = false,
     ) {
         $this->id = strtolower((string) Str::ulid());
         $this->isBye = $party->isBye() || $bye;
 
-        // Hide and relocate this match to next round when it was a bye match.
+        // Relocate this match to next round when it was a bye match.
         if ($this->isBye) {
             $this->round++;
-            $this->isHidden = true;
         }
 
         // Determine which side the winner of this match would be on the next round.
-        $this->nextSide = $index % 2 === 0 ? MatchSide::Blue : MatchSide::Red;
+        $this->nextSide = $this->getNextSide($index);
+    }
+
+    /**
+     * @codeCoverageIgnore
+     */
+    public function __debugInfo()
+    {
+        return [
+            'id' => $this->id,
+            'index' => $this->index,
+            'gap' => $this->gap,
+            'round' => $this->round,
+            'isBye' => $this->isBye,
+            'nextId' => $this->nextId,
+            'nextSide' => $this->nextSide->value,
+            'party' => collect($this->party)->mapWithKeys(fn ($p) => [
+                $p->id => $p::class,
+            ])->toArray(),
+        ];
+    }
+
+    /**
+     * Update existing index.
+     */
+    public function update(int $index): static
+    {
+        $this->index = $index;
+        $this->nextSide = $this->getNextSide($index);
+
+        return $this;
+    }
+
+    /**
+     * Determine which side the winner of this match would be on the next round.
+     */
+    public function getNextSide(int $index): MatchSide
+    {
+        return $index % 2 === 0 ? MatchSide::Blue : MatchSide::Red;
     }
 }
