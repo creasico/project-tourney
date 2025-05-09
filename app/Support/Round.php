@@ -21,18 +21,6 @@ final class Round
         public array $matches = [],
     ) {}
 
-    public function lastMatchId()
-    {
-        $lastMatch = array_filter($this->matches, fn ($match) => $match->id !== null);
-
-        return end($lastMatch)?->id;
-    }
-
-    public function reallocate(Sided $sided)
-    {
-        //
-    }
-
     public function contains(Matchup $match)
     {
         if (empty($this->matches)) {

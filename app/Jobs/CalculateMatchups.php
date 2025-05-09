@@ -106,7 +106,7 @@ class CalculateMatchups implements ShouldBeUnique, ShouldQueue
 
                         if ($match->nextId && array_key_exists($match->nextId, $matches)) {
                             $attrs['next_id'] = $matches[$match->nextId];
-                            // $attrs['next_side'] = $match->nextSide;
+                            $attrs['next_side'] = $match->nextSide;
                         }
 
                         $matchup = $this->tournament->matches()->create($attrs);
@@ -145,10 +145,9 @@ class CalculateMatchups implements ShouldBeUnique, ShouldQueue
         /** @var list<Round> */
         $rounds = [];
         $items = $participants;
-        $next = true;
         $r = 0;
 
-        while ($next) {
+        while (true) {
             if (! array_key_exists($r, $rounds)) {
                 // In case of the current iteration is actually already exists
                 // due to match relocation from previous match calculation.
@@ -413,7 +412,7 @@ class CalculateMatchups implements ShouldBeUnique, ShouldQueue
                 continue;
             }
 
-            if ($item->side?->isBlue() || $item instanceof Person) {
+            if ($item instanceof Person || ($item instanceof Party && $item->side->isBlue())) {
                 $result[] = new Sided($item);
 
                 continue;
