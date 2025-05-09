@@ -72,17 +72,6 @@ final class Matchup
     }
 
     /**
-     * Update existing index.
-     */
-    public function update(int $index): static
-    {
-        $this->index = $index;
-        $this->nextSide = $this->getNextSide($index);
-
-        return $this;
-    }
-
-    /**
      * Determine which side the winner of this match would be on the next round.
      */
     public function getNextSide(int $index): MatchSide

@@ -28,26 +28,15 @@ final class Sided implements Arrayable, Countable, IteratorAggregate
 
     public function getIterator(): \Traversable
     {
-        return new ArrayIterator([
+        return new ArrayIterator(array_filter([
             'blue' => $this->blue,
             'red' => $this->red,
-        ]);
+        ]));
     }
 
     public function toArray(): array
     {
         return array_filter([$this->blue, $this->red]);
-    }
-
-    public function have(string $id)
-    {
-        if ($this->isBye()) {
-            return $this->blue->id === $id;
-        }
-
-        $ids = array_map(fn (Person|Party $p) => $p->id, [...$this]);
-
-        return in_array($id, $ids, true);
     }
 
     public function count(): int
