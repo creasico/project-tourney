@@ -14,6 +14,8 @@ use Filament\Navigation\MenuItem;
 use Filament\Navigation\NavigationGroup;
 use Filament\Panel;
 use Filament\PanelProvider;
+use Filament\Support\Assets\Css;
+use Filament\Support\Assets\Js;
 use Filament\Support\Colors\Color;
 use Filament\Widgets;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
@@ -21,6 +23,7 @@ use Illuminate\Cookie\Middleware\EncryptCookies;
 use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\StartSession;
+use Illuminate\Support\Facades\Vite;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 
 class AdminPanelProvider extends PanelProvider
@@ -37,6 +40,10 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->favicon(asset('favicon.svg'))
             ->font('Inter Variable', provider: LocalFontProvider::class)
+            ->assets([
+                Css::make('app-css', Vite::useHotFile('app.css')->asset('resources/css/app.css', 'build')),
+                Js::make('app-js', Vite::useHotFile('app.js')->asset('resources/js/app.js', 'build')),
+            ])
             ->login()
             ->profile(Pages\Profile::class, false)
             ->databaseNotifications()
