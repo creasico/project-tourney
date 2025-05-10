@@ -4,7 +4,12 @@ declare(strict_types=1);
 
 namespace App\Providers;
 
+use Filament\Support\Assets\Css;
+use Filament\Support\Assets\Js;
+use Filament\Support\Facades\FilamentAsset;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\ViteManifestNotFoundException;
+use Illuminate\Support\Facades\Vite;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -23,5 +28,15 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         Model::unguard();
+
+        try {
+            FilamentAsset::register([
+                Css::make('app-css', Vite::useHotFile('app.css')->asset('resources/css/app.css', 'build')),
+                Js::make('app-js', Vite::useHotFile('app.js')->asset('resources/js/app.js', 'build')),
+            ]);
+        } catch (ViteManifestNotFoundException $err) {
+            // Prevent any error while running in CI
+            // See https://github.com/creasico/project-tourney/pull/9
+        }
     }
 }
