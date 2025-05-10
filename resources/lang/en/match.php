@@ -29,6 +29,7 @@ return [
         'start_match' => 'Start Match',
         'choose_winner' => 'Choose Winner',
         'set_as_draw' => 'Mark as Draw',
+        'view_chart' => 'View Chart',
     ],
 
     'field' => [

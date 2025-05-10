@@ -29,6 +29,7 @@ return [
         'start_match' => 'Mulai Pertandingan',
         'choose_winner' => 'Pilih Pemenang',
         'set_as_draw' => 'Nyatakan Draw',
+        'view_chart' => 'Lihat Bagan',
     ],
 
     'field' => [

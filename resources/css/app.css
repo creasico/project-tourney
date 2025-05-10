@@ -1,27 +1,6 @@
 @import '@fontsource-variable/inter';
 
-.rounds, .match-inner {
-  display: flex;
-  flex-direction: column;
-}
-
-.rounds {
-  gap: 1em;
-  padding: 0 1em 1em 1.4em;
-  border-left: 2px dashed lightgrey;
-
-  &:first-child {
-    border-left-width: 0;
-  }
-}
-
-.matches {
-  display: grid;
-  gap: var(--gap);
-  grid-template: repeat(var(--grid), 1fr);
-  height: 100%;
-  min-width: var(--width);
-}
+@tailwind utilities;
 
 .match {
   --vheight: 50%;
@@ -30,13 +9,6 @@
   --inner-width: calc(var(--width) + 4px + var(--gap));
   --inner-height: calc(((var(--height) + var(--gap)) * var(--size, 1)) - var(--gap));
   --line-width: 2px;
-  box-sizing: border-box;
-  margin-bottom: calc((var(--height) + var(--gap)) * var(--span, 0));
-  padding: 0;
-  position: relative;
-  display: flex;
-  align-items: center;
-  isolation: isolate;
   height: var(--inner-height);
 
   &:not(.final-round):not([aria-hidden=true]):before,
@@ -109,40 +81,12 @@
   }
 }
 
-.match-inner {
-  background-color: white;
-  margin: var(--margin) 0;
-  width: var(--width);
-  gap: 3px;
-}
-
 .match-title {
-  position: absolute;
-  padding: 4px 3px 2px;
-  margin: 0;
-  width: 1em;
-  line-height: 1em;
-  border: 2px solid var(--border-color);
-  text-align: center;
-  font-variant-numeric: proportional-nums;
-  background-color: white;
-  border-radius: 50%;
-  left: -11px;
-  top: calc(50% - 13px);
+  left: 0;
+  top: calc(50% - 12px);
 }
 
 .party {
-  display: flex;
-  border: 2px solid var(--border-color);
-  border-radius: .4rem;
-  padding: .2rem .4em .2rem 1.2em;
-  list-style: none;
-  line-height: 1em;
-  justify-content: space-between;
-  align-items: center;
-  outline: 2px solid white;
-  cursor: pointer;
-
   &[data-side=blue] .party-name {
     color: blue;
   }
@@ -161,23 +105,9 @@
   cursor: not-allowed;
 }
 
-.party-label {
-  display: flex;
-  flex-direction: column;
-}
-
-.party-check {
-  margin: 0;
-}
-
 .party-name, .party-continent {
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
-  line-height: 1.2em;
-}
-
-.party-continent {
-  font-size: .8rem;
-  color: grey;
+  line-height: 1.6rem;
 }
