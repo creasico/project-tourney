@@ -9,7 +9,8 @@
     "dev": "vite",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
-    "postinstall": "simple-git-hooks"
+    "postinstall": "simple-git-hooks",
+    "serve": "concurrently -c \"#93c5fd,#c4b5fd,#fdba74\" \"php artisan serve\" \"php artisan queue:listen --tries=1\" \"pnpm dev\" --names=serve,queue,asset"
   },
   "devDependencies": {
     "@antfu/eslint-config": "^4.13.0",
