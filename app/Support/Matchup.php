@@ -72,6 +72,18 @@ final class Matchup
     }
 
     /**
+     * The grid size requires to display in the UI.
+     */
+    public function size(): int
+    {
+        if ($this->round === 0) {
+            return 1;
+        }
+
+        return $this->party->sum($this->isBye);
+    }
+
+    /**
      * Determine which side the winner of this match would be on the next round.
      */
     public function getNextSide(int $index): MatchSide

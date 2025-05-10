@@ -39,6 +39,23 @@ final class Sided implements Arrayable, Countable, IteratorAggregate
         return array_filter([$this->blue, $this->red]);
     }
 
+    public function sum(bool $isBye = false): int
+    {
+        $items = $this->toArray();
+
+        if ($isBye) {
+            return $this->red instanceof Person ? 1 : 2;
+        }
+
+        return array_reduce($items, function (int $sum, Party|Person $side) {
+            if ($side instanceof Party) {
+                return $sum + $side->size;
+            }
+
+            return $sum + 1;
+        }, 0);
+    }
+
     public function count(): int
     {
         return $this->isBye() ? 1 : 2;

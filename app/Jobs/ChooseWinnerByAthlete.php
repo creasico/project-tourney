@@ -23,6 +23,9 @@ final class ChooseWinnerByAthlete implements ShouldBeUnique, ShouldQueue
         private string $athleteId,
     ) {}
 
+    /**
+     * @codeCoverageIgnore
+     */
     public function uniqueId(): string
     {
         return $this->match->getKey();

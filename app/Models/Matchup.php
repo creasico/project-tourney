@@ -195,21 +195,6 @@ class Matchup extends Model
         return $this->hasMany(Matchup::class, 'next_id');
     }
 
-    public function isDraw(): Attribute
-    {
-        return Attribute::get(fn () => $this->parties->whenNotEmpty(
-            fn (Collection $parties) => $parties->every(
-                fn (MatchParty $party) => $party->status->isDraw()
-            ),
-            fn () => false,
-        ));
-    }
-
-    public function winner(): Attribute
-    {
-        return Attribute::get(fn (): ?Person => $this->winning->first());
-    }
-
     public function blueSide(): Attribute
     {
         return Attribute::get(function (): ?Athlete {
@@ -252,5 +237,20 @@ class Matchup extends Model
 
             return null;
         });
+    }
+
+    public function isDraw(): Attribute
+    {
+        return Attribute::get(fn (): bool => $this->parties->whenNotEmpty(
+            fn (Collection $parties): bool => $parties->every(
+                fn (MatchParty $party): bool => $party->status->isDraw()
+            ),
+            fn () => false,
+        ));
+    }
+
+    public function winner(): Attribute
+    {
+        return Attribute::get(fn (): ?Person => $this->winning->first());
     }
 }

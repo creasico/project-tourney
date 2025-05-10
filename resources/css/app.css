@@ -5,7 +5,7 @@
 .match {
   --vheight: 50%;
   --border-color: grey;
-  --round-id: calc(var(--curr-round) + 1);
+  --round-id: calc(var(--current-round) + 1);
   --inner-width: calc(var(--width) + 4px + var(--gap));
   --inner-height: calc(((var(--height) + var(--gap)) * var(--size, 1)) - var(--gap));
   --line-width: 2px;
@@ -31,7 +31,7 @@
   }
 
   &:after {
-    --target: calc(var(--next-round) - var(--curr-round));
+    --target: calc(var(--next-round) - var(--current-round));
     --outer-width: calc(var(--inner-width) + ((var(--gap) - 6.3px) * var(--target)));
     --hline: calc(var(--outer-width) * var(--target) - (var(--outer-width) / 2));
     --vline: calc(var(--vheight) + (var(--gap) * var(--target)));

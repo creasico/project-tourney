@@ -179,16 +179,18 @@ class ClassesRelationManager extends RelationManager
                             ->where('class_id', $record->id)
                             ->first();
 
-                        return view('filament.tournaments.chart', [
+                        $matches = $this->ownerRecord->matches()
+                            ->with(['athletes', 'division', 'participations', 'blue', 'red', 'prevs', 'next'])
+                            ->where('class_id', $record->id)
+                            ->orderBy('round_number')
+                            ->orderBy('party_number')
+                            ->get();
+
+                        return view('filament.tournaments.brackets', [
                             'record' => $class,
                             'ownerRecord' => $this->ownerRecord,
                             'group' => $class->group->load('divisions'),
-                            'matches' => $this->ownerRecord->matches()
-                                ->with(['athletes', 'division', 'participations', 'blue', 'red', 'prevs', 'next'])
-                                ->where('class_id', $record->id)
-                                ->orderBy('round_number')
-                                ->orderBy('party_number')
-                                ->get(),
+                            'matches' => $matches,
                         ]);
                     }),
 
