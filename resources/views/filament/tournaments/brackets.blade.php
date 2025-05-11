@@ -15,7 +15,7 @@
             $rounds = $divisionMatches->groupBy('round_number');
             @endphp
 
-            <div class="leading-6 rounded-lg px-4 py-3 bg-gray-100 dark:bg-white/5 ring-1 ring-gray-900/10 dark:ring-white/10">{{ $division->label }}</div>
+            <div class="leading-6 rounded-lg sticky top-20 z-10 px-4 py-3 bg-gray-100 dark:bg-gray-800 ring-1 ring-gray-900/10 dark:ring-white/10">{{ $division->label }}</div>
 
             <div class="overflow-x-scroll pb-2">
                 <div class="flex gap-1">

@@ -17,8 +17,9 @@
     data-next-side="{{ $match->next_side }}"
     data-match="{{ $match->party_number }}"
     aria-hidden="{{ $hidden ? 'true' : 'false' }}"
+    aria-disabled="{{ $match->is_proceeded ? 'true' : 'false' }}"
     @class([
-        'match z-50 flex relative box-border pl-7 pr-1 items-center',
+        'match z-5 flex relative box-border pl-7 pr-1 items-center',
         'proceed' => $match->is_proceeded,
         'final-round' => $final,
     ])
@@ -35,7 +36,8 @@
                 aria-label="{{ $match->blue_side->getAriaLabel() }}"
                 @class([
                     'flex flex-col content-center justify-items-center h-16 py-2 px-3 shadow-sm rounded-lg bg-blue-100 dark:bg-blue-700/10 ring-1 ring-blue-900/30 dark:ring-blue-100/10',
-                    'loser' => $match->blue_side->status->isLose(),
+                    'text-gray-900/50 dark:text-gray-50/50 line-through' => $match->blue_side->status->isLose(),
+                    'text-gray-900 dark:text-gray-50' => $match->blue_side->canProceed(),
                 ])
             >
                 <span class="party-name font-bold">{{ $match->blue_side->display }}</span>
@@ -50,7 +52,8 @@
                 aria-label="{{ $match->red_side->getAriaLabel() }}"
                 @class([
                     'flex flex-col content-center justify-items-center h-16 py-2 px-3 shadow-sm rounded-lg bg-red-100 dark:bg-red-700/10 ring-1 ring-red-900/30 dark:ring-red-100/10',
-                    'loser' => $match->red_side->status->isLose(),
+                    'text-gray-900/50 dark:text-gray-50/50 line-through' => $match->red_side->status->isLose(),
+                    'text-gray-900 dark:text-gray-50' => $match->red_side->canProceed(),
                 ])
             >
                 <span class="party-name font-bold">{{ $match->red_side?->display }}</span>

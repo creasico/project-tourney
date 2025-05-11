@@ -213,7 +213,8 @@ class MatchesRelationManager extends RelationManager
                 Actions\Action::make('start_match')
                     ->label(trans('match.actions.start_match'))
                     ->icon('heroicon-m-paper-airplane')
-                    ->hidden(fn (Matchup $match): bool => $this->ownerRecord->is_finished || $match->is_started)
+                    // ->hidden(fn (Matchup $match): bool => $this->ownerRecord->is_finished || $match->is_started)
+                    ->visible(fn (Matchup $match): bool => ! $this->ownerRecord->is_finished && $match->can_start)
                     ->action(function (Matchup $record) {
                         $record->markAsStarted();
 

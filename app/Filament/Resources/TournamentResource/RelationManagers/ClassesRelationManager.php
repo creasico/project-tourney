@@ -174,6 +174,9 @@ class ClassesRelationManager extends RelationManager
                 Actions\Action::make('view-chart')
                     ->label(trans('match.actions.view_chart'))
                     ->icon('heroicon-m-sparkles')
+                    ->modalSubmitAction(false)
+                    ->modalCancelAction(false)
+                    ->stickyModalHeader()
                     ->modalContent(function (Classification $record) {
                         $class = $this->ownerRecord->withClassifiedAthletes()
                             ->where('class_id', $record->id)

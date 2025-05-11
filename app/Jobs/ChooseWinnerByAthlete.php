@@ -56,7 +56,9 @@ final class ChooseWinnerByAthlete implements ShouldBeUnique, ShouldQueue
             $match->setPartyStatus($winner, PartyStatus::Win);
             $match->setPartyStatus($loser, PartyStatus::Lose);
 
-            $match->next->addAthlete($winner, $match->tournament, $match->next_side);
+            if ($match->next) {
+                $match->next->addAthlete($winner, $match->tournament, $match->next_side);
+            }
 
             $now = now();
 
