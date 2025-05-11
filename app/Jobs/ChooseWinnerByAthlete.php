@@ -48,13 +48,15 @@ final class ChooseWinnerByAthlete implements ShouldBeUnique, ShouldQueue
     public function handle(): void
     {
         $match = DB::transaction(function () {
-            $match = $this->match->load(['athletes', 'tournament']);
+            $match = $this->match->load(['athletes', 'tournament', 'next']);
 
             $winner = $match->athletes->where('id', '==', $this->athleteId)->firstOrFail();
             $loser = $match->athletes->where('id', '!=', $this->athleteId)->firstOrFail();
 
             $match->setPartyStatus($winner, PartyStatus::Win);
             $match->setPartyStatus($loser, PartyStatus::Lose);
+
+            $match->next->addAthlete($winner, $match->tournament, $match->next_side);
 
             $now = now();
 
