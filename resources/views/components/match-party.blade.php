@@ -20,7 +20,7 @@
     aria-disabled="{{ $match->is_proceeded ? 'true' : 'false' }}"
     @class([
         'match z-5 flex relative box-border pl-7 pr-1 items-center',
-        'proceed' => $match->is_proceeded,
+        'proceed cursor-not-allowed' => $match->is_proceeded,
         'final-round' => $final,
     ])
 >
@@ -40,10 +40,10 @@
                     'text-gray-900 dark:text-gray-50' => $match->blue_side->canProceed(),
                 ])
             >
-                <span class="party-name font-bold">{{ $match->blue_side->display }}</span>
+                <span class="party-name font-bold truncate leading-7">{{ $match->blue_side->display }}</span>
 
                 @if ($match->blue_side->continentName)
-                <span class="party-continent text-sm text-gray-500">{{ $match->blue_side->continentName }}</span>
+                <span class="party-continent truncate leading-7 text-sm text-gray-500">{{ $match->blue_side->continentName }}</span>
                 @endif
             </div>
 
@@ -56,10 +56,10 @@
                     'text-gray-900 dark:text-gray-50' => $match->red_side->canProceed(),
                 ])
             >
-                <span class="party-name font-bold">{{ $match->red_side?->display }}</span>
+                <span class="party-name font-bold truncate leading-7">{{ $match->red_side?->display }}</span>
 
                 @if ($match->red_side?->continentName)
-                <span class="party-continent text-sm text-gray-500">{{ $match->red_side?->continentName }}</span>
+                <span class="party-continent truncate leading-7 text-sm text-gray-500">{{ $match->red_side?->continentName }}</span>
                 @endif
             </div>
         </div>

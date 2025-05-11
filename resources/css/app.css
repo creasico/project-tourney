@@ -86,28 +86,6 @@
   top: calc(50% - 12px);
 }
 
-.party {
-  &[data-side=blue] .party-name {
-    color: blue;
-  }
-
-  &[data-side=red] .party-name {
-    color: red;
-  }
-
-  &.loser span {
-    text-decoration: line-through;
-    color: grey !important;
-  }
-}
-
 .match.completed .party {
   cursor: not-allowed;
-}
-
-.party-name, .party-continent {
-  text-overflow: ellipsis;
-  overflow: hidden;
-  white-space: nowrap;
-  line-height: 1.6rem;
 }
