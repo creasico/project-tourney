@@ -171,9 +171,38 @@ class ClassesRelationManager extends RelationManager
     {
         return [
             Actions\ActionGroup::make([
-                Actions\EditAction::make()
+                Actions\Action::make('view-chart')
+                    ->label(trans('match.actions.view_chart'))
+                    ->icon('heroicon-m-sparkles')
+                    ->modalSubmitAction(false)
+                    ->modalCancelAction(false)
+                    ->stickyModalHeader()
+                    ->modalContent(function (Classification $record) {
+                        $class = $this->ownerRecord->withClassifiedAthletes()
+                            ->where('class_id', $record->id)
+                            ->first();
+
+                        $matches = $this->ownerRecord->matches()
+                            ->with(['athletes', 'division', 'participations', 'blue', 'red', 'prevs', 'next'])
+                            ->where('class_id', $record->id)
+                            ->orderBy('round_number')
+                            ->orderBy('party_number')
+                            ->get();
+
+                        return view('filament.tournaments.brackets', [
+                            'record' => $class,
+                            'ownerRecord' => $this->ownerRecord,
+                            'group' => $class->group->load('divisions'),
+                            'matches' => $matches,
+                        ]);
+                    }),
+
+                Actions\Action::make('generate')
+                    ->label(trans('match.actions.generate'))
+                    ->requiresConfirmation()
+                    ->icon('heroicon-m-arrow-path-rounded-square')
                     ->hidden(fn (Classification $classification) => $this->ownerRecord->is_finished || $classification->has_started)
-                    ->afterFormValidated(function (Classification $record) {
+                    ->action(function (Classification $record) {
                         dispatch_sync(
                             new CalculateMatchups($this->ownerRecord, $record->getKey())
                         );
@@ -185,12 +214,9 @@ class ClassesRelationManager extends RelationManager
                             ->send();
                     }),
 
-                Actions\Action::make('generate')
-                    ->label(trans('match.actions.generate'))
-                    ->requiresConfirmation()
-                    ->icon('heroicon-m-arrow-path-rounded-square')
+                Actions\EditAction::make()
                     ->hidden(fn (Classification $classification) => $this->ownerRecord->is_finished || $classification->has_started)
-                    ->action(function (Classification $record) {
+                    ->afterFormValidated(function (Classification $record) {
                         dispatch_sync(
                             new CalculateMatchups($this->ownerRecord, $record->getKey())
                         );

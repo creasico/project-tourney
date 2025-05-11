@@ -10,6 +10,11 @@ return [
         'classification_heading' => 'Classification',
     ],
 
+    'notification' => [
+        'published_title' => 'Tournament published',
+        'published_body' => ':tournament succesfuly published',
+    ],
+
     'wizard' => [
         'basic_label' => 'Basic',
         'basic_description' => 'The tournament info',

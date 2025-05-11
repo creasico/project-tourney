@@ -88,6 +88,8 @@ class CalculateMatchups implements ShouldBeUnique, ShouldQueue
                 /** @var array<string, string> */
                 $matches = [];
                 $rounds = $this->createRounds($participants);
+                $gridRows = 0;
+                $byes = [];
 
                 krsort($rounds);
 
@@ -103,8 +105,17 @@ class CalculateMatchups implements ShouldBeUnique, ShouldQueue
                             'attr' => [
                                 'index' => $match->index,
                                 'gap' => $match->gap,
+                                'size' => $match->size(),
                             ],
                         ];
+
+                        if ($r === 0) {
+                            $gridRows += 1 + $match->gap;
+                        }
+
+                        if ($match->isBye) {
+                            $byes[] = $match->id;
+                        }
 
                         if ($match->nextId && array_key_exists($match->nextId, $matches)) {
                             $attrs['next_id'] = $matches[$match->nextId];
@@ -125,6 +136,17 @@ class CalculateMatchups implements ShouldBeUnique, ShouldQueue
 
                         $matches[$match->id] = $matchup->getKey();
                     }
+                }
+
+                if ($gridRows > 0) {
+                    $division->update([
+                        'attr' => [
+                            'grid' => $gridRows,
+                            'has_byes' => count($byes) > 0,
+                            'total_rounds' => count($rounds),
+                            'current_round' => null,
+                        ],
+                    ]);
                 }
 
                 event(new MatchupInitialized(
@@ -206,7 +228,7 @@ class CalculateMatchups implements ShouldBeUnique, ShouldQueue
                     $rounds[$nextRound] = new Round($nextRound);
                 }
 
-                $party = new Party($match->id, $match->nextSide);
+                $party = new Party($match->id, $match->nextSide, $match->size());
 
                 if ($lastBye && ! empty($rounds[$nextRound]->matches)) {
                     foreach ($rounds[$nextRound]->matches as &$byeMatch) {

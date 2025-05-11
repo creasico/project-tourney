@@ -23,6 +23,9 @@ final class ChooseWinnerByAthlete implements ShouldBeUnique, ShouldQueue
         private string $athleteId,
     ) {}
 
+    /**
+     * @codeCoverageIgnore
+     */
     public function uniqueId(): string
     {
         return $this->match->getKey();
@@ -45,13 +48,25 @@ final class ChooseWinnerByAthlete implements ShouldBeUnique, ShouldQueue
     public function handle(): void
     {
         $match = DB::transaction(function () {
-            $match = $this->match->load(['athletes', 'tournament']);
+            $match = $this->match->load(['athletes', 'division', 'next', 'tournament']);
 
             $winner = $match->athletes->where('id', '==', $this->athleteId)->firstOrFail();
             $loser = $match->athletes->where('id', '!=', $this->athleteId)->firstOrFail();
 
             $match->setPartyStatus($winner, PartyStatus::Win);
             $match->setPartyStatus($loser, PartyStatus::Lose);
+
+            if ($match->next) {
+                $match->next->addAthlete($winner, $match->tournament, $match->next_side);
+            }
+
+            $divisionAttr = $match->division->attr?->toArray();
+
+            if ($divisionAttr && $divisionAttr['current_round'] !== $match->round_number) {
+                $divisionAttr['current_round'] = $match->round_number;
+
+                $match->division->update(['attr' => $divisionAttr]);
+            }
 
             $now = now();
 

@@ -22,4 +22,13 @@ return [
         'finished' => 'Selesai',
     ],
 
+    'round' => [
+        'preliminary' => 'Penyisihan',
+        'final' => 'Final',
+        'semifinal' => 'Semi Final',
+        'quarter' => 'Perempat Final',
+        'roundofsixteen' => 'Perdelapan Final',
+        'roundofthirtytwo' => 'Perenambelas Final',
+    ],
+
 ];

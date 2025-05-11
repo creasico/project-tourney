@@ -15,6 +15,7 @@ final class Party implements Arrayable
     public function __construct(
         public readonly string $id,
         public readonly MatchSide $side,
+        public readonly int $size = 1,
     ) {}
 
     public function toArray(): array
@@ -22,6 +23,7 @@ final class Party implements Arrayable
         return [
             'id' => $this->id,
             'side' => $this->side->value,
+            'size' => $this->size,
         ];
     }
 }

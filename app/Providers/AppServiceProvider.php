@@ -31,8 +31,8 @@ class AppServiceProvider extends ServiceProvider
 
         try {
             FilamentAsset::register([
-                Css::make('app-css', Vite::useHotFile('app.css')->asset('resources/css/app.css', 'build')),
-                Js::make('app-js', Vite::useHotFile('app.js')->asset('resources/js/app.js', 'build'))->module(),
+                Css::make('app-css', Vite::asset('resources/css/app.css')),
+                Js::make('app-js', Vite::asset('resources/js/app.js'))->module(),
             ]);
         } catch (ViteManifestNotFoundException $err) {
             // Prevent any error while running in CI

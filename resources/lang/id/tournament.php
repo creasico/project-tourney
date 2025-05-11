@@ -10,6 +10,11 @@ return [
         'classification_heading' => 'Klasifikasi',
     ],
 
+    'notification' => [
+        'published_title' => 'Tournamen terpublikasi',
+        'published_body' => ':tournament berhasil terpublikasi',
+    ],
+
     'wizard' => [
         'basic_label' => 'Dasar',
         'basic_description' => 'Informasi turnamen',

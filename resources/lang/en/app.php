@@ -22,4 +22,13 @@ return [
         'finished' => 'Finished',
     ],
 
+    'round' => [
+        'preliminary' => 'Preliminary',
+        'final' => 'Final',
+        'semifinal' => 'Semi Final',
+        'quarter' => 'Quarter Final',
+        'roundofsixteen' => 'Round of Sixteen',
+        'roundofthirtytwo' => 'Round of Thirtytwo',
+    ],
+
 ];

@@ -29,6 +29,7 @@ return [
         'start_match' => 'Start Match',
         'choose_winner' => 'Choose Winner',
         'set_as_draw' => 'Mark as Draw',
+        'view_chart' => 'View Chart',
     ],
 
     'field' => [
@@ -40,7 +41,8 @@ return [
         'loser' => 'loser',
     ],
 
-    'winner_from' => 'Winner of :number',
+    'winner_from' => 'Winner of Party :number',
+    'participant_from' => ':athlete from :continent',
 
     'bye' => [
         'up' => 'Up',
