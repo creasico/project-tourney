@@ -44,4 +44,16 @@ class Athlete implements HasLabel
     {
         return $this->display;
     }
+
+    public function getAriaLabel(): string
+    {
+        if ($this->continentName) {
+            return trans('match.participant_from', [
+                'athlete' => $this->display,
+                'continent' => $this->continentName,
+            ]);
+        }
+
+        return $this->display;
+    }
 }

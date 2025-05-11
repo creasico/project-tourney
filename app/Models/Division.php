@@ -4,7 +4,10 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Enums\Round;
+use Countable;
 use Illuminate\Database\Eloquent\Casts\AsArrayObject;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -57,5 +60,28 @@ class Division extends Model
         return $this->belongsToMany(PrizePool::class, DivisionPrize::class, 'division_id', 'prize_id')
             ->withPivot(['amount', 'medal'])
             ->as('pool');
+    }
+
+    public function hasByes(): Attribute
+    {
+        return Attribute::get(fn (): bool => $this->attr?->has_byes ?: false);
+    }
+
+    public function getRoundLabel(int $current, int|Countable $total): Round
+    {
+        if ($this->has_byes && $current === 0) {
+            return Round::Preliminary;
+        }
+
+        if ($total instanceof Countable) {
+            $total = count($total);
+        }
+
+        if (! $this->has_byes) {
+            $total++;
+            $current++;
+        }
+
+        return Round::from($total - $current);
     }
 }

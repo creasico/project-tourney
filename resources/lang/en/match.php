@@ -41,7 +41,8 @@ return [
         'loser' => 'loser',
     ],
 
-    'winner_from' => 'Winner of :number',
+    'winner_from' => 'Winner of Party :number',
+    'participant_from' => ':athlete from :continent',
 
     'bye' => [
         'up' => 'Up',

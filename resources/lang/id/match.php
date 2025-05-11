@@ -41,7 +41,8 @@ return [
         'loser' => 'Kalah',
     ],
 
-    'winner_from' => 'Pemenang dari :number',
+    'winner_from' => 'Pemenang dari Partai :number',
+    'participant_from' => ':athlete dari :continent',
 
     'bye' => [
         'up' => 'Atas',

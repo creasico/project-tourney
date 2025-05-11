@@ -13,20 +13,23 @@
             @php
             $division = $group->divisions->where('id', $div)->first();
             $rounds = $divisionMatches->groupBy('round_number');
-            $finalRound = count($rounds) - 1;
             @endphp
 
-            <div class="leading-6 rounded-lg px-4 py-3 bg-gray-50 dark:bg-white/5 ring-1 ring-gray-950/5 dark:ring-white/10">{{ $division->label }}</div>
+            <div class="leading-6 rounded-lg px-4 py-3 bg-gray-100 dark:bg-white/5 ring-1 ring-gray-900/10 dark:ring-white/10">{{ $division->label }}</div>
 
             <div class="overflow-x-scroll pb-2">
                 <div class="flex gap-1">
                     @foreach ($rounds as $round => $roundMatches)
+                        @php
+                        $roundLabel = $division->getRoundLabel($round, $rounds);
+                        @endphp
+
                         <section
                             id="round-{{ $round }}"
                             style="--current-round: {{ $round }};"
-                            class="rounds flex flex-col gap-4 px-3 border-l-2 first:border-l-0 border-dashed border-gray-50 dark:border-white/5"
+                            class="rounds flex flex-col gap-4 px-3 border-l-2 first:border-l-0 border-dashed border-gray-100 dark:border-white/5"
                         >
-                            <h3 class="leading-6">Round {{ $round }}</h3>
+                            <h3 class="leading-6 font-bold pl-4">{{ $roundLabel->getLabel() }}</h3>
 
                             <div
                                 class="matches grid gap-[--gap] w-[--width]"
@@ -39,7 +42,7 @@
                                         @endforeach
                                     @endif
 
-                                    <x-match-party :match="$match" :final="$round === $finalRound" />
+                                    <x-match-party :match="$match" :final="$roundLabel->isFinal()" />
                                 @endforeach
                             </div>
                         </section>

@@ -239,6 +239,11 @@ class Matchup extends Model
         });
     }
 
+    public function isProceeded(): Attribute
+    {
+        return Attribute::get(fn (): bool => $this->is_finished && $this->next !== null);
+    }
+
     public function isDraw(): Attribute
     {
         return Attribute::get(fn (): bool => $this->parties->whenNotEmpty(

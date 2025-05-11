@@ -89,6 +89,7 @@ class CalculateMatchups implements ShouldBeUnique, ShouldQueue
                 $matches = [];
                 $rounds = $this->createRounds($participants);
                 $gridRows = 0;
+                $byes = [];
 
                 krsort($rounds);
 
@@ -110,6 +111,10 @@ class CalculateMatchups implements ShouldBeUnique, ShouldQueue
 
                         if ($r === 0) {
                             $gridRows += 1 + $match->gap;
+                        }
+
+                        if ($match->isBye) {
+                            $byes[] = $match->id;
                         }
 
                         if ($match->nextId && array_key_exists($match->nextId, $matches)) {
@@ -137,8 +142,7 @@ class CalculateMatchups implements ShouldBeUnique, ShouldQueue
                     $division->update([
                         'attr' => [
                             'grid' => $gridRows,
-                            'current_round' => null,
-                            'current_match' => null,
+                            'has_byes' => count($byes) > 0,
                         ],
                     ]);
                 }
