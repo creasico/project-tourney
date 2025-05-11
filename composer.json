@@ -2,7 +2,23 @@
   "name": "creasico/project-tourney",
   "description": "A simple app to manage your tournament.",
   "type": "project",
-  "license": "MIT",
+  "license": "AGPL-3.0-or-later",
+  "authors": [
+    {
+      "name": "PT. Creasi Tekno Solusi",
+      "homepage": "https://creasi.co"
+    }
+  ],
+  "funding": [
+    {
+      "type": "github",
+      "url": "https://github.com/sponsors/creasico"
+    }
+  ],
+  "support": {
+    "source": "https://github.com/creasico/project-tourney",
+    "forum": "https://github.com/orgs/creasico/discussions"
+  },
   "require": {
     "php": "^8.2",
     "fakerphp/faker": "^1.23",
