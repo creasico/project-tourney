@@ -60,9 +60,9 @@ final class ChooseWinnerByAthlete implements ShouldBeUnique, ShouldQueue
                 $match->next->addAthlete($winner, $match->tournament, $match->next_side);
             }
 
-            $divisionAttr = $match->division->attr->toArray();
+            $divisionAttr = $match->division->attr?->toArray();
 
-            if ($divisionAttr['current_round'] !== $match->round_number) {
+            if ($divisionAttr && $divisionAttr['current_round'] !== $match->round_number) {
                 $divisionAttr['current_round'] = $match->round_number;
 
                 $match->division->update(['attr' => $divisionAttr]);
