@@ -21,7 +21,7 @@
                 <div class="flex gap-1">
                     @foreach ($rounds as $round => $roundMatches)
                         @php
-                        $roundLabel = $division->getRoundLabel($round, $rounds);
+                        $roundLabel = $division->getRoundLabel($round);
                         @endphp
 
                         <section

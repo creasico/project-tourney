@@ -143,6 +143,8 @@ class CalculateMatchups implements ShouldBeUnique, ShouldQueue
                         'attr' => [
                             'grid' => $gridRows,
                             'has_byes' => count($byes) > 0,
+                            'total_rounds' => count($rounds),
+                            'current_round' => null,
                         ],
                     ]);
                 }

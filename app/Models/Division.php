@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Models;
 
 use App\Enums\Round;
-use Countable;
 use Illuminate\Database\Eloquent\Casts\AsArrayObject;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -67,15 +66,27 @@ class Division extends Model
         return Attribute::get(fn (): bool => $this->attr?->has_byes ?: false);
     }
 
-    public function getRoundLabel(int $current, int|Countable $total): Round
+    public function currentRound(): Attribute
     {
+        return Attribute::get(fn () => $this->getRoundLabel($this->attr->current_round));
+    }
+
+    public function totalRounds(): Attribute
+    {
+        return Attribute::get(fn (): ?int => $this->attr->total_rounds);
+    }
+
+    public function getRoundLabel(?int $current): ?Round
+    {
+        if ($current === null) {
+            return null;
+        }
+
         if ($this->has_byes && $current === 0) {
             return Round::Preliminary;
         }
 
-        if ($total instanceof Countable) {
-            $total = count($total);
-        }
+        $total = $this->total_rounds;
 
         if (! $this->has_byes) {
             $total++;
