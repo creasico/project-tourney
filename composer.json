@@ -1,5 +1,6 @@
 {
   "name": "creasico/project-tourney",
+  "description": "A simple app to manage your tournament.",
   "type": "project",
   "license": "MIT",
   "require": {
@@ -39,9 +40,7 @@
     "post-autoload-dump": [
       "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
       "@php artisan package:discover --ansi",
-      "@php artisan filament:upgrade",
-      "@php artisan ide-helper:generate",
-      "@php artisan ide-helper:models -n"
+      "@php artisan filament:upgrade"
     ],
     "post-update-cmd": [
       "@php artisan vendor:publish --tag=laravel-assets --ansi --force"
@@ -52,6 +51,10 @@
     "post-create-project-cmd": [
       "@php artisan key:generate --ansi",
       "@php artisan migrate --graceful --ansi"
+    ],
+    "ide-helper": [
+      "@php artisan ide-helper:generate",
+      "@php artisan ide-helper:models -n"
     ],
     "lint": [
       "pint --preset laravel --test --ansi"
