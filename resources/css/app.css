@@ -85,7 +85,3 @@
   left: 0;
   top: calc(50% - 12px);
 }
-
-.match.completed .party {
-  cursor: not-allowed;
-}
