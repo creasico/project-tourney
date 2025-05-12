@@ -19,7 +19,6 @@ frankenphp
 # 2. Ignore build and tests config files/directories we don't need
 .devcontainer
 .pnpm-store
-.fly
 _ide_helper.php
 _ide_helper_models.php
 *.config.js
@@ -30,6 +29,7 @@ composer.yaml
 composer.*.yaml
 node_modules
 phpunit.xml
+phpstan.neon
 phpunit.*.xml
 pnpm-lock.yaml
 jsconfig.json
