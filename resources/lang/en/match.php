@@ -42,7 +42,6 @@ return [
     ],
 
     'winner_from' => 'Winner of Party :number',
-    'participant_from' => ':athlete from :continent',
 
     'bye' => [
         'up' => 'Up',

@@ -40,6 +40,8 @@ return [
         'upload_participant' => 'Upload participants',
     ],
 
+    'bracket_label' => ':athlete from :continent',
+
     'role' => [
         'athlete' => 'Athlete',
         'manager' => 'Manager',
