@@ -135,7 +135,7 @@ class ClassesRelationManager extends RelationManager
                 ->label(trans('match.actions.generate'))
                 ->requiresConfirmation()
                 ->icon('heroicon-m-arrow-path-rounded-square')
-                ->visible(fn () => $this->ownerRecord->participants()->exists() && ! $this->ownerRecord->is_finished)
+                ->visible(fn () => $this->ownerRecord->participants->isNotEmpty() && ! $this->ownerRecord->is_finished)
                 ->action(function (Component $livewire) {
                     $user = auth()->user();
 
@@ -183,7 +183,7 @@ class ClassesRelationManager extends RelationManager
                             ->first();
 
                         $matches = $this->ownerRecord->matches()
-                            ->with(['athletes', 'division', 'participations', 'blue', 'red', 'prevs', 'next'])
+                            ->with(['division', 'participations', 'blue.continent', 'red.continent', 'prevs', 'next'])
                             ->where('class_id', $record->id)
                             ->orderBy('round_number')
                             ->orderBy('party_number')

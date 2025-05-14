@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Models;
 
 use App\Enums\Round;
+use Countable;
 use Illuminate\Database\Eloquent\Casts\AsArrayObject;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -94,5 +95,16 @@ class Division extends Model
         }
 
         return Round::tryFrom($total - $current);
+    }
+
+    public function getGrid(int $index, Countable|int $defaults = 0): int
+    {
+        if ($index === 0 && $this->attr) {
+            return $this->attr->grid;
+        }
+
+        return $defaults instanceof Countable
+            ? count($defaults)
+            : $defaults;
     }
 }

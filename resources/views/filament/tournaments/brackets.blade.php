@@ -19,32 +19,27 @@
             <div class="overflow-x-scroll pb-2">
                 <div class="flex gap-1">
                     @foreach ($divisionMatches->groupBy('round_number') as $index => $roundMatches)
-                        @if ($round = $division->getRound($index))
-                            @php
-                            $grid = count($roundMatches);
-                            if ($index === 0 && $division->attr) {
-                                $grid = $division->attr->grid;
-                            }
-                            @endphp
+                        @php
+                        $round = $division->getRound($index)
+                        @endphp
 
-                            <section
-                                id="round-{{ $index }}"
-                                style="--current-round: {{ $index }};"
-                                class="rounds flex flex-col gap-4 px-3 border-l-2 first:border-l-0 border-dashed border-gray-100 dark:border-white/5"
-                            >
-                                <h3 class="leading-6 font-bold pl-4">{{ $round->getLabel() }}</h3>
+                        <section
+                            id="round-{{ $index }}"
+                            style="--current-round: {{ $index }};"
+                            class="rounds flex flex-col gap-4 px-3 border-l-2 first:border-l-0 border-dashed border-gray-100 dark:border-white/5"
+                        >
+                            <h3 class="leading-6 font-bold pl-4">{{ $round->getLabel() }}</h3>
 
-                                <div class="matches grid gap-[--gap] w-[--width]" style="--grid: {{ $grid }}">
-                                    @foreach ($roundMatches as $match)
-                                        @foreach ($match->gaps as $g)
-                                        <div class="match" aria-hidden="true"></div>
-                                        @endforeach
-
-                                        <x-match-party :match="$match" :final="$round->isFinal()" />
+                            <div class="matches grid gap-[--gap] w-[--width]" style="--grid: {{ $division->getGrid($index, $roundMatches) }}">
+                                @foreach ($roundMatches as $match)
+                                    @foreach ($match->gaps as $g)
+                                    <div class="match" aria-hidden="true"></div>
                                     @endforeach
-                                </div>
-                            </section>
-                        @endif
+
+                                    <x-match-party :match="$match" :final="$round->isFinal()" />
+                                @endforeach
+                            </div>
+                        </section>
                     @endforeach
                 </div>
             </div>

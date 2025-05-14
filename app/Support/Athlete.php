@@ -21,11 +21,15 @@ class Athlete implements HasLabel
 
     public readonly PartyStatus $status;
 
+    public readonly bool $isPerson;
+
     public function __construct(
         public readonly Person|Matchup $profile,
         public readonly ?Participation $participation = null,
     ) {
-        if ($profile instanceof Person) {
+        $this->isPerson = $profile instanceof Person;
+
+        if ($this->isPerson) {
             $this->display = $profile->name;
             $this->continentName = $profile->continent?->name;
             $this->status = $profile->party?->status ?? PartyStatus::Queue;
