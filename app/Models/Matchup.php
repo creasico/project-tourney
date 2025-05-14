@@ -263,4 +263,9 @@ class Matchup extends Model
     {
         return Attribute::get(fn (): ?Person => $this->winning->first());
     }
+
+    public function gaps(): Attribute
+    {
+        return Attribute::get(fn (): array => ($gap = $this->attr?->gap) ? range(1, $gap) : []);
+    }
 }

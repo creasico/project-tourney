@@ -11,41 +11,40 @@
     @foreach ($matches->groupBy('division_id') as $div => $divisionMatches)
         <section class="flex flex-col gap-4">
             @php
-            $division = $group->divisions->where('id', $div)->first();
-            $rounds = $divisionMatches->groupBy('round_number');
+            $division = $group->divisions->firstWhere('id', $div);
             @endphp
 
             <div class="leading-6 rounded-lg sticky top-20 z-10 px-4 py-3 bg-gray-100 dark:bg-gray-800 ring-1 ring-gray-900/10 dark:ring-white/10">{{ $division->label }}</div>
 
             <div class="overflow-x-scroll pb-2">
                 <div class="flex gap-1">
-                    @foreach ($rounds as $round => $roundMatches)
-                        @php
-                        $roundLabel = $division->getRoundLabel($round);
-                        @endphp
+                    @foreach ($divisionMatches->groupBy('round_number') as $index => $roundMatches)
+                        @if ($round = $division->getRound($index))
+                            @php
+                            $grid = count($roundMatches);
+                            if ($index === 0 && $division->attr) {
+                                $grid = $division->attr->grid;
+                            }
+                            @endphp
 
-                        <section
-                            id="round-{{ $round }}"
-                            style="--current-round: {{ $round }};"
-                            class="rounds flex flex-col gap-4 px-3 border-l-2 first:border-l-0 border-dashed border-gray-100 dark:border-white/5"
-                        >
-                            <h3 class="leading-6 font-bold pl-4">{{ $roundLabel->getLabel() }}</h3>
-
-                            <div
-                                class="matches grid gap-[--gap] w-[--width]"
-                                style="--grid: {{ $round === 0 ? $division->attr->grid : count($roundMatches) }}"
+                            <section
+                                id="round-{{ $index }}"
+                                style="--current-round: {{ $index }};"
+                                class="rounds flex flex-col gap-4 px-3 border-l-2 first:border-l-0 border-dashed border-gray-100 dark:border-white/5"
                             >
-                                @foreach ($roundMatches as $match)
-                                    @if ($match->attr->gap > 0)
-                                        @foreach (range(1, $match->attr->gap) as $g)
-                                        <x-match-party :match="$match" :hidden="true" />
-                                        @endforeach
-                                    @endif
+                                <h3 class="leading-6 font-bold pl-4">{{ $round->getLabel() }}</h3>
 
-                                    <x-match-party :match="$match" :final="$roundLabel->isFinal()" />
-                                @endforeach
-                            </div>
-                        </section>
+                                <div class="matches grid gap-[--gap] w-[--width]" style="--grid: {{ $grid }}">
+                                    @foreach ($roundMatches as $match)
+                                        @foreach ($match->gaps as $g)
+                                        <div class="match" aria-hidden="true"></div>
+                                        @endforeach
+
+                                        <x-match-party :match="$match" :final="$round->isFinal()" />
+                                    @endforeach
+                                </div>
+                            </section>
+                        @endif
                     @endforeach
                 </div>
             </div>

@@ -63,20 +63,20 @@ class Division extends Model
 
     public function hasByes(): Attribute
     {
-        return Attribute::get(fn (): bool => $this->attr?->has_byes ?: false);
+        return Attribute::get(fn (): bool => $this->attr?->has_byes ?? false);
     }
 
     public function currentRound(): Attribute
     {
-        return Attribute::get(fn () => $this->getRoundLabel($this->attr->current_round));
+        return Attribute::get(fn (): ?Round => $this->getRound($this->attr?->current_round));
     }
 
     public function totalRounds(): Attribute
     {
-        return Attribute::get(fn (): ?int => $this->attr->total_rounds);
+        return Attribute::get(fn (): int => $this->attr?->total_rounds ?? 1);
     }
 
-    public function getRoundLabel(?int $current): ?Round
+    public function getRound(?int $current): ?Round
     {
         if ($current === null) {
             return null;
@@ -93,6 +93,6 @@ class Division extends Model
             $current++;
         }
 
-        return Round::from($total - $current);
+        return Round::tryFrom($total - $current);
     }
 }
