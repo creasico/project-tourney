@@ -45,8 +45,10 @@ COPY --chown=www-data:www-data . .
 
 # Make sure our container has the correct permissions
 RUN find . -type f -exec chmod 644 {} + && find . -type d -exec chmod 755 {} + && \
-    chmod -R 775 bootstrap/cache storage && chmod +x artisan && \
+    chmod -R 775 bootstrap/cache && chmod +x artisan && \
     rm -rf .deploy
 
 # Install composer dependencies
 RUN composer install --optimize-autoloader --no-interaction --no-progress --no-dev
+
+VOLUME ["${APP_BASE_DIR}/storage/app"]
