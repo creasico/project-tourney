@@ -29,6 +29,9 @@ COPY .deploy/common/nginx/*.conf /etc/nginx/server-opts.d/
 RUN mv /usr/local/etc/php/conf.d/serversideup-docker-php.ini /usr/local/etc/php/php.ini && \
     chown www-data /etc/s6-overlay/s6-rc.d/user/contents.d
 
+RUN mv /init /init-s6
+COPY --chmod=755 .deploy/production/init /
+
 ############################################
 # Deployment Image
 ############################################
