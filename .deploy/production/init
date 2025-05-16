@@ -6,7 +6,7 @@ if [ "$$" -eq 1 ]; then
     exec /init-s6 "$@"
 else
     # create a new PID namespace
-    exec unshare --pid sh -c '
+    exec unshare -r --pid sh -c '
         # set up /proc and start the real init in the background
         unshare --mount-proc /init-s6 "$@" &
         child="$!"
