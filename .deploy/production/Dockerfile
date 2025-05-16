@@ -29,6 +29,9 @@ COPY .deploy/common/nginx/*.conf /etc/nginx/server-opts.d/
 RUN mv /usr/local/etc/php/conf.d/serversideup-docker-php.ini /usr/local/etc/php/php.ini && \
     chown www-data /etc/s6-overlay/s6-rc.d/user/contents.d
 
+RUN mv /init /init-s6
+COPY --chmod=755 .deploy/production/init /
+
 ############################################
 # Deployment Image
 ############################################
@@ -45,8 +48,10 @@ COPY --chown=www-data:www-data . .
 
 # Make sure our container has the correct permissions
 RUN find . -type f -exec chmod 644 {} + && find . -type d -exec chmod 755 {} + && \
-    chmod -R 775 bootstrap/cache storage && chmod +x artisan && \
+    chmod -R 775 bootstrap/cache && chmod +x artisan && \
     rm -rf .deploy
 
 # Install composer dependencies
 RUN composer install --optimize-autoloader --no-interaction --no-progress --no-dev
+
+VOLUME ["${APP_BASE_DIR}/storage/app"]

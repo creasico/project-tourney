@@ -45,6 +45,14 @@ return [
             'throw' => false,
         ],
 
+        'samples' => [
+            'driver' => 'local',
+            'root' => storage_path('samples'),
+            'url' => env('APP_URL').'/samples',
+            'serve' => true,
+            'throw' => false,
+        ],
+
         's3' => [
             'driver' => 's3',
             'key' => env('AWS_ACCESS_KEY_ID'),

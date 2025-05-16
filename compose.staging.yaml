@@ -3,7 +3,7 @@ services:
     image: ghcr.io/creasico/project-tourney
     container_name: tourney-app
     env_file:
-      - .env
+      - .env.staging
     environment:
       APP_ENV: staging
       APP_WORKERS_ENABLED: true
@@ -15,6 +15,8 @@ services:
       interval: 30s
       timeout: 5s
       retries: 3
+    volumes:
+      - local-storage:/var/www/html/storage/app
     depends_on:
       - pgsql
       - valkey
@@ -58,6 +60,8 @@ networks:
     enable_ipv6: false
 
 volumes:
+  local-storage:
+    driver: local
   local-pgsql:
     driver: local
   local-valkey:
