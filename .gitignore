@@ -22,6 +22,7 @@ Desktop.ini
 .php-version
 .tool-versions
 .phpstorm.meta.php
+.zed
 _ide_helper.php
 _ide_helper_models.php
 phpunit.dusk.xml
