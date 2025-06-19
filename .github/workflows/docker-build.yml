@@ -25,7 +25,7 @@ jobs:
       SENTRY_DSN: ${{ secrets.SENTRY_DSN }}
     with:
       branch: ${{ needs.prepare.outputs.target-branch }}
-      composer-cache: ${{ needs.prepare.outputs.composer-cache }}
+      composer-cache: ${{ needs.prepare.outputs.composer-cache-dir }}
       composer-cache-key: ${{ needs.prepare.outputs.composer-cache-key }}
       sentry-project: ${{ vars.SENTRY_PROJECT }}
       target-env: staging

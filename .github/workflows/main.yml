@@ -25,7 +25,7 @@ jobs:
       SENTRY_DSN: ${{ secrets.SENTRY_DSN }}
     with:
       branch: ${{ needs.prepare.outputs.target-branch }}
-      composer-cache: ${{ needs.prepare.outputs.composer-cache }}
+      composer-cache: ${{ needs.prepare.outputs.composer-cache-dir }}
       composer-cache-key: ${{ needs.prepare.outputs.composer-cache-key }}
       sentry-project: ${{ vars.SENTRY_PROJECT }}
 
@@ -79,7 +79,7 @@ jobs:
       - name: Prepare Composer Cache
         uses: actions/cache@v4
         with:
-          path: ${{ needs.prepare.outputs.composer-cache }}
+          path: ${{ needs.prepare.outputs.composer-cache-dir }}
           key: ${{ needs.prepare.outputs.composer-cache-key }}-composer-${{ hashFiles('**/composer.lock') }}
           restore-keys: ${{ needs.prepare.outputs.composer-cache-key }}-composer-
 
@@ -167,7 +167,7 @@ jobs:
   #     - name: Prepare Composer Cache
   #       uses: actions/cache@v4
   #       with:
-  #         path: ${{ needs.prepare.outputs.composer-cache }}
+  #         path: ${{ needs.prepare.outputs.composer-cache-dir }}
   #         key: ${{ needs.prepare.outputs.composer-cache-key }}-composer-${{ hashFiles('**/composer.lock') }}
   #         restore-keys: ${{ needs.prepare.outputs.composer-cache-key }}-composer-
 
