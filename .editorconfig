@@ -17,6 +17,3 @@ indent_size = 2
 
 [*.{xml}]
 indent_size = 4
-
-[docker-compose.yml]
-indent_size = 4
